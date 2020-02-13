@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
+import { Container } from "react-bootstrap/lib/Tab";
+import {Row, Col} from 'react-bootstrap';
 
 const tableName = 'usuario';
 
@@ -14,6 +16,7 @@ export default class EditUsuario extends Component {
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangeSenha = this.onChangeSenha.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.cancelar = this.cancelar.bind(this);
 
     // State
     this.state = {
@@ -35,6 +38,10 @@ export default class EditUsuario extends Component {
       .catch((error) => {
         console.log(error);
       })
+  }
+
+  cancelar(){
+    this.props.history.push('/usuario-list');
   }
 
   onChangeNome(e) {
@@ -89,10 +96,17 @@ export default class EditUsuario extends Component {
           <Form.Control type="password" value={this.state.senha} onChange={this.onChangeSenha} />
         </Form.Group>
 
-        <Button variant="danger" size="lg" block="block" type="submit">
+        <Container id="Botoes">
+        <Row>
+          <Col><Button variant="danger" size="lg" block="block" type="submit">
           Alterar
-        </Button>
+        </Button></Col>
+          <Col><Button variant="warning" size="lg" block="block" type="button" onClick={this.cancelar}>Cancelar</Button></Col>          
+        </Row>
+      </Container>
+
       </Form>
+
     </div>);
   }
 }

@@ -13,9 +13,10 @@ export default class UsuarioTableRow extends Component {
     }
 
     delete() {
-        axios.delete(process.env.URL_SERVER + tableName + '/delete/' + this.props.obj._id)
+        axios.delete(process.env.REACT_APP_URL_SERVER + tableName + '/delete/' + this.props.obj._id)
             .then((res) => {
-                console.log('Excluído com sucesso!')
+                console.log('Excluído com sucesso!');
+                window.location.reload();
             }).catch((error) => {
                 console.log(error)
             })
@@ -26,12 +27,11 @@ export default class UsuarioTableRow extends Component {
             <tr>
                 <td>{this.props.obj.nome}</td>
                 <td>{this.props.obj.email}</td>
-                <td>{this.props.obj.senha}</td>
                 <td>
                     <Link className="edit-link" to={"/edit-usuario/" + this.props.obj._id}>
                         Editar
                     </Link>
-                    <Button onClick={this.delete} size="sm" variant="danger">Deletar</Button>
+                    <Button onClick={this.delete} size="sm" variant="danger">Excluir</Button>
                 </td>
             </tr>
         );

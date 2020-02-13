@@ -5,6 +5,9 @@ import axios from 'axios';
 import sha256 from 'crypto-js/sha256';
 import hmacSHA512 from 'crypto-js/hmac-sha512';
 import Base64 from 'crypto-js/enc-base64';
+import { Link } from 'react-router-dom';
+import { Container } from "react-bootstrap/lib/Tab";
+import {Row, Col} from 'react-bootstrap';
 
 const tableName = 'usuario';
 const nonce = '';
@@ -19,6 +22,7 @@ export default class CreateUsuario extends Component {
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangeSenha = this.onChangeSenha.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.cancelar = this.cancelar.bind(this);
 
     // Setting up state
     this.state = {
@@ -26,6 +30,10 @@ export default class CreateUsuario extends Component {
       email: '',
       senha: ''
     }
+  }
+
+  cancelar(){
+    this.props.history.push('/usuario-list');
   }
 
   onChangeNome(e) {
@@ -54,7 +62,10 @@ export default class CreateUsuario extends Component {
     };
 
     axios.post(process.env.REACT_APP_URL_SERVER + tableName + '/create', objEnvio)
-      .then(res => console.log(res.data));
+      .then(res => {
+        console.log(res.data); 
+        this.props.history.push('/usuario-list');
+      });
 
     this.setState({
       nome: '',
@@ -81,9 +92,14 @@ export default class CreateUsuario extends Component {
           <Form.Control type="password" value={this.state.senha} onChange={this.onChangeSenha} />
         </Form.Group>
 
-        <Button variant="danger" size="lg" block="block" type="submit">
-          Criar
-        </Button>
+      <Container id="Botoes">
+        <Row>
+          <Col><Button variant="danger" size="lg" block="block" type="submit">Criar</Button></Col>
+          <Col><Button variant="warning" size="lg" block="block" type="button" onClick={this.cancelar}>Cancelar</Button></Col>          
+        </Row>
+      </Container>
+        
+        
       </Form>
     </div>);
   }

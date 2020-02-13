@@ -37,3 +37,40 @@ body h3 {
   text-decoration: none;
   color: #ffffff;
 }
+
+.warning-link {
+  padding: 7px 10px;
+  font-size: 0.875rem;
+  line-height: normal;
+  border-radius: 0.2rem;
+  color: #fff;
+  background-color: #dbad42;
+  border-color:  #dbad42;
+  margin-right: 10px;
+  position: relative;
+  top: 1px;
+}
+
+.warning-link:hover {
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.new-link {
+  padding: 7px 10px;
+  font-size: 0.875rem;
+  line-height: normal;
+  border-radius: 0.2rem;
+  color: #fff;
+  background-color: #275cbe;
+  border-color:  #275cbe;
+  margin-right: 10px;
+  position: relative;
+  top: 1px;
+}
+
+.new-link:hover {
+  text-decoration: none;
+  color: #ffffff;
+}
+

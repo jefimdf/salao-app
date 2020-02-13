@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import axios from 'axios';
 import Table from 'react-bootstrap/Table';
-import UsuarioTableRow from './UsuarioTableRow';
+import Button from 'react-bootstrap/Button';
+import { Link } from 'react-router-dom';
+import ModalConfirmacao from "../../../common/modalConfirmacao";
+
 
 const tableName = 'usuario';
 
@@ -10,15 +13,26 @@ export default class UsuarioList extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      students: []
+      usuarios: [],
+      showModal: false,
+      idRegistro: 0
     };
+
+    this.delete = this.delete.bind(this);
+    this.confimarExclusao = this.confimarExclusao.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.novo = this.novo.bind(this);
   }
 
   componentDidMount() {
-    axios.get(process.env.URL_SERVER + tableName + '/')
+    this.carregaLista();    
+  }
+
+  carregaLista(){
+    axios.get(process.env.REACT_APP_URL_SERVER + tableName + '/')
       .then(res => {
         this.setState({
-          students: res.data
+          usuarios: res.data
         });
       })
       .catch((error) => {
@@ -26,28 +40,76 @@ export default class UsuarioList extends Component {
       })
   }
 
+  delete = (id) => {
+    axios.delete(process.env.REACT_APP_URL_SERVER + tableName + '/delete/' + id)
+        .then((res) => {
+            console.log('Excluído com sucesso!');
+            this.setState({showModal: false});    
+            this.carregaLista();
+        }).catch((error) => {
+            console.log(error)
+        })    
+  }
+
+  confimarExclusao(id){
+    this.setState({showModal: true, idRegistro: id});
+  }
+
+  handleClose(status){
+    if (status){
+      this.delete(this.state.idRegistro);
+    }
+    this.setState({showModal: status});    
+  }
+
+  novo(){
+    this.props.history.push('/create-usuario');
+  }
+
   DataTable() {
-    return this.state.students.map((res, i) => {
-      return <UsuarioTableRow obj={res} key={i} />;
+    return this.state.usuarios.map((res) => {
+      
+      return (
+        <tr>
+            <td>{res._id}</td>
+            <td>{res.nome}</td>
+            <td>{res.email}</td>
+            <td>
+                <Link className="edit-link" to={"/edit-usuario/" + res._id}>
+                    Editar
+                </Link>
+                <Button onClick={() => this.confimarExclusao(res._id)} size="sm" variant="danger">Excluir</Button>
+            </td>
+        </tr>
+      );
+
     });
   }
 
 
   render() {
-    return (<div className="table-wrapper">
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Email</th>
-            <th>Senha</th>
-            <th>Ação</th>
-          </tr>
-        </thead>
-        <tbody>
-          {this.DataTable()}
-        </tbody>
-      </Table>
-    </div>);
+    
+    return (
+      <div>
+        <ModalConfirmacao show={this.state.showModal} handleClose={this.handleClose} Title="Exclusão de usuário" Message="Deseja excluir o registro?" />
+        <div className="table-wrapper">        
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Ação</th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.DataTable()}
+            </tbody>
+          </Table>          
+        </div>
+        <Button variant="primary" size="lg" block="block" type="button" onClick={this.novo}>Novo</Button>        
+      </div>
+    
+    );
   }
 }
