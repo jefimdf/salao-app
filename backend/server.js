@@ -5,7 +5,6 @@ let bodyParser = require('body-parser');
 let dbConfig = require('./database/db');
 
 // Express Route
-const studentRoute = require('../backend/routes/student.route')
 const usuarioRoute = require('../backend/routes/usuario.route')
 const agendaRoute = require('../backend/routes/agenda.route')
 const agendaServicoRoute = require('../backend/routes/agendaServico.route')
@@ -34,7 +33,6 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(cors());
-app.use('/students', studentRoute)
 app.use('/usuario', usuarioRoute)
 app.use('/agenda', agendaRoute)
 app.use('/agendaServico', agendaServicoRoute)
