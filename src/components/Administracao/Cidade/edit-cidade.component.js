@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
-import { Container } from "react-bootstrap/lib/Tab";
+import { Container } from "react-bootstrap";
 import {Row, Col} from 'react-bootstrap';
 
 const tableName = 'cidade';

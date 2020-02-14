@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let agendaSchema = new Schema({
+  idServico: {
+    type: String
+  },
   idCliente: {
     type: String
   },

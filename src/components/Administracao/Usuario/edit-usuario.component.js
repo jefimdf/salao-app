@@ -2,10 +2,14 @@ import React, { Component } from "react";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
-import { Container } from "react-bootstrap/lib/Tab";
+import { Container } from "react-bootstrap";
 import {Row, Col} from 'react-bootstrap';
+import sha256 from 'crypto-js/sha256';
+import hmacSHA512 from 'crypto-js/hmac-sha512';
+import Base64 from 'crypto-js/enc-base64';
 
 const tableName = 'usuario';
+const nonce = '';
 
 export default class EditUsuario extends Component {
 
@@ -14,7 +18,8 @@ export default class EditUsuario extends Component {
 
     this.onChangeNome = this.onChangeNome.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
-    this.onChangeSenha = this.onChangeSenha.bind(this);
+    this.onChangeSenhaAtual = this.onChangeSenhaAtual.bind(this);
+    this.onChangeNovaSenha = this.onChangeNovaSenha.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.cancelar = this.cancelar.bind(this);
 
@@ -22,7 +27,9 @@ export default class EditUsuario extends Component {
     this.state = {
       nome: '',
       email: '',
-      senha: ''
+      senha: '',
+      novaSenha: '',
+      senhaAtual: ''
     }
   }
 
@@ -52,29 +59,42 @@ export default class EditUsuario extends Component {
     this.setState({ email: e.target.value })
   }
 
-  onChangeSenha(e) {
-    this.setState({ senha: e.target.value })
+  onChangeSenhaAtual(e) {
+    this.setState({ senhaAtual: e.target.value })
+  }
+
+  onChangeNovaSenha(e) {
+    this.setState({ novaSenha: e.target.value })
   }
 
   onSubmit(e) {
     e.preventDefault()
 
-    const objEnvio = {
-      nome: this.state.nome,
-      email: this.state.email,
-      senha: this.state.senha
-    };
+    const path='', privateKey='';
 
-    axios.put(process.env.REACT_APP_URL_SERVER + tableName + '/update/' + this.props.match.params.id, objEnvio)
-      .then((res) => {
-        console.log(res.data)
-        console.log('Alterado com sucesso!')
-      }).catch((error) => {
-        console.log(error)
-      })
+    if (this.state.senha == Base64.stringify(hmacSHA512(path + sha256(nonce + this.state.senhaAtual), privateKey))){
 
-    // Redirect to Student List 
-    this.props.history.push('/'+tableName+'-list')
+      const senha = Base64.stringify(hmacSHA512(path + sha256(nonce + this.state.novaSenha), privateKey));
+
+      const objEnvio = {
+        nome: this.state.nome,
+        email: this.state.email,
+        senha: senha
+      };
+
+      axios.put(process.env.REACT_APP_URL_SERVER + tableName + '/update/' + this.props.match.params.id, objEnvio)
+        .then((res) => {
+          console.log(res.data)
+          console.log('Alterado com sucesso!')
+        }).catch((error) => {
+          console.log(error)
+        })
+
+      // Redirect to Student List 
+      this.props.history.push('/'+tableName+'-list');
+    }
+
+
   }
 
 
@@ -91,9 +111,14 @@ export default class EditUsuario extends Component {
           <Form.Control type="email" value={this.state.email} onChange={this.onChangeEmail} />
         </Form.Group>
 
-        <Form.Group controlId="Senha">
-          <Form.Label>Senha</Form.Label>
-          <Form.Control type="password" value={this.state.senha} onChange={this.onChangeSenha} />
+        <Form.Group controlId="SenhaAtual">
+          <Form.Label>Senha Atual</Form.Label>
+          <Form.Control type="password" onChange={this.onChangeSenhaAtual} />
+        </Form.Group>
+
+        <Form.Group controlId="NovaSenha">
+          <Form.Label>Nova Senha</Form.Label>
+          <Form.Control type="password" onChange={this.onChangeNovaSenha} />
         </Form.Group>
 
         <Container id="Botoes">

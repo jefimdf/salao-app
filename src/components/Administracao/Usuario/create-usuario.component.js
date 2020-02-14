@@ -5,7 +5,7 @@ import axios from 'axios';
 import sha256 from 'crypto-js/sha256';
 import hmacSHA512 from 'crypto-js/hmac-sha512';
 import Base64 from 'crypto-js/enc-base64';
-import { Container } from "react-bootstrap/lib/Tab";
+import { Container } from "react-bootstrap";
 import {Row, Col} from 'react-bootstrap';
 
 const tableName = 'usuario';

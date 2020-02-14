@@ -3,19 +3,21 @@ import axios from 'axios';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
-import ModalConfirmacao from "../../../common/modalConfirmacao";
-import { serverDateToString } from "../../../common/dateValidations";
+import ModalConfirmacao from "../../common/modalConfirmacao";
+import { serverDateToString } from "../../common/dateValidations";
 
-const tableName = 'servicoFuncionario';
+const tableName = 'agenda';
 
-export default class ServicoFuncionarioList extends Component {
+export default class AgendaList extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      funcionarios: [],
+      agendas: [],
       showModal: false,
       idRegistro: 0,
+      clientes: [],
+      funcionarios: [],
       servicos: [],
       servicosFuncionarios: []
     };
@@ -27,9 +29,35 @@ export default class ServicoFuncionarioList extends Component {
   }
 
   componentDidMount() {
+    this.carregaServicoFuncionario();
     this.carregaFuncionario();
     this.carregaServico();
+    this.carregaCliente();
     this.carregaLista();        
+  }
+
+  carregaCliente(){
+    axios.get(process.env.REACT_APP_URL_SERVER + 'cliente/')
+    .then(res => {
+      this.setState({
+        clientes: res.data
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  }
+
+  carregaServicoFuncionario(){
+    axios.get(process.env.REACT_APP_URL_SERVER + 'servicoFuncionario/')
+    .then(res => {
+      this.setState({
+        servicosFuncionarios: res.data
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    })
   }
 
   carregaFuncionario(){
@@ -60,7 +88,7 @@ export default class ServicoFuncionarioList extends Component {
     axios.get(process.env.REACT_APP_URL_SERVER + tableName + '/')
       .then(res => {
         this.setState({
-          servicosFuncionarios: res.data
+          agendas: res.data
         });
       })
       .catch((error) => {
@@ -94,23 +122,30 @@ export default class ServicoFuncionarioList extends Component {
     this.props.history.push('/create-'+tableName+'');
   }
 
-  retornaFuncionario = (id) =>{
-    debugger
-    return this.state.funcionarios.find(obj=>obj._id===id).nome;
-  }
-
   retornaServico = (id) =>{
+    debugger
     return this.state.servicos.find(obj=>obj._id===id).nome;
   }
 
+  retornaFuncionario = (id) =>{
+    return this.state.funcionarios.find(obj=>obj._id===id).nome;
+  }
+
+  retornaCliente = (id) =>{
+    return this.state.clientes.find(obj=>obj._id===id).nome;
+  }
+
   DataTable() {
-    return this.state.servicosFuncionarios.map((res) => {
+    return this.state.agendas.map((res) => {
+      
       return (
         <tr>
             <td>{res._id}</td>
-            <td>{this.retornaFuncionario(res.idFuncionario)}</td>
             <td>{this.retornaServico(res.idServico)}</td>
-            <td>{res.percentual}</td>
+            <td>{this.retornaFuncionario(res.idFuncionario)}</td>
+            <td>{this.retornaCliente(res.idCliente)}</td>
+            <td>{serverDateToString(res.data)}</td>
+            <td>{res.hora}</td>
             <td>
                 <Link className="edit-link" to={"/edit-"+tableName+"/" + res._id}>
                     Editar
@@ -128,15 +163,17 @@ export default class ServicoFuncionarioList extends Component {
     
     return (
       <div>
-        <ModalConfirmacao show={this.state.showModal} handleClose={this.handleClose} Title="Exclusão de serviço de funcionário" Message="Deseja excluir o registro?" />
+        <ModalConfirmacao show={this.state.showModal} handleClose={this.handleClose} Title="Exclusão de preço" Message="Deseja excluir o registro?" />
         <div className="table-wrapper">        
           <Table striped bordered hover>
             <thead>
               <tr>
                 <th>#</th>
-                <th>Funcionário</th>
                 <th>Serviço</th>
-                <th>Percentual</th>
+                <th>Funcionário</th>
+                <th>Cliente</th>
+                <th>Data</th>
+                <th>Hora</th>
                 <th>Ação</th>
               </tr>
             </thead>

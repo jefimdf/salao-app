@@ -44,6 +44,11 @@ import CreateServicoFuncionario from "./components/Administracao/ServicoFunciona
 import EditServicoFuncionario from "./components/Administracao/ServicoFuncionario/edit-servicoFuncionario.component";
 import ListServicoFuncionario from "./components/Administracao/ServicoFuncionario/servicoFuncionario-list.component";
 
+//Preço
+import CreateAgenda from "./components/Agenda/create-agenda.component";
+import EditAgenda from "./components/Agenda/edit-agenda.component";
+import ListAgenda from "./components/Agenda/agenda-list.component";
+
 
 function App() {
   return (<Router>
@@ -52,14 +57,14 @@ function App() {
         <Navbar bg="dark" variant="dark">
           <Container>
             <Navbar.Brand>
-              <Link to={"/create-student"} className="nav-link">
-                React MERN Stack App
+              <Link to={"/agenda-list"} className="nav-link">
+                Salão
               </Link>
             </Navbar.Brand>
 
             <Nav className="justify-content-end">
               <Nav>
-                <Link to={"/create-student"} className="nav-link">
+                <Link to={"/create-agenda"} className="nav-link">
                   Agenda
                 </Link>
               </Nav>
@@ -117,6 +122,10 @@ function App() {
                 <Route path="/create-servicoFuncionario" component={CreateServicoFuncionario} />
                 <Route path="/edit-servicoFuncionario/:id" component={EditServicoFuncionario} />
                 <Route path="/servicoFuncionario-list" component={ListServicoFuncionario} />
+
+                <Route path="/create-agenda" component={CreateAgenda} />
+                <Route path="/edit-agenda/:id" component={EditAgenda} />
+                <Route path="/agenda-list" component={ListAgenda} />
 
               </Switch>
             </div>
