@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Container } from "react-bootstrap";
 import {Row, Col} from 'react-bootstrap';
 import DatePicker from "react-datepicker";
+import MaskedFormControl from 'react-bootstrap-maskedinput';
 
 
 const tableName = 'agenda';
@@ -20,8 +21,11 @@ export default class CreateAgenda extends Component {
     this.onChangeCliente = this.onChangeCliente.bind(this);
     this.onChangeData = this.onChangeData.bind(this);
     this.onChangeHora = this.onChangeHora.bind(this);
+    this.onChangeServico = this.onChangeServico.bind(this);
+    
     this.onSubmit = this.onSubmit.bind(this);
     this.cancelar = this.cancelar.bind(this);
+
 
     // Setting up state
     this.state = {
@@ -34,7 +38,8 @@ export default class CreateAgenda extends Component {
       funcionariosTodos: [],
       funcionarios: [],
       clientes: [],
-      servicosFuncionarios: []
+      servicosFuncionarios: [],
+      servicoSelecionado: []
     }
   }
 
@@ -99,18 +104,7 @@ export default class CreateAgenda extends Component {
   }
 
   onChangeServico(e) {
-    this.setState({ idServico: e.target.value })
-    /* var servfunc = this.state.servicosFuncionarios.filter(obj=>obj.idServico === e.target.value);
-
-    var test = [];
-    servfunc.map(obj2 => {
-      var func = this.state.funcionariosTodos.filter(obj=>obj._id===obj2.idFuncionario);            
-      if (func!=undefined)
-        test.push(func);
-    });
-
-    this.setState({ funcionarios: test }) */
-
+    this.setState({ idServico: e.target.value })    
   }
 
   onChangeFuncionario(e) {
@@ -125,39 +119,35 @@ export default class CreateAgenda extends Component {
     this.setState({ data: date })
   }
 
-  onChangeHora(e) {
+  onChangeHora(e){    
     this.setState({ hora: e.target.value })
   }
 
   onSubmit(e) {
     e.preventDefault();
 
-    const objEnvio = {
-      idServico: this.state.idServico,
-      idFuncionario: this.state.idFuncionario,
-      idCliente: this.state.idCliente,
-      data: this.state.data,
-      hora: this.state.hora
-    };
+    if (this.state.servicoSelecionado != undefined){
 
-    debugger
+      this.state.servicoSelecionado.map(obj=>{
 
-    axios.post(process.env.REACT_APP_URL_SERVER + tableName + '/create', objEnvio)
-      .then(res => {
-        console.log(res.data); 
-        this.props.history.push('/'+tableName+'-list');
-      });
+        var arr = obj.split('|');
 
-    this.state = {
-      idServico: '',
-      idFuncionario: '',
-      idCliente: '',
-      data: '',
-      hora: '',
-      servicos: [],
-      funcionarios: [],
-      clientes: []
+        const objEnvio = {
+          idServico: arr[0],
+          idFuncionario: arr[1],
+          idCliente: this.state.idCliente,
+          data: this.state.data,
+          hora: this.state.hora
+        };
+
+        axios.post(process.env.REACT_APP_URL_SERVER + tableName + '/create', objEnvio)
+        .then(res => {
+          console.log(res.data); 
+          this.props.history.push('/'+tableName+'-list');
+        });
+      })
     }
+
   }
 
   servicos(){
@@ -192,11 +182,20 @@ export default class CreateAgenda extends Component {
     return this.state.funcionarios.find(obj=>obj._id===id).nome;
   }
 
+  onChangeServico(item, chave){
+    if (item.target.checked){
+      this.state.servicoSelecionado.push(chave);
+    }else{
+      var retorno = this.state.servicoSelecionado.filter((obj)=>obj!=chave);
+      this.setState({servicoSelecionado: retorno});
+    }
+  }
+
   montaServicos(){
     return this.state.servicosFuncionarios.map((obj)=>{
       return (
         <div className="mb-3">
-          <Form.Check type="checkbox" label={this.retornaServico(obj.idServico) +' - '+ this.retornaFuncionario(obj.idFuncionario)} />
+          <Form.Check type="checkbox" label={this.retornaServico(obj.idServico) +' - '+ this.retornaFuncionario(obj.idFuncionario)} onChange={(item)=>this.onChangeServico(item, obj.idServico+'|'+obj.idFuncionario)}/>
         </div>
       )
     })
@@ -233,22 +232,10 @@ export default class CreateAgenda extends Component {
           />
 
         <Form.Group controlId="Hora">
-          <Form.Label>Hora</Form.Label>                    
+          <Form.Label>Hora</Form.Label>    
+          <MaskedFormControl type='text' name='hora' mask='11:11' value={this.state.hora} onChange={this.onChangeHora} />                 
         </Form.Group>
-        <DatePicker
-            name="hora"
-            className="form-control"
-            minDate={new Date()}
-            selected={this.state.data}
-            onChange={this.onChangeData}
-            showTimeSelect
-            showTimeSelectOnly
-            timeIntervals={15}
-            timeCaption="Time"
-            dateFormat="h:mm aa"
-          />
         
-
       <Container id="Botoes">
         <Row>
           <Col><Button variant="danger" size="lg" block="block" type="submit">Criar</Button></Col>

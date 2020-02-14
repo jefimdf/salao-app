@@ -81,6 +81,7 @@ export default class PrecoList extends Component {
   }
 
   retornaServico = (id) =>{
+    
     return this.state.servicos.find(obj=>obj._id===id).nome;
   }
 

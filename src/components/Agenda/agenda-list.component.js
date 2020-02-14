@@ -123,7 +123,6 @@ export default class AgendaList extends Component {
   }
 
   retornaServico = (id) =>{
-    debugger
     return this.state.servicos.find(obj=>obj._id===id).nome;
   }
 
@@ -140,7 +139,6 @@ export default class AgendaList extends Component {
       
       return (
         <tr>
-            <td>{res._id}</td>
             <td>{this.retornaServico(res.idServico)}</td>
             <td>{this.retornaFuncionario(res.idFuncionario)}</td>
             <td>{this.retornaCliente(res.idCliente)}</td>
@@ -168,7 +166,6 @@ export default class AgendaList extends Component {
           <Table striped bordered hover>
             <thead>
               <tr>
-                <th>#</th>
                 <th>Serviço</th>
                 <th>Funcionário</th>
                 <th>Cliente</th>
