@@ -29,71 +29,36 @@ export default class AgendaList extends Component {
   }
 
   componentDidMount() {
-    this.carregaServicoFuncionario();
-    this.carregaFuncionario();
-    this.carregaServico();
-    this.carregaCliente();
-    this.carregaLista();        
-  }
 
-  carregaCliente(){
-    axios.get(process.env.REACT_APP_URL_SERVER + 'cliente/')
-    .then(res => {
-      this.setState({
-        clientes: res.data
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-    })
-  }
+    const requests = [
+      axios.get(process.env.REACT_APP_URL_SERVER + tableName + '/')
+      .then(res => res = res.data),
+      axios.get(process.env.REACT_APP_URL_SERVER + 'servicoFuncionario/')
+        .then(res => res = res.data),
+      axios.get(process.env.REACT_APP_URL_SERVER + 'servico/')
+        .then(res => res = res.data),
+      axios.get(process.env.REACT_APP_URL_SERVER + 'preco/')
+        .then(res => res = res.data),
+      axios.get(process.env.REACT_APP_URL_SERVER + 'funcionario/')
+        .then(res => res = res.data),
+      axios.get(process.env.REACT_APP_URL_SERVER + 'cliente/')
+        .then(res => res = res.data)
+    ];
 
-  carregaServicoFuncionario(){
-    axios.get(process.env.REACT_APP_URL_SERVER + 'servicoFuncionario/')
-    .then(res => {
-      this.setState({
-        servicosFuncionarios: res.data
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-    })
-  }
-
-  carregaFuncionario(){
-    axios.get(process.env.REACT_APP_URL_SERVER + 'funcionario/')
-    .then(res => {
-      this.setState({
-        funcionarios: res.data
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-    })
-  }
-
-  carregaServico(){
-    axios.get(process.env.REACT_APP_URL_SERVER + 'servico/')
-    .then(res => {
-      this.setState({
-        servicos: res.data
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-    })
-  }
-
-  carregaLista(){
-    axios.get(process.env.REACT_APP_URL_SERVER + tableName + '/')
-      .then(res => {
+    Promise.all(requests)
+      .then(([objAgenda, objServicoFuncionario, objServico, objPreco, objFuncionario, objCliente]) => {
         this.setState({
-          agendas: res.data
+          agendas: objAgenda,
+          servicosFuncionarios: objServicoFuncionario,
+          servicos: objServico,
+          precos: objPreco,
+          funcionarios: objFuncionario,
+          clientes: objCliente          
         });
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+
+      }, (evt) => {
+          console.log(evt);        
+      });
   }
 
   delete = (id) => {
@@ -144,6 +109,7 @@ export default class AgendaList extends Component {
             <td>{this.retornaCliente(res.idCliente)}</td>
             <td>{serverDateToString(res.data)}</td>
             <td>{res.hora}</td>
+            <td>{res.total}</td>
             <td>
                 <Link className="edit-link" to={"/edit-"+tableName+"/" + res._id}>
                     Editar
@@ -171,6 +137,7 @@ export default class AgendaList extends Component {
                 <th>Cliente</th>
                 <th>Data</th>
                 <th>Hora</th>
+                <th>Valor Total</th>
                 <th>Ação</th>
               </tr>
             </thead>

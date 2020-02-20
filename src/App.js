@@ -44,10 +44,11 @@ import CreateServicoFuncionario from "./components/Administracao/ServicoFunciona
 import EditServicoFuncionario from "./components/Administracao/ServicoFuncionario/edit-servicoFuncionario.component";
 import ListServicoFuncionario from "./components/Administracao/ServicoFuncionario/servicoFuncionario-list.component";
 
-//Preço
+//Agenda
 import CreateAgenda from "./components/Agenda/create-agenda.component";
 import EditAgenda from "./components/Agenda/edit-agenda.component";
 import ListAgenda from "./components/Agenda/agenda-list.component";
+import ViewAgenda from "./components/Agenda/agenda-view.component";
 
 
 function App() {
@@ -126,6 +127,7 @@ function App() {
                 <Route path="/create-agenda" component={CreateAgenda} />
                 <Route path="/edit-agenda/:id" component={EditAgenda} />
                 <Route path="/agenda-list" component={ListAgenda} />
+                <Route path="/agenda-view" component={ViewAgenda} />
 
               </Switch>
             </div>

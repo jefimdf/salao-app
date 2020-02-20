@@ -16,6 +16,9 @@ let agendaSchema = new Schema({
   },  
   hora: {
     type: String
+  },  
+  total: {
+    type: Number
   }
 }, {
     collection: 'agendas'

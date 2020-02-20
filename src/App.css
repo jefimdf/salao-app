@@ -1,5 +1,12 @@
+body{
+  background-color: #664d6b;
+}
+
 .wrapper {
   padding-top: 30px;
+  background-color: #d5d4d6;
+  border-radius: 30px;
+  padding: 20px;
 }
 
 body h3 {
@@ -74,3 +81,21 @@ body h3 {
   color: #ffffff;
 }
 
+.col-md-12{
+  padding: 9px !important;
+}
+
+label{
+  display: inline-block;
+  margin-bottom: 0.5rem;
+    font-family: sans-serif;
+    color: #656363;
+}
+
+.table-wrapper{
+  max-width: 100% !important;
+}
+
+.form-control{
+  border-radius: 9px;
+}
