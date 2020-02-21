@@ -80,9 +80,10 @@ ul.ks-cboxtags li input[type="checkbox"]:focus + label {
 }
 
 .spanDia{
-  font-size: 42px;
+  font-size: 22px;
   display: flex;
   color: #fff;
+  text-align: right;
 }
 
 .divDia{
@@ -91,10 +92,13 @@ ul.ks-cboxtags li input[type="checkbox"]:focus + label {
     padding: 10px;
     background-color: #7b7a7a;
     color:rgb(180, 178, 178);
+    display: inline;
+   float: right;
+   width: 20%;
 }
 
 .tdDia{
-  padding: 10px;
+  padding: 10px;  
 }
 
 .divInfo{
@@ -140,10 +144,36 @@ ul.ks-cboxtags li input[type="checkbox"]:focus + label {
 
 .divNome{
   font-size: 20px;
+  padding-left: 5px;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 .divCelular{
   color: #7b7a7a;
   padding-left: 10px;
 
+}
+
+.liAgenda{
+  list-style: none;
+  padding: 5px;
+}
+
+.divHora{
+  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(105, 48, 48);
+  font-size: large;
+  font-weight: bold;
+  border-bottom: 1px solid rgb(230, 159, 108);
+  margin-bottom: 10px;
+  width: 93%;
+}
+
+.divQuantidade{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: large;
+}
+
+.divQuantidade span{
+  font-weight: bold;
 }

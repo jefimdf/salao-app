@@ -58,7 +58,7 @@ function App() {
         <Navbar bg="dark" variant="dark">
           <Container>
             <Navbar.Brand>
-              <Link to={"/agenda-list"} className="nav-link">
+              <Link to={"/agenda-view"} className="nav-link">
                 Salão
               </Link>
             </Navbar.Brand>

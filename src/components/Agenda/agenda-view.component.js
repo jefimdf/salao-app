@@ -26,6 +26,10 @@ export default class AgendaView extends Component {
           agendasTodas: []
         };
     
+        this.onChangeData = this.onChangeData.bind(this);
+        this.filtraDadosAgenda = this.filtraDadosAgenda.bind(this);
+        this.dataString = this.dataString.bind(this);
+
       }
 
     componentDidMount() {
@@ -48,7 +52,7 @@ export default class AgendaView extends Component {
         .then(([objAgenda, objServicoFuncionario, objServico, objPreco, objFuncionario, objCliente]) => {
           this.setState({
             agendasTodas: objAgenda,
-            agendas: this.filtraDadosAgenda(objAgenda),
+            agendas: this.filtraDadosAgenda(this.state.data, objAgenda),
             servicosFuncionarios: objServicoFuncionario,
             servicos: objServico,
             precos: objPreco,
@@ -61,20 +65,34 @@ export default class AgendaView extends Component {
         });
     }
 
-    filtraDadosAgenda = (obj) => {
-      let agendaFiltro = obj.filter((obj)=>{
-        let d = new Date(obj.data);        
-        return this.dataString(d) === this.dataString(this.state.data);;        
+    filtraDadosAgenda = (date, obj) => {
+      
+      this.setState({agendas:[]});
+      
+      let filtro=[];
+      const agendaFiltro = obj.map(obj=>{
+        let d = new Date(obj.data);     
+        let dataSelecionada = this.dataString(date);
+        let dataBase = this.dataString(d);
+
+        if (dataSelecionada === dataBase){
+          
+          filtro.push(obj);        
+        }
       });
-      return agendaFiltro;
+
+      return filtro;
     }
 
     onChangeData = (date) => {
-      this.setState({ data: date, agendas: this.filtraDadosAgenda(this.state.agendasTodas)});      
+
+      let obj = this.filtraDadosAgenda(date, this.state.agendasTodas);
+
+      this.setState({ data: date, agendas: obj});      
     }
 
-    dataString(d){
-      let dia = d.getDay();
+    dataString = (d) => {
+      let dia = d.getDate();
       let mes = d.getMonth();
       let ano = d.getFullYear();
 
@@ -84,8 +102,8 @@ export default class AgendaView extends Component {
     retornaCliente(id){
       return (
         <div>
-          <div className="divNome">{this.state.clientes.find(obj=>obj._id===id).nome}</div>
-          <div className="divCelular">{this.state.clientes.find(obj=>obj._id===id).celular}</div>          
+          <div className="divNome">Cliente: {this.state.clientes.find(obj=>obj._id===id).nome}</div>
+          <div className="divCelular">Celular: {this.state.clientes.find(obj=>obj._id===id).celular}</div>          
         </div>
       );
     }
@@ -100,10 +118,22 @@ export default class AgendaView extends Component {
 
     retornaDataFormatada(data){
       let d = new Date(data);
+      let dia = d.getDate();
+      let mes = d.getMonth();
+
+      mes += 1;
+
+      if (dia < 10){
+        dia = '0' + dia;
+      }
+
+      if (mes < 10){
+        mes = '0' + mes;
+      }
+
       return (
         <div className="divDia">
-          <span className="spanDia">{d.getDate()}</span>
-          <span>{d.getMonth() + '/' + d.getFullYear()}</span>
+          <span className="spanDia">{dia + '/' + mes + '/' + d.getFullYear()}</span>          
         </div>
       );
     }
@@ -112,48 +142,61 @@ export default class AgendaView extends Component {
       return (
         <div className="divInfo">
           <div className="divCliente">{this.retornaCliente(idCliente)}</div>
-          <div className="divServico">{this.retornaServico(idServico)}</div>
-          <div className="divFuncionario">{this.retornaFuncionario(idFuncionario)}</div>
+          <div className="divServico">Serviço: {this.retornaServico(idServico)}</div>
+          <div className="divFuncionario">Funcionário: {this.retornaFuncionario(idFuncionario)}</div>
         </div>
       )
     }
 
-    retornaAgenda(){
-
-      return this.state.agendas.map(obj=>{
-        return (
-          <tr>
-            <td className="tdDia">{this.retornaDataFormatada(obj.data)}</td>
-            <td>{this.retornaInfo(obj.idCliente, obj.idServico, obj.idFuncionario)}</td>
-          </tr>
-        )
+    ordenarDados(props){
+      props.sort((a, b)=>{
+        let hA = parseInt(a.hora.replace(':', ''));
+        let hB = parseInt(b.hora.replace(':', ''));
+        if (hA > hB)
+          return 1;
+        if (hA < hB)
+          return -1;
+        return 0;
       });
-      
+      return props;
     }
 
+    retornaAgenda(props){
+
+      let ordenado = this.ordenarDados(props);
+
+      const itens = ordenado.map(obj=>
+          <li key={obj._id} className="liAgenda">
+            <div className="divHora">{obj.hora}</div>
+            {this.retornaInfo(obj.idCliente, obj.idServico, obj.idFuncionario)}
+          </li>
+       );
+
+       return(
+         <div>
+           <div className="tdDia">{this.retornaDataFormatada(this.state.data)}<div className="divQuantidade">Você tem <span>{props.length}</span> atendimentos no dia</div></div>
+           <ul>
+            {itens}
+          </ul>
+         </div>
+       )
+      
+    }
 
     render(){
         return(
           <div className="form-wrapper">
             <Form onSubmit={this.onSubmit}>
-              <Form.Group controlId="data">
-                <Form.Label for="datac">Data</Form.Label>          
-              </Form.Group>
               <DatePicker
                   name="data"
                   className="form-control"
-                  minDate={new Date()}
                   selected={this.state.data}
                   onChange={this.onChangeData}
                   dateFormat="dd/MM/yyyy"            
                 />
 
-              <div>
-                <table>
-                  {this.retornaAgenda()}                  
-                </table>
-              </div>
-
+              {this.retornaAgenda(this.state.agendas)}
+              
             </Form>
           </div>
         )
