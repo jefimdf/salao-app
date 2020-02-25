@@ -1,0 +1,179 @@
+
+ul.ks-cboxtags {
+    list-style: none;
+    padding: 20px;
+    border: 1px solid #9e9d9d;
+    border-radius: 20px;
+}
+ul.ks-cboxtags li{
+  display: inline;
+}
+ul.ks-cboxtags li label{
+    display: inline-block;
+    background-color: rgba(255, 255, 255, .9);
+    border: 2px solid rgba(139, 139, 139, .3);
+    color: #adadad;
+    border-radius: 25px;
+    white-space: nowrap;
+    margin: 3px 0px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: all .2s;
+}
+
+ul.ks-cboxtags li label {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+ul.ks-cboxtags li label::before {
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 12px;
+    padding: 2px 6px 2px 2px;
+    content: "\f067";
+    transition: transform .3s ease-in-out;
+}
+
+ul.ks-cboxtags li input[type="checkbox"]:checked + label::before {
+    content: "\f00c";
+    transform: rotate(-360deg);
+    transition: transform .3s ease-in-out;
+}
+
+ul.ks-cboxtags li input[type="checkbox"]:checked + label {
+    border: 2px solid #1bdbf8;
+    background-color: #12bbd4;
+    color: #fff;
+    transition: all .2s;
+}
+
+ul.ks-cboxtags li input[type="checkbox"] {
+  display: absolute;
+}
+ul.ks-cboxtags li input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+}
+ul.ks-cboxtags li input[type="checkbox"]:focus + label {
+  border: 2px solid #e9a1ff;
+}
+
+.valorTotal{
+    border: 1px solid silver;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 24px;
+    background-color: #d4f5d4;
+    color: white;
+    height: 52px;
+    margin-bottom: 10px;
+}
+
+.spanDia{
+  font-size: 22px;
+  display: flex;
+  color: #fff;
+  text-align: right;
+}
+
+.divDia{
+  border: 1px solid #b3b2b2;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #7b7a7a;
+    color:rgb(180, 178, 178);
+    display: inline;
+   float: right;
+   width: 20%;
+}
+
+.tdDia{
+  padding: 10px;  
+}
+
+.divInfo{
+  background-color: #fff;
+  border: 1px solid #7b7a7a;
+  border-radius: 10px;
+  height: 110px;
+  width: 950px;
+  position: relative;
+}
+
+.form-wrapper, .table-wrapper {
+  max-width: 100% !important;
+}
+
+.divCliente{
+  padding: 5px;
+  font-family: inherit;
+  display: inline-block;
+  width: 30%;
+}
+
+.divServico{
+  font-size: 20px;
+  padding: 5px;
+  font-family: inherit;
+  display: inline-block;
+  float: right;
+  width: 30%;
+  border-left: 1px solid #b1afaf;
+  height: 100px;
+}
+
+.divFuncionario{
+  font-size: 20px;
+  padding: 5px;
+  font-family: inherit;
+  display: inline-block;
+  float: right;
+  width: 30%;
+  color: #7b7a7a;
+}
+
+.divNome{
+  font-size: 20px;
+  padding-left: 5px;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.divCelular{
+  color: #7b7a7a;
+  padding-left: 10px;
+
+}
+
+.liAgenda{
+  list-style: none;
+  padding: 5px;
+}
+
+.divHora{
+  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(105, 48, 48);
+  font-size: large;
+  font-weight: bold;
+  border-bottom: 1px solid rgb(230, 159, 108);
+  margin-bottom: 10px;
+  width: 93%;
+}
+
+.divQuantidade{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: large;
+}
+
+.divQuantidade span{
+  font-weight: bold;
+}
