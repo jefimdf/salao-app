@@ -15,6 +15,7 @@ const tableName = 'agenda';
 
 export default function CreateAgenda(props) {
 
+  const [userLogado, setUserLogado] = useState(window.localStorage.getItem('userLogado') ? window.localStorage.getItem('userLogado') : false);
   const [idServico, setIdServico] = useState('')
   const [idFuncionario, setIdFuncionario] = useState('')
   const [idCliente, setIdCliente] = useState('')
@@ -139,7 +140,10 @@ export default function CreateAgenda(props) {
 
         axios.post(process.env.REACT_APP_URL_SERVER + tableName + '/create', objEnvio)
         .then(res => {
-          props.history.push('/'+tableName+'-list');
+          if(userLogado)
+            props.history.push('/'+tableName+'-list');
+          else
+            window.location = '/create-' + tableName;
         });
       })
     }
@@ -179,7 +183,7 @@ export default function CreateAgenda(props) {
       <Form onSubmit={onSubmit}>
 
         <Form.Group controlId="Cliente">
-          <Form.Label>Cliente:</Form.Label>
+          <Form.Label>Celular do Cliente:</Form.Label>
           {!clienteLogado && <MaskedFormControl type='text' name='celular' mask='(11)1111-1111' onChange={onChangeCelular} />}
           {clienteLogado && <div className="row"><Form.Label>{clienteLogado.nome}</Form.Label></div>}          
         </Form.Group>
@@ -239,7 +243,7 @@ export default function CreateAgenda(props) {
       <Row>
               <div className="btn-group" role="group" aria-label="Basic mixed styles example">
               <button type="submit" className="btn btn-primary" >Criar</button>
-              <button type="button" className="btn btn-warning" onClick={cancelar}>Cancelar</button>
+              {userLogado && <button type="button" className="btn btn-warning" onClick={cancelar}>Cancelar</button>}
             </div>
           </Row>
       </Container>}

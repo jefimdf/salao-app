@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
@@ -55,15 +55,33 @@ import EditAgenda from "./components/Agenda/edit-agenda.component";
 import ListAgenda from "./components/Agenda/agenda-list.component";
 import ViewAgenda from "./components/Agenda/agenda-view.component";
 
+//Login
+import Login from "./components/Administracao/Login/login.component";
 
-function App() {
+
+function App(props) {
+
+  const [userLogado, setUserLogado] = useState(window.localStorage.getItem('userLogado') ? window.localStorage.getItem('userLogado') : false)
+
+  useEffect(() => {
+    let jaesta = window.location.pathname === '/create-agenda' ? true : false;
+    if (!userLogado && !jaesta){
+      window.location = '/create-agenda';
+    }
+  }, []);
+
+  const logout = () =>{
+    window.localStorage.clear();
+    window.location = '/';
+  }
+
   return (<Router>
-    <div className="App">
-      <header className="App-header">
+    <div id="container" className="App">
+      <header id="header" className="App-header">
         <Navbar bg="dark" variant="dark">
           <Container>
             <Navbar.Brand>
-              <Link to={"/agenda-view"} className="nav-link">
+              <Link to={userLogado ? "/agenda-view" : ""} className="nav-link">
                 <div className="logo"><span>Nádia Beauty Hair Designer</span></div>
               </Link>
             </Navbar.Brand>
@@ -74,12 +92,21 @@ function App() {
                   Agenda
                 </Link>
               </Nav>
+
+              {!userLogado &&              
+              <Nav>
+                <Link to={"/login"} className="nav-link">
+                  ADM
+                </Link>
+              </Nav>}
+
+              {userLogado &&
               <Nav>
                 <Link to={"/create-cliente"} className="nav-link">
                   Clientes
                 </Link>
-              </Nav>
-              <NavDropdown title="Administração" id="basic-nav-dropdown">
+              </Nav>}
+              {userLogado && <NavDropdown title="Administração" id="basic-nav-dropdown">
                 <NavDropdown.Item href="/usuario-list">Usuário</NavDropdown.Item>
                 <NavDropdown.Item href="/funcionario-list">Funcionário</NavDropdown.Item>
                 <NavDropdown.Item href="/servicoFuncionario-list">Serviços de Funcionário</NavDropdown.Item>
@@ -88,14 +115,20 @@ function App() {
                 <NavDropdown.Item href="/preco-list">Preço</NavDropdown.Item>                
                 <NavDropdown.Item href="/cidade-list">Cidade</NavDropdown.Item>
               </NavDropdown>
-              
+              }
+              {userLogado &&              
+              <Nav>
+                <Link onClick={()=>logout()} className="nav-link">
+                  Sair
+                </Link>
+              </Nav>}
             </Nav>
 
           </Container>
         </Navbar>
       </header>
 
-      <Container>
+      <Container id="body">
         <Row>
           <Col md={12}>
             <div className="wrapper">
@@ -139,11 +172,21 @@ function App() {
                 <Route path="/agenda-list" component={ListAgenda} />
                 <Route path="/agenda-view" component={ViewAgenda} />
 
+                <Route path="/login" component={Login} />
+                
               </Switch>
             </div>
           </Col>
         </Row>
       </Container>
+
+      <footer id="footer">
+        <div className="container">
+          <div className="row">            
+        </div>
+        </div>
+      </footer>
+
     </div>
   </Router>);
 }

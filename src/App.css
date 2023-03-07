@@ -1,5 +1,30 @@
-body{
+html, body{
   background-color: #664d6b;
+  margin:0;
+  padding:0;
+  height:100%;
+}
+
+#container {
+  min-height:100%;
+  position:relative;
+}
+#header {
+  padding:10px;
+}
+#body {
+  padding:10px;
+  padding-bottom:400px;   /* Height of the footer */
+}
+#footer {
+  background-color: #67476d;
+  position:absolute;
+  bottom:0;
+  width:100%;
+  height:60px;   /* Height of the footer */  
+  color: silver;
+  font-size: large;
+  
 }
 
 .wrapper {
