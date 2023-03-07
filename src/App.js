@@ -64,7 +64,7 @@ function App() {
           <Container>
             <Navbar.Brand>
               <Link to={"/agenda-view"} className="nav-link">
-                <div className="logo">&nbsp;&nbsp;</div>
+                <div className="logo"><span>Nádia Beauty Hair Designer</span></div>
               </Link>
             </Navbar.Brand>
 
