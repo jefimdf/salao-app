@@ -64,7 +64,7 @@ function App() {
           <Container>
             <Navbar.Brand>
               <Link to={"/agenda-view"} className="nav-link">
-                Salão
+                <div className="logo">&nbsp;&nbsp;</div>
               </Link>
             </Navbar.Brand>
 
