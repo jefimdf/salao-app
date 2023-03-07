@@ -66,19 +66,24 @@ export default class FuncionarioList extends Component {
     this.props.history.push('/create-'+tableName);
   }
 
+  handleEditar(url){
+    this.props.history.push(url);
+  }
+
   DataTable() {
     return this.state.funcionarios.map((res) => {
       
       return (
         <tr>
-            <td>{res._id}</td>
             <td>{res.nome}</td>
             <td>{res.email}</td>
             <td>
-                <Link className="edit-link" to={"/edit-"+tableName+"/" + res._id}>
+            <div className="btn-group" role="group" aria-label="Basic mixed styles example">
+              <button type="button" className="btn btn-primary" onClick={() => this.handleEditar("/edit-"+tableName+"/" + res._id)}>
                     Editar
-                </Link>
-                <Button onClick={() => this.confimarExclusao(res._id)} size="sm" variant="danger">Excluir</Button>
+              </button>
+              <button type="button" className="btn btn-danger" onClick={() => this.confimarExclusao(res._id)}>Excluir</button>
+            </div>
             </td>
         </tr>
       );
@@ -93,19 +98,18 @@ export default class FuncionarioList extends Component {
       <div>
         <ModalConfirmacao show={this.state.showModal} handleClose={this.handleClose} Title="Exclusão de funcionário" Message="Deseja excluir o registro?" />
         <div className="table-wrapper">        
-          <Table striped bordered hover>
+        <table className="table table-striped">
             <thead>
               <tr>
-                <th>#</th>
                 <th>Nome</th>
                 <th>E-mail</th>
-                <th>Ação</th>
+                <th className="col-6">Ação</th>
               </tr>
             </thead>
             <tbody>
               {this.DataTable()}
             </tbody>
-          </Table>          
+          </table>          
         </div>
         <Button variant="primary" size="lg" block="block" type="button" onClick={this.novo}>Novo</Button>        
       </div>

@@ -84,20 +84,25 @@ export default class PrecoList extends Component {
     return this.state.servicos.find(obj=>obj._id===id).nome;
   }
 
+  handleEditar(url){
+    this.props.history.push(url);
+  }
+
   DataTable() {
     return this.state.precos.map((res) => {
       debugger
       return (
         <tr>
-            <td>{res._id}</td>
             <td>{this.retornaServico(res.idServico)}</td>
             <td>{res.preco}</td>
             <td>{serverDateToString(res.data)}</td>
             <td>
-                <Link className="edit-link" to={"/edit-"+tableName+"/" + res._id}>
+            <div className="btn-group" role="group" aria-label="Basic mixed styles example">
+              <button type="button" className="btn btn-primary" onClick={() => this.handleEditar("/edit-"+tableName+"/" + res._id)}>
                     Editar
-                </Link>
-                <Button onClick={() => this.confimarExclusao(res._id)} size="sm" variant="danger">Excluir</Button>
+              </button>
+              <button type="button" className="btn btn-danger" onClick={() => this.confimarExclusao(res._id)}>Excluir</button>
+            </div>              
             </td>
         </tr>
       );
@@ -112,10 +117,9 @@ export default class PrecoList extends Component {
       <div>
         <ModalConfirmacao show={this.state.showModal} handleClose={this.handleClose} Title="Exclusão de preço" Message="Deseja excluir o registro?" />
         <div className="table-wrapper">        
-          <Table striped bordered hover>
+        <table className="table table-striped">
             <thead>
               <tr>
-                <th>#</th>
                 <th>Serviço</th>
                 <th>Preço</th>
                 <th>Data</th>
@@ -125,7 +129,7 @@ export default class PrecoList extends Component {
             <tbody>
               {this.DataTable()}
             </tbody>
-          </Table>          
+          </table>          
         </div>
         <Button variant="primary" size="lg" block="block" type="button" onClick={this.novo}>Novo</Button>        
       </div>

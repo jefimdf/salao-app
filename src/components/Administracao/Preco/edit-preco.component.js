@@ -134,11 +134,11 @@ export default class EditPreco extends Component {
 
         <Container id="Botoes">
         <Row>
-          <Col><Button variant="danger" size="lg" block="block" type="submit">
-          Alterar
-        </Button></Col>
-          <Col><Button variant="warning" size="lg" block="block" type="button" onClick={this.cancelar}>Cancelar</Button></Col>          
-        </Row>
+              <div className="btn-group" role="group" aria-label="Basic mixed styles example">
+              <button type="submit" className="btn btn-primary" >Alterar</button>
+              <button type="button" className="btn btn-warning" onClick={this.cancelar}>Cancelar</button>
+            </div>
+          </Row>
       </Container>
 
       </Form>

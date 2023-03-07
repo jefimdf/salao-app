@@ -67,7 +67,8 @@ export default function AgendaList(props) {
   }
 
   const confimarExclusao = (id) =>{
-    this.setState({showModal: true, idRegistro: id});
+    setShowModal(true) 
+    setIdRegistro(id);
   }
 
   const handleClose = (status) =>{
@@ -93,6 +94,10 @@ export default function AgendaList(props) {
     return clientes.find(obj=>obj._id===id).nome;
   }
 
+  const handleEditar = (url) =>{
+    props.history.push(url);
+  }
+
   const DataTable=() =>{
     return agendas.map((res) => {
       
@@ -105,10 +110,12 @@ export default function AgendaList(props) {
             <td>{res.hora}</td>
             <td>{res.total}</td>
             <td>
-                <Link className="edit-link" to={"/edit-"+tableName+"/" + res._id}>
+            <div className="btn-group" role="group" aria-label="Basic mixed styles example">
+              <button type="button" className="btn btn-primary" onClick={() => handleEditar("/edit-"+tableName+"/" + res._id)}>
                     Editar
-                </Link>
-                <Button onClick={() => confimarExclusao(res._id)} size="sm" variant="danger">Excluir</Button>
+              </button>
+              <button type="button" className="btn btn-danger" onClick={() => confimarExclusao(res._id)}>Excluir</button>
+            </div>                
             </td>
         </tr>
       );
@@ -123,7 +130,7 @@ export default function AgendaList(props) {
       <div>
         <ModalConfirmacao show={showModal} handleClose={handleClose} Title="Exclusão de preço" Message="Deseja excluir o registro?" />
         <div className="table-wrapper">        
-          <Table striped bordered hover>
+        <table className="table table-striped">
             <thead>
               <tr>
                 <th>Serviço</th>
@@ -138,7 +145,7 @@ export default function AgendaList(props) {
             <tbody>
               {carregado && DataTable()}
             </tbody>
-          </Table>          
+          </table>          
         </div>
         <Button variant="primary" size="lg" block="block" type="button" onClick={novo}>Novo</Button>        
       </div>

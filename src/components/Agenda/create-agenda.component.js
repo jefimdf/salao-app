@@ -85,7 +85,7 @@ export default function CreateAgenda(props) {
   }, []);
 
   const cancelar = () =>{
-    this.props.history.push('/'+tableName+'-list');
+    props.history.push('/'+tableName+'-list');
   }
 
   const onChangeServico = (e) => {
@@ -230,10 +230,12 @@ export default function CreateAgenda(props) {
         </div>}
 
       {clienteLogado && <Container id="Botoes">
-        <Row>
-          <Col><Button variant="danger" size="lg" block="block" type="submit">Criar</Button></Col>
-          <Col><Button variant="warning" size="lg" block="block" type="button" onClick={cancelar}>Cancelar</Button></Col>          
-        </Row>
+      <Row>
+              <div className="btn-group" role="group" aria-label="Basic mixed styles example">
+              <button type="submit" className="btn btn-primary" >Criar</button>
+              <button type="button" className="btn btn-warning" onClick={cancelar}>Cancelar</button>
+            </div>
+          </Row>
       </Container>}
         
         

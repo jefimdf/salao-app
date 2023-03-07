@@ -66,18 +66,23 @@ export default class CidadeList extends Component {
     this.props.history.push('/create-cidade');
   }
 
+  handleEditar(url){
+    this.props.history.push(url);
+  }
+
   DataTable() {
     return this.state.cidades.map((res) => {
       
       return (
         <tr>
-            <td>{res._id}</td>
             <td>{res.nome}</td>
             <td>
-                <Link className="edit-link" to={"/edit-cidade/" + res._id}>
+            <div className="btn-group" role="group" aria-label="Basic mixed styles example">
+              <button type="button" className="btn btn-primary" onClick={() => this.handleEditar("/edit-cidade/" + res._id)}>
                     Editar
-                </Link>
-                <Button onClick={() => this.confimarExclusao(res._id)} size="sm" variant="danger">Excluir</Button>
+              </button>
+              <button type="button" className="btn btn-danger" onClick={() => this.confimarExclusao(res._id)}>Excluir</button>
+            </div>                
             </td>
         </tr>
       );
@@ -92,10 +97,9 @@ export default class CidadeList extends Component {
       <div>
         <ModalConfirmacao show={this.state.showModal} handleClose={this.handleClose} Title="Exclusão de Cidade" Message="Deseja excluir o registro?" />
         <div className="table-wrapper">        
-          <Table striped bordered hover>
+        <table className="table table-striped">
             <thead>
               <tr>
-                <th>#</th>
                 <th>Nome</th>
                 <th>Ação</th>
               </tr>
@@ -103,7 +107,7 @@ export default class CidadeList extends Component {
             <tbody>
               {this.DataTable()}
             </tbody>
-          </Table>          
+          </table>          
         </div>
         <Button variant="primary" size="lg" block="block" type="button" onClick={this.novo}>Novo</Button>        
       </div>
