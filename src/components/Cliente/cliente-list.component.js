@@ -27,32 +27,25 @@ export default class ClienteList extends Component {
   }
 
   componentDidMount() {
-    this.carregaCidades();
-    this.carregaLista();    
-  }
+    
+    const requests = [
+      axios.get(process.env.REACT_APP_URL_SERVER + tableName + '/')
+      .then(res => res = res.data),
+      axios.get(process.env.REACT_APP_URL_SERVER + 'cidade/')
+        .then(res => res = res.data)      
+    ];
 
-  carregaCidades(){
-    axios.get(process.env.REACT_APP_URL_SERVER + 'cidade/')
-    .then(res => {
-      this.setState({
-        cidades: res.data
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-    })
-  }
-
-  carregaLista(){
-    axios.get(process.env.REACT_APP_URL_SERVER + tableName + '/')
-      .then(res => {
+    Promise.all(requests)
+      .then(([objClientes, objCidades]) => {
         this.setState({
-          clientes: res.data
+          clientes: objClientes,
+          cidades: objCidades
         });
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+
+      }, (evt) => {
+          console.log(evt);        
+      });
+
   }
 
   delete = (id) => {
@@ -60,7 +53,7 @@ export default class ClienteList extends Component {
         .then((res) => {
             console.log('Excluído com sucesso!');
             this.setState({showModal: false});    
-            this.carregaLista();
+            window.location.reload();
         }).catch((error) => {
             console.log(error)
         })    

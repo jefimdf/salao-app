@@ -26,32 +26,25 @@ export default class PrecoList extends Component {
   }
 
   componentDidMount() {
-    this.carregaServico();
-    this.carregaLista();        
-  }
+    
+    const requests = [
+      axios.get(process.env.REACT_APP_URL_SERVER + tableName + '/')
+      .then(res => res = res.data),
+      axios.get(process.env.REACT_APP_URL_SERVER + 'servico/')
+        .then(res => res = res.data)      
+    ];
 
-  carregaServico(){
-    axios.get(process.env.REACT_APP_URL_SERVER + 'servico/')
-    .then(res => {
-      this.setState({
-        servicos: res.data
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-    })
-  }
-
-  carregaLista(){
-    axios.get(process.env.REACT_APP_URL_SERVER + tableName + '/')
-      .then(res => {debugger
+    Promise.all(requests)
+      .then(([objPreco, objServico]) => {
         this.setState({
-          precos: res.data
+          servicos: objServico,
+          precos: objPreco
         });
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+
+      }, (evt) => {
+          console.log(evt);        
+      });
+
   }
 
   delete = (id) => {
@@ -59,7 +52,7 @@ export default class PrecoList extends Component {
         .then((res) => {
             console.log('Excluído com sucesso!');
             this.setState({showModal: false});    
-            this.carregaLista();
+            window.location.reload();
         }).catch((error) => {
             console.log(error)
         })    

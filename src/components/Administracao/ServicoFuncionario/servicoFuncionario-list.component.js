@@ -27,45 +27,28 @@ export default class ServicoFuncionarioList extends Component {
   }
 
   componentDidMount() {
-    this.carregaFuncionario();
-    this.carregaServico();
-    this.carregaLista();        
-  }
+    
+    const requests = [
+      axios.get(process.env.REACT_APP_URL_SERVER + tableName + '/')
+      .then(res => res = res.data),
+      axios.get(process.env.REACT_APP_URL_SERVER + 'funcionario/')
+        .then(res => res = res.data),
+      axios.get(process.env.REACT_APP_URL_SERVER + 'servico/')
+        .then(res => res = res.data)            
+    ];
 
-  carregaFuncionario(){
-    axios.get(process.env.REACT_APP_URL_SERVER + 'funcionario/')
-    .then(res => {
-      this.setState({
-        funcionarios: res.data
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-    })
-  }
-
-  carregaServico(){
-    axios.get(process.env.REACT_APP_URL_SERVER + 'servico/')
-    .then(res => {
-      this.setState({
-        servicos: res.data
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-    })
-  }
-
-  carregaLista(){
-    axios.get(process.env.REACT_APP_URL_SERVER + tableName + '/')
-      .then(res => {
+    Promise.all(requests)
+      .then(([objServFuncionarios, objFuncionarios, objServicos]) => {
         this.setState({
-          servicosFuncionarios: res.data
+          servicosFuncionarios: objServFuncionarios,
+          funcionarios: objFuncionarios,
+          servicos: objServicos
         });
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+
+      }, (evt) => {
+          console.log(evt);        
+      });
+
   }
 
   delete = (id) => {
@@ -73,7 +56,7 @@ export default class ServicoFuncionarioList extends Component {
         .then((res) => {
             console.log('Excluído com sucesso!');
             this.setState({showModal: false});    
-            this.carregaLista();
+            window.location.reload();
         }).catch((error) => {
             console.log(error)
         })    
