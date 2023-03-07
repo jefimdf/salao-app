@@ -44,7 +44,7 @@ export default class PrecoList extends Component {
 
   carregaLista(){
     axios.get(process.env.REACT_APP_URL_SERVER + tableName + '/')
-      .then(res => {
+      .then(res => {debugger
         this.setState({
           precos: res.data
         });
@@ -81,13 +81,12 @@ export default class PrecoList extends Component {
   }
 
   retornaServico = (id) =>{
-    
     return this.state.servicos.find(obj=>obj._id===id).nome;
   }
 
   DataTable() {
     return this.state.precos.map((res) => {
-      
+      debugger
       return (
         <tr>
             <td>{res._id}</td>

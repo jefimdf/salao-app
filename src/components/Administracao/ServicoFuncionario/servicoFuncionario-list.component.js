@@ -100,6 +100,7 @@ export default class ServicoFuncionarioList extends Component {
   }
 
   retornaServico = (id) =>{
+    debugger;
     return this.state.servicos.find(obj=>obj._id===id).nome;
   }
 

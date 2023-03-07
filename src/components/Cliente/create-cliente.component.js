@@ -121,7 +121,7 @@ export default class CreateCliente extends Component {
             onChange={this.onChangeDataNasc}
             dateFormat="dd/MM/yyyy"            
           />
-        <Form.Group controlId="Name">
+        <Form.Group controlId="Celular">
           <Form.Label>Celular</Form.Label>
           <MaskedFormControl type='text' name='celular' mask='(11)1111-1111' value={this.state.celular} onChange={this.onChangeCelular} />          
         </Form.Group>

@@ -12,6 +12,7 @@ const cidadeRoute = require('../backend/routes/cidade.route')
 const clienteRoute = require('../backend/routes/cliente.route')
 const funcionarioRoute = require('../backend/routes/funcionario.route')
 const precoRoute = require('../backend/routes/preco.route')
+const grupoServicoRoute = require('../backend/routes/grupoServico.route')
 const servicoRoute = require('../backend/routes/servico.route')
 const servicoFuncionarioRoute = require('../backend/routes/servicoFuncionario.route')
 
@@ -41,6 +42,7 @@ app.use('/cliente', clienteRoute)
 app.use('/funcionario', funcionarioRoute)
 app.use('/preco', precoRoute)
 app.use('/servico', servicoRoute)
+app.use('/grupoServico', grupoServicoRoute)
 app.use('/servicoFuncionario', servicoFuncionarioRoute)
 
 

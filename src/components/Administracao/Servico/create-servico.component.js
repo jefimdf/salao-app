@@ -14,13 +14,44 @@ export default class CreateServico extends Component {
 
     // Setting up functions
     this.onChangeNome = this.onChangeNome.bind(this);
+    this.onChangeGrupoServico = this.onChangeGrupoServico.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.cancelar = this.cancelar.bind(this);
 
     // Setting up state
     this.state = {
-      nome: ''
+      idGrupoServico: '',
+      nome: '',
+      grupoServico: []
     }
+  }
+
+  componentDidMount(){
+    this.carregaGrupoServico();    
+  }
+
+  carregaGrupoServico(){
+    axios.get(process.env.REACT_APP_URL_SERVER + 'grupoServico/')
+    .then(res => {
+      this.setState({
+        grupoServico: res.data
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  }
+
+  grupoServico(){
+    return this.state.grupoServico.map((obj)=>{
+      return (
+        <option value={obj._id}>{obj.nome}</option>
+      )
+    })
+  }
+
+  onChangeGrupoServico(e) {
+    this.setState({ idGrupoServico: e.target.value })
   }
 
   cancelar(){
@@ -36,6 +67,7 @@ export default class CreateServico extends Component {
     e.preventDefault();
 
     const objEnvio = {
+      idGrupoServico: this.state.idGrupoServico,
       nome: this.state.nome
     };
 
@@ -53,6 +85,15 @@ export default class CreateServico extends Component {
   render() {
     return (<div className="form-wrapper">
       <Form onSubmit={this.onSubmit}>
+
+       <Form.Group controlId="GrupoServico">
+          <Form.Label>Grupo</Form.Label>
+          <Form.Control as="select" value={this.state.idGrupoServico} onChange={this.onChangeGrupoServico}>
+            <option value="0">Selecione...</option>
+            {this.grupoServico()}
+          </Form.Control> 
+        </Form.Group>
+
         <Form.Group controlId="Name">
           <Form.Label>Nome</Form.Label>
           <Form.Control type="text" value={this.state.nome} onChange={this.onChangeNome} />

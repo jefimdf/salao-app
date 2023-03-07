@@ -19,6 +19,11 @@ import CreateCidade from "./components/Administracao/Cidade/create-cidade.compon
 import EditCidade from "./components/Administracao/Cidade/edit-cidade.component";
 import ListCidade from "./components/Administracao/Cidade/cidade-list.component";
 
+//Grupo de Serviços
+import CreateGrupoServico from "./components/Administracao/GrupoServico/create-grupoServico.component";
+import EditGrupoServico from "./components/Administracao/GrupoServico/edit-grupoServico.component";
+import ListGrupoServico from "./components/Administracao/GrupoServico/grupoServico-list.component";
+
 //Serviço
 import CreateServico from "./components/Administracao/Servico/create-servico.component";
 import EditServico from "./components/Administracao/Servico/edit-servico.component";
@@ -78,6 +83,7 @@ function App() {
                 <NavDropdown.Item href="/usuario-list">Usuário</NavDropdown.Item>
                 <NavDropdown.Item href="/funcionario-list">Funcionário</NavDropdown.Item>
                 <NavDropdown.Item href="/servicoFuncionario-list">Serviços de Funcionário</NavDropdown.Item>
+                <NavDropdown.Item href="/grupoServico-list">Grupos de Serviços</NavDropdown.Item>
                 <NavDropdown.Item href="/servico-list">Serviço</NavDropdown.Item>
                 <NavDropdown.Item href="/preco-list">Preço</NavDropdown.Item>                
                 <NavDropdown.Item href="/cidade-list">Cidade</NavDropdown.Item>
@@ -103,6 +109,10 @@ function App() {
                 <Route path="/create-cidade" component={CreateCidade} />
                 <Route path="/edit-cidade/:id" component={EditCidade} />
                 <Route path="/cidade-list" component={ListCidade} />
+
+                <Route path="/create-grupoServico" component={CreateGrupoServico} />
+                <Route path="/edit-grupoServico/:id" component={EditGrupoServico} />
+                <Route path="/grupoServico-list" component={ListGrupoServico} />
 
                 <Route path="/create-servico" component={CreateServico} />
                 <Route path="/edit-servico/:id" component={EditServico} />

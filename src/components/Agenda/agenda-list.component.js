@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
@@ -8,28 +8,20 @@ import { serverDateToString } from "../../common/dateValidations";
 
 const tableName = 'agenda';
 
-export default class AgendaList extends Component {
+export default function AgendaList(props) {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      agendas: [],
-      showModal: false,
-      idRegistro: 0,
-      clientes: [],
-      funcionarios: [],
-      servicos: [],
-      servicosFuncionarios: []
-    };
+  const [agendas, setAgendas] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [idRegistro, setIdRegistro] = useState(0);
+  const [clientes, setClientes] = useState([]);
+  const [funcionarios, setFuncionarios] = useState([]);
+  const [servicos, setServicos] = useState([]);
+  const [servicosFuncionarios, setServicosFuncionarios] = useState([]);
+  const [carregado, setCarregado] = useState(false);
+  const [precos, setPrecos] = useState([]);
 
-    this.delete = this.delete.bind(this);
-    this.confimarExclusao = this.confimarExclusao.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-    this.novo = this.novo.bind(this);
-  }
-
-  componentDidMount() {
-
+  useEffect(() => {
+  
     const requests = [
       axios.get(process.env.REACT_APP_URL_SERVER + tableName + '/')
       .then(res => res = res.data),
@@ -47,66 +39,68 @@ export default class AgendaList extends Component {
 
     Promise.all(requests)
       .then(([objAgenda, objServicoFuncionario, objServico, objPreco, objFuncionario, objCliente]) => {
-        this.setState({
-          agendas: objAgenda,
-          servicosFuncionarios: objServicoFuncionario,
-          servicos: objServico,
-          precos: objPreco,
-          funcionarios: objFuncionario,
-          clientes: objCliente          
-        });
+        
+          setAgendas(objAgenda);
+          setServicosFuncionarios(objServicoFuncionario);
+          setServicos(objServico);
+          setPrecos(objPreco);
+          setFuncionarios(objFuncionario);
+          setClientes(objCliente);
+          setCarregado(true);
 
       }, (evt) => {
           console.log(evt);        
-      });
-  }
+      })
+    
+  }, []);
+  
 
-  delete = (id) => {
+  const onDelete = (id) => {
     axios.delete(process.env.REACT_APP_URL_SERVER + tableName + '/delete/' + id)
         .then((res) => {
             console.log('Excluído com sucesso!');
-            this.setState({showModal: false});    
-            this.carregaLista();
+            setShowModal(false);    
+            //carregaLista();
         }).catch((error) => {
             console.log(error)
         })    
   }
 
-  confimarExclusao(id){
+  const confimarExclusao = (id) =>{
     this.setState({showModal: true, idRegistro: id});
   }
 
-  handleClose(status){
+  const handleClose = (status) =>{
     if (status){
-      this.delete(this.state.idRegistro);
+      onDelete(idRegistro);
     }
-    this.setState({showModal: status});    
+    setShowModal(status);    
   }
 
-  novo(){
-    this.props.history.push('/create-'+tableName+'');
+  const novo = ()=>{
+    props.history.push('/create-'+tableName+'');
   }
 
-  retornaServico = (id) =>{
-    return this.state.servicos.find(obj=>obj._id===id).nome;
+  const retornaServico = (id) =>{debugger
+    return servicos.find(obj=>obj._id===id).nome;
   }
 
-  retornaFuncionario = (id) =>{
-    return this.state.funcionarios.find(obj=>obj._id===id).nome;
+  const retornaFuncionario = (id) =>{
+    return funcionarios.find(obj=>obj._id===id).nome;
   }
 
-  retornaCliente = (id) =>{
-    return this.state.clientes.find(obj=>obj._id===id).nome;
+  const retornaCliente = (id) =>{
+    return clientes.find(obj=>obj._id===id).nome;
   }
 
-  DataTable() {
-    return this.state.agendas.map((res) => {
+  const DataTable=() =>{
+    return agendas.map((res) => {
       
       return (
         <tr>
-            <td>{this.retornaServico(res.idServico)}</td>
-            <td>{this.retornaFuncionario(res.idFuncionario)}</td>
-            <td>{this.retornaCliente(res.idCliente)}</td>
+            <td>{retornaServico(res.idServico)}</td>
+            <td>{retornaFuncionario(res.idFuncionario)}</td>
+            <td>{retornaCliente(res.idCliente)}</td>
             <td>{serverDateToString(res.data)}</td>
             <td>{res.hora}</td>
             <td>{res.total}</td>
@@ -114,7 +108,7 @@ export default class AgendaList extends Component {
                 <Link className="edit-link" to={"/edit-"+tableName+"/" + res._id}>
                     Editar
                 </Link>
-                <Button onClick={() => this.confimarExclusao(res._id)} size="sm" variant="danger">Excluir</Button>
+                <Button onClick={() => confimarExclusao(res._id)} size="sm" variant="danger">Excluir</Button>
             </td>
         </tr>
       );
@@ -123,11 +117,11 @@ export default class AgendaList extends Component {
   }
 
 
-  render() {
+  
     
     return (
       <div>
-        <ModalConfirmacao show={this.state.showModal} handleClose={this.handleClose} Title="Exclusão de preço" Message="Deseja excluir o registro?" />
+        <ModalConfirmacao show={showModal} handleClose={handleClose} Title="Exclusão de preço" Message="Deseja excluir o registro?" />
         <div className="table-wrapper">        
           <Table striped bordered hover>
             <thead>
@@ -142,13 +136,13 @@ export default class AgendaList extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.DataTable()}
+              {carregado && DataTable()}
             </tbody>
           </Table>          
         </div>
-        <Button variant="primary" size="lg" block="block" type="button" onClick={this.novo}>Novo</Button>        
+        <Button variant="primary" size="lg" block="block" type="button" onClick={novo}>Novo</Button>        
       </div>
     
     );
-  }
+  
 }

@@ -101,10 +101,8 @@ export default class AgendaView extends Component {
 
     retornaCliente(id){
       return (
-        <div>
-          <div className="divNome">Cliente: {this.state.clientes.find(obj=>obj._id===id).nome}</div>
-          <div className="divCelular">Celular: {this.state.clientes.find(obj=>obj._id===id).celular}</div>          
-        </div>
+           <div className="divNome">Cliente: {id ? this.state.clientes.find(obj=>obj._id===id).nome : ''} - {id ? this.state.clientes.find(obj=>obj._id===id).celular: ''}
+           </div>
       );
     }
 
@@ -141,9 +139,9 @@ export default class AgendaView extends Component {
     retornaInfo(idCliente, idServico, idFuncionario){
       return (
         <div className="divInfo">
-          <div className="divCliente">{this.retornaCliente(idCliente)}</div>
-          <div className="divServico">Serviço: {this.retornaServico(idServico)}</div>
-          <div className="divFuncionario">Funcionário: {this.retornaFuncionario(idFuncionario)}</div>
+          {this.retornaCliente(idCliente)}
+          <div className="divNome">Serviço: {this.retornaServico(idServico)}</div>
+          <div className="divNome">Funcionário: {this.retornaFuncionario(idFuncionario)}</div>
         </div>
       )
     }
@@ -165,19 +163,18 @@ export default class AgendaView extends Component {
 
       let ordenado = this.ordenarDados(props);
 
-      const itens = ordenado.map(obj=>
-          <li key={obj._id} className="liAgenda">
+      const itens = ordenado.map(obj=>   <div>     
             <div className="divHora">{obj.hora}</div>
+            <div>
             {this.retornaInfo(obj.idCliente, obj.idServico, obj.idFuncionario)}
-          </li>
+            </div>
+            </div>
        );
 
        return(
          <div>
-           <div className="tdDia">{this.retornaDataFormatada(this.state.data)}<div className="divQuantidade">Você tem <span>{props.length}</span> atendimentos no dia</div></div>
-           <ul>
-            {itens}
-          </ul>
+           <div className="tdDia"><div className="divQuantidade">Você tem <span>{props.length}</span> atendimentos no dia</div></div>           
+            {itens}          
          </div>
        )
       

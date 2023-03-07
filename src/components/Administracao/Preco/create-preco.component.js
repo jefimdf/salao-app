@@ -70,7 +70,7 @@ export default class CreatePreco extends Component {
       preco: this.state.preco,
       data: this.state.data  
     };
-
+debugger
     axios.post(process.env.REACT_APP_URL_SERVER + tableName + '/create', objEnvio)
       .then(res => {
         console.log(res.data); 

@@ -6,7 +6,7 @@ let precoSchema = new Schema({
     type: String
   },
   preco: {
-    type: Number
+    type: String
   },
   data: {
     type: Date
