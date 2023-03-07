@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { Container } from "react-bootstrap";
 import {Row, Col} from 'react-bootstrap';
 import DatePicker from "react-datepicker";
+import situacao from '../../common/enum/situacao';
 
 const tableName = 'agenda';
 
@@ -136,12 +137,45 @@ export default class AgendaView extends Component {
       );
     }
 
-    retornaInfo(idCliente, idServico, idFuncionario){
+    alteraSituacao(objAgenda, situacao){
+
+      const objEnvio = {
+        idServico: objAgenda.idServico,
+        idFuncionario: objAgenda.idFuncionario,
+        idCliente: objAgenda.idCliente,
+        data: objAgenda.data,
+        hora: objAgenda.hora,
+        total: objAgenda.total,
+        situacao: situacao
+      };
+
+      axios.put(process.env.REACT_APP_URL_SERVER + tableName + '/update/' + objAgenda._id, objEnvio)
+        .then((res) => {
+          window.location.reload();
+        }).catch((error) => {
+          console.log(error);
+        })
+
+
+    }
+
+    retornaInfo(objAgenda, idCliente, idServico, idFuncionario){
       return (
         <div className="divInfo">
-          {this.retornaCliente(idCliente)}
-          <div className="divNome">Serviço: {this.retornaServico(idServico)}</div>
-          <div className="divNome">Funcionário: {this.retornaFuncionario(idFuncionario)}</div>
+          <div className="row align-items-center">
+          <div className="col">
+            {this.retornaCliente(idCliente)}
+            <div className="divNome">Serviço: {this.retornaServico(idServico)}</div>
+            <div className="divNome">Funcionário: {this.retornaFuncionario(idFuncionario)}</div>
+            <div className="divNome">Situação: {objAgenda.situacao ? objAgenda.situacao : 'Marcado'}</div>
+            </div>
+            <div className="col">              
+            <div className="btn-group" role="group" aria-label="Basic mixed styles example">
+              {objAgenda.situacao != situacao[1] ? <button type="button" className="btn btn-success" onClick={()=>this.alteraSituacao(objAgenda, situacao[1])}>Confirmar</button> : ''}
+              {objAgenda.situacao != situacao[2] ? <button type="button" className="btn btn-danger" onClick={()=>this.alteraSituacao(objAgenda, situacao[2])}>Desmarcar</button> : ''}
+            </div>
+              </div>
+          </div>
         </div>
       )
     }
@@ -166,7 +200,7 @@ export default class AgendaView extends Component {
       const itens = ordenado.map(obj=>   <div>     
             <div className="divHora">{obj.hora}</div>
             <div>
-            {this.retornaInfo(obj.idCliente, obj.idServico, obj.idFuncionario)}
+            {this.retornaInfo(obj, obj.idCliente, obj.idServico, obj.idFuncionario)}
             </div>
             </div>
        );

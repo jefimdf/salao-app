@@ -109,6 +109,7 @@ export default function AgendaList(props) {
             <td>{serverDateToString(res.data)}</td>
             <td>{res.hora}</td>
             <td>{res.total}</td>
+            <td>{res.situacao}</td>
             <td>
             <div className="btn-group" role="group" aria-label="Basic mixed styles example">
               <button type="button" className="btn btn-primary" onClick={() => handleEditar("/edit-"+tableName+"/" + res._id)}>
@@ -138,7 +139,8 @@ export default function AgendaList(props) {
                 <th>Cliente</th>
                 <th>Data</th>
                 <th>Hora</th>
-                <th>Valor Total</th>
+                <th>Valor</th>
+                <th>Situação</th>
                 <th>Ação</th>
               </tr>
             </thead>

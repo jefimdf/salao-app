@@ -29,7 +29,7 @@ export default function GruposServicos({...props}) {
         let filtro = p.servicosFuncionarios.filter(objSF=>objSF.idServico === idServico);
         return filtro.map((obj)=>{
           return (
-            <div className="col-2 checkServico"><Form.Check type="checkbox" name={obj._id} id={obj._id} label={retornaServico(obj.idServico) +' - '+ retornaFuncionario(obj.idFuncionario) +' - R$'+ retornaPreco(obj.idServico)} onChange={(item)=>onCkcChangeServico(item, obj.idServico+'|'+obj.idFuncionario)}/></div>
+            <div className="col-2 checkServico"><Form.Check type="checkbox" name={obj._id} id={obj._id} label={retornaServico(obj.idServico) +' - '+ retornaFuncionario(obj.idFuncionario) +' - R$'+ retornaPreco(obj.idServico)} onChange={(item)=>onCkcChangeServico(item, obj.idServico+'|'+obj.idFuncionario +'|'+retornaPreco(obj.idServico))}/></div>
           )
         })     
       }

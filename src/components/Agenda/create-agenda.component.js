@@ -9,6 +9,7 @@ import MaskedFormControl from 'react-bootstrap-maskedinput';
 import '../Agenda/style.css';
 import moment from 'moment';
 import GruposServicos from './gruposServicos.component';
+import situacao from '../../common/enum/situacao';
 
 
 const tableName = 'agenda';
@@ -135,7 +136,8 @@ export default function CreateAgenda(props) {
           idCliente: idCliente,
           data: data,
           hora: hora,
-          total: total
+          total: arr[2],
+          situacao: situacao[0]
         };
 
         axios.post(process.env.REACT_APP_URL_SERVER + tableName + '/create', objEnvio)
