@@ -19,7 +19,7 @@ export default function CreateAgenda(props) {
   const [idFuncionario, setIdFuncionario] = useState('')
   const [idCliente, setIdCliente] = useState('')
   const [data, setData] = useState('')
-  const [total, setTotal] = useState('')
+  const [total, setTotal] = useState(0.0)
   const [hora, setHora] = useState('')
   const [servicos, setServicos] = useState([])
   const [precos, setPrecos] = useState([])
@@ -198,9 +198,10 @@ export default function CreateAgenda(props) {
         carregado={carregado}
         />  }
 
-        {clienteLogado && <Form.Group controlId="data">
+        {clienteLogado && <Form.Group controlId="Data">
           <Form.Label for="datac">Data:</Form.Label>          
           <div className="row">
+          <div className="col-6">
           <DatePicker
             name="data"
             className="form-control"
@@ -209,6 +210,7 @@ export default function CreateAgenda(props) {
             onChange={onChangeData}
             dateFormat="dd/MM/yyyy"            
           />
+          </div>
           </div>
         </Form.Group>
         }
@@ -222,12 +224,16 @@ export default function CreateAgenda(props) {
           </div>          
         </Form.Group>}
         
-        {clienteLogado && <div className="valorTotal">
+        {clienteLogado && 
         <Form.Group controlId="Total">
+          <Row>
           <Form.Label>Valor Total: </Form.Label>    
-          <Form.Label> R$ {total}</Form.Label>
+          </Row>
+          <Row>
+          <Form.Label> <div className="valorTotal">R$ {total}.00 </div></Form.Label>          
+          </Row>
         </Form.Group>
-        </div>}
+        }
 
       {clienteLogado && <Container id="Botoes">
       <Row>

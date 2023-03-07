@@ -16,7 +16,9 @@ export default function GruposServicos({...props}) {
       }
     
       const retornaPreco = (id) =>{
-       return p.precos.find(obj=>obj.idServico===id).preco;
+        let valor = p.precos.find(obj=>obj.idServico===id).preco;
+        valor = parseFloat(valor);
+        return valor;
       }
     
       const retornaFuncionario = (id) =>{
@@ -35,8 +37,9 @@ export default function GruposServicos({...props}) {
       const onCkcChangeServico = (item, chave) => {
     
         let arr = chave.split('|');
-        let total = p.total;
-    
+        let total = parseFloat(p.total);
+        
+
         var arraySelecao = p.servicoSelecionado.length <= 0 ? [] : p.servicoSelecionado;
 
         if (item.target.checked){
@@ -52,7 +55,6 @@ export default function GruposServicos({...props}) {
         }
 debugger
         p.setServicoSelecionado(arraySelecao);
-
 
       }
 

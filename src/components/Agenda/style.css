@@ -75,7 +75,7 @@ ul.ks-cboxtags li input[type="checkbox"]:focus + label {
     border-radius: 8px;
     padding: 10px;
     font-size: 24px;
-    background-color: #d4f5d4;
+    background-color: #664d6b;
     color: white;
     height: 52px;
     margin-bottom: 10px;
@@ -185,7 +185,7 @@ body{
 }
 
 div.radioHoarario{
- background-color: rgb(232, 224, 250);
+ background-color: #664d6b34;
  border-radius: 10px;
  margin: 5px;
  padding-left: 3px;
@@ -193,7 +193,7 @@ div.radioHoarario{
 }
 
 div.checkServico{
-  background-color: rgb(253, 204, 130);
+  background-color: rgb(102 77 107 / 21%);
  border-radius: 10px;
  margin: 5px;
  padding-left: 3px;
@@ -202,4 +202,29 @@ div.checkServico{
 
 .form-label{
   font-weight: bold;
+}
+
+.accordion{
+  --bs-accordion-active-bg:#664d6b94 !important;
+  color: white;
+
+}
+
+.accordion-button:not(.collapsed) {
+  color: white !important;
+  font-weight: 400 !important;
+
+}
+
+.accordion-button{
+  font-weight: bold !important;
+}
+
+
+.form-check {
+  padding-top: 9px !important;
+  padding-left: 1.8em !important;
+  color: lightslategrey;
+  font-weight: bold;
+
 }
