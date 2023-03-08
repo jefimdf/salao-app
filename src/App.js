@@ -9,6 +9,7 @@ import "./App.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { NavDropdown } from "react-bootstrap";
 
+import Home from "./components/home.component";
 
 //Usuario
 import CreateUsuario from "./components/Administracao/Usuario/create-usuario.component";
@@ -123,7 +124,7 @@ function App(props) {
           <Col md={12}>
             <div className="wrapper">
               <Switch>
-                <Route exact path='/'  />
+                <Route exact path='/' component={Home} />
                 
                 <Route path="/create-usuario" component={CreateUsuario} />
                 <Route path="/edit-usuario/:id" component={EditUsuario} />
@@ -172,7 +173,7 @@ function App(props) {
 
       <footer id="footer">
         <div className="container">
-          <div className="row">            
+          <div className="row">        
         </div>
         </div>
       </footer>

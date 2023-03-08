@@ -139,6 +139,22 @@ div .title{
   color: rgb(141, 140, 140);
 }
 
+div .home{
+  text-align: center;
+  color: #aa6fb6;
+}
+div .home .titulo{
+  font-size: x-large;
+}
+
+div .home .subtitulo{
+  font-size: large;
+}
+
+div .home .conteudo{
+  font-size: medium;
+}
+
 @media only screen 
   and (min-device-width: 300px) 
   and (max-device-width: 580px)
