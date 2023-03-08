@@ -63,12 +63,12 @@ function App(props) {
 
   const [userLogado, setUserLogado] = useState(window.localStorage.getItem('userLogado') ? window.localStorage.getItem('userLogado') : false)
 
-  useEffect(() => {
+  /* useEffect(() => {
     let jaesta = window.location.pathname === '/create-agenda' ? true : false;
     if (!userLogado && !jaesta){
       window.location = '/create-agenda';
     }
-  }, []);
+  }, []); */
 
   const logout = () =>{
     window.localStorage.clear();
