@@ -23,6 +23,7 @@ export default function CreateAgenda(props) {
   const [data, setData] = useState('')
   const [total, setTotal] = useState(0.0)
   const [hora, setHora] = useState('')
+  const [celular, setCelular] = useState('')
   const [servicos, setServicos] = useState([])
   const [precos, setPrecos] = useState([])
   const [funcionariosTodos, setFuncionariosTodos] = useState([])
@@ -168,13 +169,17 @@ export default function CreateAgenda(props) {
   }
 
   const onChangeCelular = (e) => {
-    if (e.target.value.replaceAll('(', '').replaceAll(')', '').replaceAll('_', '').length >= 9){
-      let obj = clientes.find(obj=>obj.celular === e.target.value);
+    setCelular(e.target.value);
+  }
+
+  const onBuscar = () =>{debugger
+    if (celular.replaceAll('(', '').replaceAll(')', '').replaceAll('_', '').length >= 11){
+      let obj = clientes.find(obj=>obj.celular === celular);
       if (obj){
         setIdCliente(obj._id);
         setClienteLogado(obj);      
       }      
-    }    
+    }
   }
 
   const onCkcChangeHorario = (item) => {
@@ -188,7 +193,10 @@ export default function CreateAgenda(props) {
         {carregado &&
         <Form.Group controlId="Cliente">
           <Form.Label>Celular do Cliente:</Form.Label>
-          {!clienteLogado && <MaskedFormControl type='text' name='celular' mask='(11)1111-1111' onChange={onChangeCelular} />}
+          {!clienteLogado && <div className="row">
+          <div className="col"><MaskedFormControl type='text' name='celular' mask='(11)1111-1111'  onChange={onChangeCelular}/></div>
+          <div className="col"><button type="button" className="btn btn-primary" onClick={onBuscar}>Buscar</button></div>
+          </div>}
           {clienteLogado && <div className="row"><Form.Label>{clienteLogado.nome}</Form.Label></div>}          
         </Form.Group>}
 
