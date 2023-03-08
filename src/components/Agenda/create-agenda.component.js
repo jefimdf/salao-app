@@ -145,7 +145,7 @@ export default function CreateAgenda(props) {
           if(userLogado)
             props.history.push('/'+tableName+'-list');
           else
-            window.location = '/create-' + tableName;
+            window.location.reload();            
         });
       })
     }

@@ -20,6 +20,11 @@ export default function CreateAgenda(props) {
   const nonce = '';
   const tableName = 'usuario';
 
+  useEffect(() => {
+    if(userLogado)
+      props.history.push('/agenda-view');            
+  }, [userLogado]);
+
   const onChangeEmail = (e) =>{
     setEmail(e.target.value);
   }
@@ -48,7 +53,7 @@ export default function CreateAgenda(props) {
 
         if (usuarioLocalizado && usuarioLocalizado.senha === senhaCriptografada){            
             window.localStorage.setItem('userLogado', true);
-            window.location = '/agenda-view';
+            window.location.reload();            
         }else{
             setLogin(false);
         }
