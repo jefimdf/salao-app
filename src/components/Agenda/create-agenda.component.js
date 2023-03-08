@@ -173,7 +173,7 @@ export default function CreateAgenda(props) {
   }
 
   const onBuscar = () =>{debugger
-    if (celular.replaceAll('(', '').replaceAll(')', '').replaceAll('_', '').length >= 11){
+    if (celular.length >= 11){
       let obj = clientes.find(obj=>obj.celular === celular);
       if (obj){
         setIdCliente(obj._id);
