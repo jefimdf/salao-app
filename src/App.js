@@ -9,6 +9,7 @@ import "./App.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { NavDropdown } from "react-bootstrap";
 
+
 //Usuario
 import CreateUsuario from "./components/Administracao/Usuario/create-usuario.component";
 import EditUsuario from "./components/Administracao/Usuario/edit-usuario.component";
@@ -77,55 +78,44 @@ function App(props) {
 
   return (<Router>
     <div id="container" className="App">
-      <header id="header" className="App-header">
-        <Navbar bg="dark" variant="dark">
-          <Container>
-            <Navbar.Brand>
-              <Link to={userLogado ? "/agenda-view" : ""} className="nav-link">
-                <div className="logo"><span>Nádia Beauty Hair Designer</span></div>
+      <header id="header" className="App-header">      
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div className="container-fluid">
+            <a href="#" className="navbar-brand">
+              <Link to={userLogado ? "/agenda-view" : ""}>
+                <div className="logo"></div>
               </Link>
-            </Navbar.Brand>
-
-            <Nav className="justify-content-end">
-              <Nav>
-                <Link to={"/create-agenda"} className="nav-link">
-                  Agenda
-                </Link>
-              </Nav>
-
-              {!userLogado &&              
-              <Nav>
-                <Link to={"/login"} className="nav-link">
-                  ADM
-                </Link>
-              </Nav>}
-
-              {userLogado &&
-              <Nav>
-                <Link to={"/create-cliente"} className="nav-link">
-                  Clientes
-                </Link>
-              </Nav>}
-              {userLogado && <NavDropdown title="Administração" id="basic-nav-dropdown">
-                <NavDropdown.Item href="/usuario-list">Usuário</NavDropdown.Item>
-                <NavDropdown.Item href="/funcionario-list">Funcionário</NavDropdown.Item>
-                <NavDropdown.Item href="/servicoFuncionario-list">Serviços de Funcionário</NavDropdown.Item>
-                <NavDropdown.Item href="/grupoServico-list">Grupos de Serviços</NavDropdown.Item>
-                <NavDropdown.Item href="/servico-list">Serviço</NavDropdown.Item>
-                <NavDropdown.Item href="/preco-list">Preço</NavDropdown.Item>                
-                <NavDropdown.Item href="/cidade-list">Cidade</NavDropdown.Item>
-              </NavDropdown>
-              }
-              {userLogado &&              
-              <Nav>
-                <Link onClick={()=>logout()} className="nav-link">
-                  Sair
-                </Link>
-              </Nav>}
-            </Nav>
-
-          </Container>
-        </Navbar>
+            </a>
+            <div className="title">Nádia Beauty</div>
+            <button type="button" className="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span className="navbar-toggler-icon"></span>
+            </button>
+            <div className="collapse navbar-collapse" id="navbarCollapse">
+                <div className="navbar-nav">
+                  <a href={"/create-agenda"} class="nav-item nav-link">Agenda</a>
+                  {userLogado &&<a href={"/create-cliente"} class="nav-item nav-link">Clientes</a>}                  
+                  {userLogado && <NavDropdown title="Administração" id="basic-nav-dropdown">
+                    <NavDropdown.Item href="/usuario-list">Usuário</NavDropdown.Item>
+                    <NavDropdown.Item href="/funcionario-list">Funcionário</NavDropdown.Item>
+                    <NavDropdown.Item href="/servicoFuncionario-list">Serviços de Funcionário</NavDropdown.Item>
+                    <NavDropdown.Item href="/grupoServico-list">Grupos de Serviços</NavDropdown.Item>
+                    <NavDropdown.Item href="/servico-list">Serviço</NavDropdown.Item>
+                    <NavDropdown.Item href="/preco-list">Preço</NavDropdown.Item>                
+                    <NavDropdown.Item href="/cidade-list">Cidade</NavDropdown.Item>
+                  </NavDropdown>
+                  }              
+                </div>
+                <div className="navbar-nav ms-auto">
+                    {userLogado &&              
+                      <a href="#" onClick={()=>logout()} className="nav-item nav-link">Sair</a>
+                    }
+                    {!userLogado && 
+                      <a href={"/login"} className="nav-item nav-link">Login</a>             
+                                  }
+                </div>
+            </div>
+        </div>
+    </nav>
       </header>
 
       <Container id="body">
