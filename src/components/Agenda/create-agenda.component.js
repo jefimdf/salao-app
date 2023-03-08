@@ -168,12 +168,13 @@ export default function CreateAgenda(props) {
   }
 
   const onChangeCelular = (e) => {
-    if (e.target.value.replaceAll('(', '').replaceAll(')', '').replaceAll('_', '').length >= 11){
+    if (e.target.value.replaceAll('(', '').replaceAll(')', '').replaceAll('_', '').length >= 9){
       let obj = clientes.find(obj=>obj.celular === e.target.value);
-      setIdCliente(obj._id);
-      setClienteLogado(obj);      
-    }
-    
+      if (obj){
+        setIdCliente(obj._id);
+        setClienteLogado(obj);      
+      }      
+    }    
   }
 
   const onCkcChangeHorario = (item) => {
@@ -184,11 +185,12 @@ export default function CreateAgenda(props) {
       
       <Form onSubmit={onSubmit}>
 
+        {carregado &&
         <Form.Group controlId="Cliente">
           <Form.Label>Celular do Cliente:</Form.Label>
           {!clienteLogado && <MaskedFormControl type='text' name='celular' mask='(11)1111-1111' onChange={onChangeCelular} />}
           {clienteLogado && <div className="row"><Form.Label>{clienteLogado.nome}</Form.Label></div>}          
-        </Form.Group>
+        </Form.Group>}
 
         {carregado && clienteLogado && <GruposServicos 
          {...props}
