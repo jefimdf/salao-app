@@ -136,7 +136,7 @@ export default class EditCliente extends Component {
           />
         <Form.Group controlId="Name">
           <Form.Label>Celular</Form.Label>
-          <MaskedFormControl type='text' name='celular' mask='(11)1111-1111' value={this.state.celular} onChange={this.onChangeCelular} />          
+          <MaskedFormControl type='text' name='celular' mask='(11)1 1111-1111' value={this.state.celular} onChange={this.onChangeCelular} />          
         </Form.Group>
         <Form.Group controlId="Cidade">
           <Form.Label>Cidade</Form.Label>
