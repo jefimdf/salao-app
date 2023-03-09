@@ -88,9 +88,9 @@ export default class ClienteList extends Component {
       return (
         <tr>
             <td>{res.nome}</td>
-            <td>{serverDateToString(res.dataNascimento)}</td>
+            {/* <td>{serverDateToString(res.dataNascimento)}</td> */}
             <td>{res.celular}</td>
-            <td>{this.retornaCidade(res.idCidade)}</td>
+            {/* <td>{this.retornaCidade(res.idCidade)}</td> */}
             <td>
             <div className="btn-group" role="group" aria-label="Basic mixed styles example">
               <button type="button" className="btn btn-primary" onClick={() => this.handleEditar("/edit-"+tableName+"/" + res._id)}>
@@ -116,9 +116,7 @@ export default class ClienteList extends Component {
             <thead>
               <tr>
                 <th>Nome</th>
-                <th>Data de Nascimento</th>
                 <th>Celular</th>
-                <th>Cidade</th>
                 <th>Ação</th>
               </tr>
             </thead>

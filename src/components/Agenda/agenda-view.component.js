@@ -171,8 +171,8 @@ export default class AgendaView extends Component {
             </div>
             <div className="col">              
             <div className="btn-group" role="group" aria-label="Basic mixed styles example">
-              {objAgenda.situacao != situacao[1] ? <button type="button" className="btn btn-success" onClick={()=>this.alteraSituacao(objAgenda, situacao[1])}>Confirmar</button> : ''}
-              {objAgenda.situacao != situacao[2] ? <button type="button" className="btn btn-danger" onClick={()=>this.alteraSituacao(objAgenda, situacao[2])}>Desmarcar</button> : ''}
+              {objAgenda.situacao != situacao[1] ? <button type="button" className="btn btn-success" onClick={()=>this.alteraSituacao(objAgenda, situacao[1])}>V</button> : ''}
+              {objAgenda.situacao != situacao[2] ? <button type="button" className="btn btn-danger" onClick={()=>this.alteraSituacao(objAgenda, situacao[2])}>X</button> : ''}
             </div>
               </div>
           </div>
