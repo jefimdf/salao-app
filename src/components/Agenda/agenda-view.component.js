@@ -15,7 +15,6 @@ export default function AgendaView(props) {
     
   const [agendas, setAgendas] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [idRegistro, setIdRegistro] = useState(0);
   const [clientes, setClientes] = useState([]);
   const [funcionarios, setFuncionarios] = useState([]);
   const [servicos, setServicos] = useState([]);
@@ -57,19 +56,15 @@ export default function AgendaView(props) {
       this.situacao= situacao;
     }
 
-    const filtraDadosAgenda = (date, obj) => {
-      return obj.filter(obj=>dataString(date) === dataString(obj.data));
-    }
-
+    const filtraDadosAgenda = (date, obj) => obj.filter(obj=>dataString(date) === dataString(obj.data));
+    
     const onChangeData = (date) => {
       setData(date)
       setAgendas(filtraDadosAgenda(date, agendasTodas));      
     }
 
-    const dataString = (data) => {
-      return (new Date(data)).getFullYear() + '' + (new Date(data)).getMonth() + '' + (new Date(data)).getDate();
-    }
-
+    const dataString = (data) => (new Date(data)).getFullYear() + '' + (new Date(data)).getMonth() + '' + (new Date(data)).getDate();
+    
     function retornaCliente(id){
       return (
            <div className="divNome">Cliente: {id ? clientes.find(obj=>obj._id===id).nome : ''} - {id ? clientes.find(obj=>obj._id===id).celular: ''}
@@ -77,36 +72,10 @@ export default function AgendaView(props) {
       );
     }
 
-    function retornaServico(id){
-      return servicos.find(obj=>obj._id===id).nome;
-    }
-
-    function retornaFuncionario(id){
-      return funcionarios.find(obj=>obj._id===id).nome;
-    }
-
-    function retornaDataFormatada(data){
-      let d = new Date(data);
-      let dia = d.getDate();
-      let mes = d.getMonth();
-
-      mes += 1;
-
-      if (dia < 10){
-        dia = '0' + dia;
-      }
-
-      if (mes < 10){
-        mes = '0' + mes;
-      }
-
-      return (
-        <div className="divDia">
-          <span className="spanDia">{dia + '/' + mes + '/' + d.getFullYear()}</span>          
-        </div>
-      );
-    }
-
+    const retornaServico = (id) => servicos.find(obj=>obj._id===id).nome;
+    
+    const retornaFuncionario = (id) =>funcionarios.find(obj=>obj._id===id).nome;
+    
     function alteraSituacao(obj, situacao){
 
       obj = new Agenda(obj._id, obj.idServico, obj.idFuncionario, obj.idCliente, obj.data, obj.hora, obj.total, situacao);
@@ -117,7 +86,6 @@ export default function AgendaView(props) {
         }).catch((error) => {
           console.log(error);
         })
-
 
     }
 

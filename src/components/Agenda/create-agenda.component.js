@@ -33,20 +33,7 @@ export default function CreateAgenda(props) {
   const [servicosFuncionarios, setServicosFuncionarios] = useState([])
   const [servicoSelecionado, setServicoSelecionado] = useState([])
   const [gruposServicos, setGruposServicos] = useState([])
-  const [horarios, setHorarios] = useState(['09:00',
-  '10:00',
-  '11:00',
-  '12:00',
-  '13:00',
-  '14:00',
-  '15:00',
-  '16:00',
-  '17:00',
-  '18:00',
-  '19:00',
-  '20:00',
-  '21:00',
-  '22:00',])
+  const [horarios, setHorarios] = useState(process.env.REACT_APP_HORARIOS.split(','));
   const [carregado, setCarregado] = useState(false);
   const [clienteLogado, setClienteLogado] = useState(null);
 
@@ -158,7 +145,7 @@ export default function CreateAgenda(props) {
       var momentA = moment(new Date(obj.data)).valueOf();
       var momentB = moment(data).valueOf();      
       return momentA === momentB; })
-    
+    debugger
     let objhorarios = horarios.filter(obj=>!objAgenda.find(o=>o.hora===obj));
 
     return objhorarios.map((obj)=>{
