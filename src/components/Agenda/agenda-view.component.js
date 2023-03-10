@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import Table from 'react-bootstrap/Table';
@@ -11,111 +11,81 @@ import situacao from '../../common/enum/situacao';
 
 const tableName = 'agenda';
 
-export default class AgendaView extends Component {
+export default function AgendaView(props) {
     
-    constructor(props) {
-        super(props)
-        this.state = {
-          agendas: [],
-          showModal: false,
-          idRegistro: 0,
-          clientes: [],
-          funcionarios: [],
-          servicos: [],
-          servicosFuncionarios: [],
-          data: new Date(),
-          agendasTodas: []
-        };
-    
-        this.onChangeData = this.onChangeData.bind(this);
-        this.filtraDadosAgenda = this.filtraDadosAgenda.bind(this);
-        this.dataString = this.dataString.bind(this);
-
-      }
-
-    componentDidMount() {
-      const requests = [
-        axios.get(process.env.REACT_APP_URL_SERVER + tableName + '/')
+  const [agendas, setAgendas] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [idRegistro, setIdRegistro] = useState(0);
+  const [clientes, setClientes] = useState([]);
+  const [funcionarios, setFuncionarios] = useState([]);
+  const [servicos, setServicos] = useState([]);
+  const [data, setData] = useState(new Date());
+  const [agendasTodas, setAgendasTodas] = useState([]);
+  
+  useEffect(() => {
+    const requests = [
+      axios.get(process.env.REACT_APP_URL_SERVER + tableName + '/')
+      .then(res => res = res.data),
+      axios.get(process.env.REACT_APP_URL_SERVER + 'servico/')
         .then(res => res = res.data),
-        axios.get(process.env.REACT_APP_URL_SERVER + 'servicoFuncionario/')
-          .then(res => res = res.data),
-        axios.get(process.env.REACT_APP_URL_SERVER + 'servico/')
-          .then(res => res = res.data),
-        axios.get(process.env.REACT_APP_URL_SERVER + 'preco/')
-          .then(res => res = res.data),
-        axios.get(process.env.REACT_APP_URL_SERVER + 'funcionario/')
-          .then(res => res = res.data),
-        axios.get(process.env.REACT_APP_URL_SERVER + 'cliente/')
-          .then(res => res = res.data)
-      ];
-  
-      Promise.all(requests)
-        .then(([objAgenda, objServicoFuncionario, objServico, objPreco, objFuncionario, objCliente]) => {
-          this.setState({
-            agendasTodas: objAgenda,
-            agendas: this.filtraDadosAgenda(this.state.data, objAgenda),
-            servicosFuncionarios: objServicoFuncionario,
-            servicos: objServico,
-            precos: objPreco,
-            funcionarios: objFuncionario,
-            clientes: objCliente          
-          });
-  
-        }, (evt) => {
-            console.log(evt);        
-        });
-    }
+      axios.get(process.env.REACT_APP_URL_SERVER + 'funcionario/')
+        .then(res => res = res.data),
+      axios.get(process.env.REACT_APP_URL_SERVER + 'cliente/')
+        .then(res => res = res.data)
+    ];
 
-    filtraDadosAgenda = (date, obj) => {
-      
-      this.setState({agendas:[]});
-      
-      let filtro=[];
-      const agendaFiltro = obj.map(obj=>{
-        let d = new Date(obj.data);     
-        let dataSelecionada = this.dataString(date);
-        let dataBase = this.dataString(d);
-
-        if (dataSelecionada === dataBase){
-          
-          filtro.push(obj);        
-        }
+    Promise.all(requests)
+      .then(([objAgenda, objServico, objFuncionario, objCliente]) => {
+        setAgendas(filtraDadosAgenda(data, objAgenda));
+        setAgendasTodas(objAgenda)
+        setServicos(objServico)
+        setFuncionarios(objFuncionario)
+        setClientes(objCliente)
+      }, (evt) => {
+          console.log(evt);        
       });
+  }, []);
 
-      return filtro;
+    function Agenda(_id, idServico, idFuncionario, idCliente, data, hora, total, situacao){
+      this._id = _id;
+      this.idServico= idServico;
+      this.idFuncionario= idFuncionario;
+      this.idCliente= idCliente;
+      this.data= data;
+      this.hora= hora;
+      this.total= total;
+      this.situacao= situacao;
     }
 
-    onChangeData = (date) => {
-
-      let obj = this.filtraDadosAgenda(date, this.state.agendasTodas);
-
-      this.setState({ data: date, agendas: obj});      
+    const filtraDadosAgenda = (date, obj) => {
+      return obj.filter(obj=>dataString(date) === dataString(obj.data));
     }
 
-    dataString = (d) => {
-      let dia = d.getDate();
-      let mes = d.getMonth();
-      let ano = d.getFullYear();
-
-      return ano + '' + mes + '' + dia;
+    const onChangeData = (date) => {
+      setData(date)
+      setAgendas(filtraDadosAgenda(date, agendasTodas));      
     }
 
-    retornaCliente(id){
+    const dataString = (data) => {
+      return (new Date(data)).getFullYear() + '' + (new Date(data)).getMonth() + '' + (new Date(data)).getDate();
+    }
+
+    function retornaCliente(id){
       return (
-           <div className="divNome">Cliente: {id ? this.state.clientes.find(obj=>obj._id===id).nome : ''} - {id ? this.state.clientes.find(obj=>obj._id===id).celular: ''}
+           <div className="divNome">Cliente: {id ? clientes.find(obj=>obj._id===id).nome : ''} - {id ? clientes.find(obj=>obj._id===id).celular: ''}
            </div>
       );
     }
 
-    retornaServico(id){
-      return this.state.servicos.find(obj=>obj._id===id).nome;
+    function retornaServico(id){
+      return servicos.find(obj=>obj._id===id).nome;
     }
 
-    retornaFuncionario(id){
-      return this.state.funcionarios.find(obj=>obj._id===id).nome;
+    function retornaFuncionario(id){
+      return funcionarios.find(obj=>obj._id===id).nome;
     }
 
-    retornaDataFormatada(data){
+    function retornaDataFormatada(data){
       let d = new Date(data);
       let dia = d.getDate();
       let mes = d.getMonth();
@@ -137,19 +107,11 @@ export default class AgendaView extends Component {
       );
     }
 
-    alteraSituacao(objAgenda, situacao){
+    function alteraSituacao(obj, situacao){
 
-      const objEnvio = {
-        idServico: objAgenda.idServico,
-        idFuncionario: objAgenda.idFuncionario,
-        idCliente: objAgenda.idCliente,
-        data: objAgenda.data,
-        hora: objAgenda.hora,
-        total: objAgenda.total,
-        situacao: situacao
-      };
-
-      axios.put(process.env.REACT_APP_URL_SERVER + tableName + '/update/' + objAgenda._id, objEnvio)
+      obj = new Agenda(obj._id, obj.idServico, obj.idFuncionario, obj.idCliente, obj.data, obj.hora, obj.total, situacao);
+      
+      axios.put(process.env.REACT_APP_URL_SERVER + tableName + '/update/' + obj._id, obj)
         .then((res) => {
           window.location.reload();
         }).catch((error) => {
@@ -159,20 +121,20 @@ export default class AgendaView extends Component {
 
     }
 
-    retornaInfo(objAgenda, idCliente, idServico, idFuncionario){
+    function retornaInfo(objAgenda, idCliente, idServico, idFuncionario){
       return (
         <div className="divInfo">
           <div className="row align-items-center">
           <div className="col">
-            {this.retornaCliente(idCliente)}
-            <div className="divNome">Serviço: {this.retornaServico(idServico)}</div>
-            <div className="divNome">Funcionário: {this.retornaFuncionario(idFuncionario)}</div>
+            {retornaCliente(idCliente)}
+            <div className="divNome">Serviço: {retornaServico(idServico)}</div>
+            <div className="divNome">Funcionário: {retornaFuncionario(idFuncionario)}</div>
             <div className="divNome">Situação: {objAgenda.situacao ? objAgenda.situacao : 'Marcado'}</div>
             </div>
             <div className="col">              
             <div className="btn-group" role="group" aria-label="Basic mixed styles example">
-              {objAgenda.situacao != situacao[1] ? <button type="button" className="btn btn-success" onClick={()=>this.alteraSituacao(objAgenda, situacao[1])}>V</button> : ''}
-              {objAgenda.situacao != situacao[2] ? <button type="button" className="btn btn-danger" onClick={()=>this.alteraSituacao(objAgenda, situacao[2])}>X</button> : ''}
+              {objAgenda.situacao != situacao[1] ? <button type="button" className="btn btn-success" onClick={()=>alteraSituacao(objAgenda, situacao[1])}>V</button> : ''}
+              {objAgenda.situacao != situacao[2] ? <button type="button" className="btn btn-danger" onClick={()=>alteraSituacao(objAgenda, situacao[2])}>X</button> : ''}
             </div>
               </div>
           </div>
@@ -180,7 +142,7 @@ export default class AgendaView extends Component {
       )
     }
 
-    ordenarDados(props){
+    function ordenarDados(props){
       props.sort((a, b)=>{
         let hA = parseInt(a.hora.replace(':', ''));
         let hB = parseInt(b.hora.replace(':', ''));
@@ -193,14 +155,14 @@ export default class AgendaView extends Component {
       return props;
     }
 
-    retornaAgenda(props){
+    function retornaAgenda(props){
 
-      let ordenado = this.ordenarDados(props);
+      let ordenado = ordenarDados(props);
 
       const itens = ordenado.map(obj=>   <div>     
             <div className="divHora">{obj.hora}</div>
             <div>
-            {this.retornaInfo(obj, obj.idCliente, obj.idServico, obj.idFuncionario)}
+            {retornaInfo(obj, obj.idCliente, obj.idServico, obj.idFuncionario)}
             </div>
             </div>
        );
@@ -214,23 +176,22 @@ export default class AgendaView extends Component {
       
     }
 
-    render(){
         return(
           <div className="form-wrapper">
-            <Form onSubmit={this.onSubmit}>
+            <Form >
               <DatePicker
                   name="data"
                   className="form-control"
-                  selected={this.state.data}
-                  onChange={this.onChangeData}
+                  selected={data}
+                  onChange={onChangeData}
                   dateFormat="dd/MM/yyyy"            
                 />
 
-              {this.retornaAgenda(this.state.agendas)}
+              {retornaAgenda(agendas)}
               
             </Form>
           </div>
         )
-    }
+    
 
 };
