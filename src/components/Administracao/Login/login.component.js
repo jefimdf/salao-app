@@ -10,6 +10,7 @@ import moment from 'moment';
 import sha256 from 'crypto-js/sha256';
 import hmacSHA512 from 'crypto-js/hmac-sha512';
 import Base64 from 'crypto-js/enc-base64';
+import Mensagem from '../../../common/mensagem/Mensagem';
 
 export default function CreateAgenda(props) {
 
@@ -19,6 +20,7 @@ export default function CreateAgenda(props) {
   const [login, setLogin] = useState(true);
   const nonce = '';
   const tableName = 'usuario';
+  const [mensagem, setMensagem] = useState({});
 
   useEffect(() => {
     if(userLogado)
@@ -56,6 +58,7 @@ export default function CreateAgenda(props) {
             window.location.reload();            
         }else{
             setLogin(false);
+            setMensagem({tipo: 'erro', mensagem:'E-mail ou senha incorretos!'});            
         }
         
       });
@@ -66,10 +69,8 @@ export default function CreateAgenda(props) {
     props.history.push('/');
   }
 
-  return (<div className="form-wrapper">
-    {!login && <div className="alert alert-danger" role="alert">
-        E-mail ou senha incorretos!
-        </div>}
+  return (<div className="form-wrapper">    
+    {mensagem && <Mensagem tipo={mensagem.tipo} texto={mensagem.mensagem}/>}    
   <Form onSubmit={onSubmit}>
     <Form.Group controlId="Email">
         <Form.Label>Email</Form.Label>

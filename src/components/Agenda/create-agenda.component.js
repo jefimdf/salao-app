@@ -10,6 +10,7 @@ import '../Agenda/style.css';
 import moment from 'moment';
 import GruposServicos from './gruposServicos.component';
 import situacao from '../../common/enum/situacao';
+import Mensagem from '../../common/mensagem/Mensagem';
 
 
 const tableName = 'agenda';
@@ -36,6 +37,7 @@ export default function CreateAgenda(props) {
   const [horarios, setHorarios] = useState(process.env.REACT_APP_HORARIOS.split(','));
   const [carregado, setCarregado] = useState(false);
   const [clienteLogado, setClienteLogado] = useState(null);
+  const [mensagem, setMensagem] = useState({});
 
   useEffect(() => {
     const requests = [
@@ -130,11 +132,13 @@ export default function CreateAgenda(props) {
 
         axios.post(process.env.REACT_APP_URL_SERVER + tableName + '/create', objEnvio)
         .then(res => {
-          if(userLogado)
+          if(userLogado){
             props.history.push('/'+tableName+'-list');
-          else
+          }else{
+            setMensagem({tipo: 'sucesso', mensagem:'Dados salvos com sucesso!'});
             window.location.reload();            
-        });
+          }
+        }).catch(err=> setMensagem({tipo: 'erro', mensagem:'Problema no cadastro'}));
       })
     }
 
@@ -165,6 +169,11 @@ export default function CreateAgenda(props) {
       if (obj){
         setIdCliente(obj._id);
         setClienteLogado(obj);      
+        setMensagem({});
+      }else{
+        setIdCliente('');
+        setClienteLogado(null);      
+        setMensagem({tipo: 'alerta', mensagem:'Número de celular não localizado! Favor informar novamente'});
       }      
     }
   }
@@ -174,7 +183,7 @@ export default function CreateAgenda(props) {
   }
   
     return (<div className="form-wrapper">
-      
+      {mensagem && <Mensagem tipo={mensagem.tipo} texto={mensagem.mensagem}/>}
       <Form onSubmit={onSubmit}>
 
         {carregado &&
