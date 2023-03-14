@@ -11,6 +11,7 @@ import moment from 'moment';
 import GruposServicos from './gruposServicos.component';
 import situacao from '../../common/enum/situacao';
 import Mensagem from '../../common/mensagem/Mensagem';
+import Loading from '../../common/loading/loading';
 
 
 const tableName = 'agenda';
@@ -183,6 +184,7 @@ export default function CreateAgenda(props) {
   }
   
     return (<div className="form-wrapper">
+      {!carregado && <Loading/>}
       {mensagem && <Mensagem tipo={mensagem.tipo} texto={mensagem.mensagem}/>}
       <Form onSubmit={onSubmit}>
 

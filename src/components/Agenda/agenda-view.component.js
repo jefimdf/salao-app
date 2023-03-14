@@ -8,6 +8,7 @@ import { Container } from "react-bootstrap";
 import {Row, Col} from 'react-bootstrap';
 import DatePicker from "react-datepicker";
 import situacao from '../../common/enum/situacao';
+import Loading from '../../common/loading/loading';
 
 const tableName = 'agenda';
 
@@ -20,6 +21,7 @@ export default function AgendaView(props) {
   const [servicos, setServicos] = useState([]);
   const [data, setData] = useState(new Date());
   const [agendasTodas, setAgendasTodas] = useState([]);
+  const [carregado, setCarregado] = useState(false);
   
   useEffect(() => {
     const requests = [
@@ -40,6 +42,7 @@ export default function AgendaView(props) {
         setServicos(objServico)
         setFuncionarios(objFuncionario)
         setClientes(objCliente)
+        setCarregado(true)
       }, (evt) => {
           console.log(evt);        
       });
@@ -146,6 +149,7 @@ export default function AgendaView(props) {
 
         return(
           <div className="form-wrapper">
+            {!carregado && <Loading/>}
             <Form >
               <DatePicker
                   name="data"
