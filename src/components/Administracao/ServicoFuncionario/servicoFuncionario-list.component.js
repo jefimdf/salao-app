@@ -1,32 +1,22 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import axios from 'axios';
-import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
-import { Link } from 'react-router-dom';
 import ModalConfirmacao from "../../../common/modalConfirmacao";
-import { serverDateToString } from "../../../common/dateValidations";
+import DataGrid from '../../../common/dataGrid/dataGrid'
+import Persistencia from '../Commom/persistencia'
 
 const tableName = 'servicoFuncionario';
 
-export default class ServicoFuncionarioList extends Component {
+export default function ServicoFuncionarioList(props) {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      funcionarios: [],
-      showModal: false,
-      idRegistro: 0,
-      servicos: [],
-      servicosFuncionarios: []
-    };
+  const [data, setData] = useState({})
+  const [showModal, setShowModal] = useState(false)
+  const [idRegistro, setIdRegistro] = useState(0)
+  const [carregado, setCarregado] = useState(false)
 
-    this.delete = this.delete.bind(this);
-    this.confimarExclusao = this.confimarExclusao.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-    this.novo = this.novo.bind(this);
-  }
+  const persistencia = new Persistencia({props: props, tableName: tableName, setShowModal: setShowModal});
 
-  componentDidMount() {
+  useEffect(() => {
     
     const requests = [
       axios.get(process.env.REACT_APP_URL_SERVER + tableName + '/')
@@ -39,101 +29,44 @@ export default class ServicoFuncionarioList extends Component {
 
     Promise.all(requests)
       .then(([objServFuncionarios, objFuncionarios, objServicos]) => {
-        this.setState({
-          servicosFuncionarios: objServFuncionarios,
+        setData({
+          tabela: objServFuncionarios,
           funcionarios: objFuncionarios,
           servicos: objServicos
-        });
+        })
+        setCarregado(true)
 
       }, (evt) => {
           console.log(evt);        
       });
 
-  }
+    }, []);
 
-  delete = (id) => {
-    axios.delete(process.env.REACT_APP_URL_SERVER + tableName + '/delete/' + id)
-        .then((res) => {
-            console.log('Excluído com sucesso!');
-            this.setState({showModal: false});    
-            window.location.reload();
-        }).catch((error) => {
-            console.log(error)
-        })    
-  }
-
-  confimarExclusao(id){
-    this.setState({showModal: true, idRegistro: id});
-  }
-
-  handleClose(status){
-    if (status){
-      this.delete(this.state.idRegistro);
+    const handleClose = (status) => {
+      if (status){        
+        persistencia.handleDelete(idRegistro);
+      }
+      setShowModal(status);    
     }
-    this.setState({showModal: status});    
-  }
+  
+    const novo = () => {
+      props.history.push('/create-'+tableName+'');
+    }
 
-  novo(){
-    this.props.history.push('/create-'+tableName+'');
-  }
-
-  retornaFuncionario = (id) =>{
-    return this.state.funcionarios.find(obj=>obj._id===id).nome;
-  }
-
-  retornaServico = (id) =>{
-    return this.state.servicos.find(obj=>obj._id===id).nome;
-  }
-
-  handleEditar(url){
-    this.props.history.push(url);
-  }
-
-  DataTable() {
-    return this.state.servicosFuncionarios.map((res) => {
-      return (
-        <tr>
-            <td>{this.retornaFuncionario(res.idFuncionario)}</td>
-            <td>{this.retornaServico(res.idServico)}</td>
-            <td>{res.percentual}</td>
-            <td>
-            <div className="btn-group" role="group" aria-label="Basic mixed styles example">
-              <button type="button" className="btn btn-primary" onClick={() => this.handleEditar("/edit-"+tableName+"/" + res._id)}>
-                    Editar
-              </button>
-              <button type="button" className="btn btn-danger" onClick={() => this.confimarExclusao(res._id)}>Excluir</button>
-            </div>                
-            </td>
-        </tr>
-      );
-
-    });
-  }
-
-
-  render() {
-    
     return (
       <div>
-        <ModalConfirmacao show={this.state.showModal} handleClose={this.handleClose} Title="Exclusão de serviço de funcionário" Message="Deseja excluir o registro?" />
-        <div className="table-wrapper">        
-        <table className="table table-striped">
-            <thead>
-              <tr>
-                <th>Funcionário</th>
-                <th>Serviço</th>
-                <th>Percentual</th>
-                <th className="col-6">Ação</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.DataTable()}
-            </tbody>
-          </table>          
-        </div>
-        <Button variant="primary" size="lg" block="block" type="button" onClick={this.novo}>Novo</Button>        
+        <ModalConfirmacao show={showModal} handleClose={handleClose} Title="Exclusão de serviço de funcionário" Message="Deseja excluir o registro?" />
+        {carregado && <DataGrid 
+        {...props}
+        fields={['idFuncionario', 'idServico', 'percentual']}
+        data={data} 
+        tableName={tableName}
+        setShowModal={setShowModal}
+        setIdRegistro={setIdRegistro}
+        />}
+        <Button variant="primary" size="lg" block="block" type="button" onClick={novo}>Novo</Button>        
       </div>
     
     );
-  }
+  
 }

@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import ModalConfirmacao from "../../../common/modalConfirmacao";
 import DataGrid from '../../../common/dataGrid/dataGrid'
 
-
 const tableName = 'servico';
 
 export default function ServicoList(props) {
@@ -26,7 +25,7 @@ export default function ServicoList(props) {
   Promise.all(requests)
       .then(([objServico]) => {        
         setData({
-          servicos: objServico
+          tabela: objServico
       })
         setCarregado(true);
       }, (evt) => {
@@ -63,8 +62,8 @@ export default function ServicoList(props) {
         <ModalConfirmacao show={showModal} handleClose={handleClose} Title="Exclusão de serviço" Message="Deseja excluir o registro?" />
         {carregado && <DataGrid 
         {...props}
-        fields={['nome','_id']}
-        data={data.servicos} 
+        fields={['nome']}
+        data={data} 
         tableName={tableName}
         setShowModal={setShowModal}
         setIdRegistro={setIdRegistro}

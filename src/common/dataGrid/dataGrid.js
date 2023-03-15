@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react'
+import { serverDateToString } from "../dateValidations";
 
 
 export default function DataGrid(props) {
 
-    const [dados, setDados] = useState(props.data);
+    const [dados, setDados] = useState(props.data.tabela);
     const [direcao, setDirecao] = useState('asc');
 
     useEffect(() => {
@@ -37,14 +38,42 @@ export default function DataGrid(props) {
         setDados(data);                
       }
 
-      const primeiraUpperCase = (v) => v.substr(0,1).toUpperCase() + v.substr(1,v.lenght)
+      const primeiraUpperCase = (v) => v.includes('id') ? v.substr(2,1).toUpperCase() + v.substr(3,v.lenght) : v.substr(0,1).toUpperCase() + v.substr(1,v.lenght)
+
+      const retornaServico = (id) =>{
+        return props.data.servicos.find(obj=>obj._id===id) ? props.data.servicos.find(obj=>obj._id===id).nome : '';
+      }
+
+      const retornaFuncionario = (id) =>{
+        return props.data.funcionarios.find(obj=>obj._id===id) ? props.data.funcionarios.find(obj=>obj._id===id).nome : '';
+      }
+
+      const defineDado = (tipo, dado) => {
+        switch (tipo) {
+            case 'idServico':
+                return retornaServico(dado);
+                break;
+
+            case 'data':
+                return serverDateToString(dado);
+                break;
+        
+            case 'idFuncionario':
+              return retornaFuncionario(dado);
+              break;
+
+            default:
+                return dado;
+                break;
+        }
+      }
 
     const dataTable = () => {
         return dados && dados.map((res) => {          
           return (
             <tr>
                 {props.fields.map((t)=>{
-                    return Object.keys(res).find((o)=>o===t) ? <td>{res[t]}</td> : ''                    
+                    return Object.keys(res).find((o)=>o===t) ? <td>{defineDado(t,res[t])}</td> : ''                    
                 }                    
                 )}                
                 <td>

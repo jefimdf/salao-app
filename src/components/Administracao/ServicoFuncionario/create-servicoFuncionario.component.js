@@ -32,6 +32,7 @@ export default class CreateServicoFuncionario extends Component {
   }
 
   componentDidMount(){
+    
     this.carregaFuncionario();
     this.carregaServico();
   }
@@ -84,6 +85,8 @@ export default class CreateServicoFuncionario extends Component {
       idServico: this.state.idServico,
       percentual: this.state.percentual
     };
+
+
 
     axios.post(process.env.REACT_APP_URL_SERVER + tableName + '/create', objEnvio)
       .then(res => {
