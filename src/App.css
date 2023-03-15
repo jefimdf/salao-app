@@ -160,7 +160,18 @@ div .servicos{
 }
 
 div .servicos ul{
-  width: 20%;  
+  width: 50%;  
+  align-content: normal;
+}
+
+div .fotoHome{
+  -webkit-mask-image: linear-gradient(to top , transparent 25%, black 100%);
+  background-image: url('./common/images/foto.jpeg');
+  background-size: 100%;
+  background-repeat: no-repeat;  
+  background-position: center;
+  width: 100%;
+  height: 900px;
 }
 
 @media only screen 
