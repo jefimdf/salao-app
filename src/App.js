@@ -66,6 +66,8 @@ import Login from "./components/Administracao/Login/login.component";
 function App(props) {
 
   const [userLogado, setUserLogado] = useState(window.localStorage.getItem('userLogado') ? window.localStorage.getItem('userLogado') : false)
+  const [detalhesErro, setDetalhesErro] = useState('');
+  const [divNoneBlock, setDivNoneBlock] = useState('d-none');
 
   /* useEffect(() => {
     let jaesta = window.location.pathname === '/create-agenda' ? true : false;
@@ -79,20 +81,26 @@ function App(props) {
     window.location = '/';
   }
 
+  const handleDetalhes = () =>{
+    divNoneBlock === 'd-none' ? setDivNoneBlock('d-block') : setDivNoneBlock('d-none');    
+  }
+
   function ErrorFallback({error, resetErrorBoundary}) {
+    debugger
     return (
-      <div role="alert">
+      <div className='alert alert-danger'  role="alert">
         <p>A aplicação gerou um erro:</p>
         <pre>{error.message}</pre>
+        <div><a href="#" onClick={handleDetalhes}>Mais Detalhes</a></div>
+        <div className={divNoneBlock}>{detalhesErro}</div>
         <button onClick={resetErrorBoundary}>Tente novamente</button>
       </div>
     )
+    
   }
 
   const myErrorHandler = (error: Error, info: {componentStack: string}) => {
-    debugger
-    // Do something with the error
-    // E.g. log to an error logging client here
+    setDetalhesErro('Error:' +error + ' ' + info.componentStack);    
   }
 
   return (<Router>
