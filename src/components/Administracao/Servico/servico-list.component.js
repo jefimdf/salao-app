@@ -61,14 +61,14 @@ export default function ServicoList(props) {
     return (
       <div>
         <ModalConfirmacao show={showModal} handleClose={handleClose} Title="Exclusão de serviço" Message="Deseja excluir o registro?" />
-        <DataGrid 
+        {carregado && <DataGrid 
         {...props}
-        fields={['nome']}
+        fields={['nome','_id']}
         data={data.servicos} 
         tableName={tableName}
         setShowModal={setShowModal}
         setIdRegistro={setIdRegistro}
-        />
+        />}
         <button type="button" className="btn btn-primary" onClick={novo}>Novo</button>        
       </div>
     

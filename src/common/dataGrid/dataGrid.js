@@ -3,10 +3,11 @@ import React, {useState, useEffect} from 'react'
 
 export default function DataGrid(props) {
 
+    const [dados, setDados] = useState(props.data);
+    const [direcao, setDirecao] = useState('asc');
 
     useEffect(() => {
-        console.log(props)
-
+        
     }, []);
 
 
@@ -19,8 +20,27 @@ export default function DataGrid(props) {
         props.history.push(url);
       }
 
+      const handleOrdenar = (col) =>{debugger        
+        const data = dados.sort(function (a, b) {            
+            if (direcao === 'desc'){
+                if (a[col] > b[col]) {
+                    return -1;
+                }
+                setDirecao('asc');
+            }else{
+                if (a[col] < b[col]) {
+                    return -1;
+                }
+                setDirecao('desc');
+            }            
+        });
+        setDados(data);                
+      }
+
+      const primeiraUpperCase = (v) => v.substr(0,1).toUpperCase() + v.substr(1,v.lenght)
+
     const dataTable = () => {
-        return props.data && props.data.map((res) => {          
+        return dados && dados.map((res) => {          
           return (
             <tr>
                 {props.fields.map((t)=>{
@@ -49,7 +69,7 @@ export default function DataGrid(props) {
             <thead>
               <tr>
                 {props.fields.map((t)=>
-                    <th>{t}</th>
+                    <th><a href="#" onClick={() => handleOrdenar(t)}>{primeiraUpperCase(t)}</a></th>
                 )}                
                 <th>Ação</th>
               </tr>
