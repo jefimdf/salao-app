@@ -1,117 +1,77 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 import ModalConfirmacao from "../../../common/modalConfirmacao";
+import DataGrid from '../../../common/dataGrid/dataGrid'
 
 
 const tableName = 'servico';
 
-export default class ServicoList extends Component {
+export default function ServicoList(props) {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      servicos: [],
-      showModal: false,
-      idRegistro: 0
-    };
+  const [servicos, setServicos] = useState([])
+  const [showModal, setShowModal] = useState(false)
+  const [idRegistro, setIdRegistro] = useState(0)
+  const [data, setData] = useState({})
+  const [carregado, setCarregado] = useState(false)
 
-    this.delete = this.delete.bind(this);
-    this.confimarExclusao = this.confimarExclusao.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-    this.novo = this.novo.bind(this);
-  }
+  useEffect(() => {
+    const requests =[
+      axios.get(process.env.REACT_APP_URL_SERVER + tableName + '/')
+    .then(res => res = res.data)
+  ];
 
-  componentDidMount() {
-    this.carregaLista();    
-  }
-
-  carregaLista(){
-    axios.get(process.env.REACT_APP_URL_SERVER + tableName + '/')
-      .then(res => {
-        this.setState({
-          servicos: res.data
-        });
+  Promise.all(requests)
+      .then(([objServico]) => {        
+        setData({
+          servicos: objServico
       })
-      .catch((error) => {
-        console.log(error);
+        setCarregado(true);
+      }, (evt) => {
+          console.log(evt);        
       })
-  }
+  }, []);
+  
+    
 
-  delete = (id) => {
+  const handleDelete = (id) => {
     axios.delete(process.env.REACT_APP_URL_SERVER + tableName + '/delete/' + id)
         .then((res) => {
             console.log('Excluído com sucesso!');
-            this.setState({showModal: false});    
-            this.carregaLista();
+            setShowModal(false)
+            window.location.reload()            
         }).catch((error) => {
             console.log(error)
         })    
   }
 
-  confimarExclusao(id){
-    this.setState({showModal: true, idRegistro: id});
-  }
-
-  handleClose(status){
+  const handleClose = (status) =>{
     if (status){
-      this.delete(this.state.idRegistro);
+      handleDelete(idRegistro);
     }
-    this.setState({showModal: status});    
+    setShowModal(status)    
   }
 
-  novo(){
-    this.props.history.push('/create-'+tableName);
-  }
-
-  handleEditar(url){
-    this.props.history.push(url);
+  const novo = () =>{
+    props.history.push('/create-'+tableName);
   }
   
-  DataTable() {
-    return this.state.servicos.map((res) => {
-      
-      return (
-        <tr>
-            <td>{res.nome}</td>
-            <td>
-            <div className="btn-group" role="group" aria-label="Basic mixed styles example">
-              <button type="button" className="btn btn-primary" onClick={() => this.handleEditar("/edit-"+tableName+"/" + res._id)}>
-                    Editar
-              </button>
-              <button type="button" className="btn btn-danger" onClick={() => this.confimarExclusao(res._id)}>Excluir</button>
-            </div>                
-            </td>
-        </tr>
-      );
-
-    });
-  }
-
-
-  render() {
-    
     return (
       <div>
-        <ModalConfirmacao show={this.state.showModal} handleClose={this.handleClose} Title="Exclusão de serviço" Message="Deseja excluir o registro?" />
-        <div className="table-wrapper">        
-        <table className="table table-striped">
-            <thead>
-              <tr>
-                <th>Nome</th>
-                <th>Ação</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.DataTable()}
-            </tbody>
-          </table>          
-        </div>
-        <Button variant="primary" size="lg" block="block" type="button" onClick={this.novo}>Novo</Button>        
+        <ModalConfirmacao show={showModal} handleClose={handleClose} Title="Exclusão de serviço" Message="Deseja excluir o registro?" />
+        <DataGrid 
+        {...props}
+        fields={['nome']}
+        data={data.servicos} 
+        tableName={tableName}
+        setShowModal={setShowModal}
+        setIdRegistro={setIdRegistro}
+        />
+        <button type="button" className="btn btn-primary" onClick={novo}>Novo</button>        
       </div>
     
     );
-  }
+  
 }
