@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
@@ -8,24 +8,14 @@ import { serverDateToString } from "../../../common/dateValidations";
 
 const tableName = 'preco';
 
-export default class PrecoList extends Component {
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      precos: [],
-      showModal: false,
-      idRegistro: 0,
-      servicos: []
-    };
-
-    this.delete = this.delete.bind(this);
-    this.confimarExclusao = this.confimarExclusao.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-    this.novo = this.novo.bind(this);
-  }
-
-  componentDidMount() {
+export default function PrecoList(props){
+  
+  const [precos, setPrecos] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [idRegistro, setIdRegistro] = useState(0);
+  const [servicos, setServicos] = useState([]);
+  
+  useEffect(() => {
     
     const requests = [
       axios.get(process.env.REACT_APP_URL_SERVER + tableName + '/')
@@ -36,65 +26,64 @@ export default class PrecoList extends Component {
 
     Promise.all(requests)
       .then(([objPreco, objServico]) => {
-        this.setState({
-          servicos: objServico,
-          precos: objPreco
-        });
-
+        setServicos(objServico);
+        setPrecos(objPreco)
+        
       }, (evt) => {
           console.log(evt);        
       });
 
-  }
+    }, []);
 
-  delete = (id) => {
+  const handleDelete = (id) => {
     axios.delete(process.env.REACT_APP_URL_SERVER + tableName + '/delete/' + id)
         .then((res) => {
             console.log('Excluído com sucesso!');
-            this.setState({showModal: false});    
+            setShowModal(false)
             window.location.reload();
         }).catch((error) => {
             console.log(error)
         })    
   }
 
-  confimarExclusao(id){
-    this.setState({showModal: true, idRegistro: id});
+  const confimarExclusao = (id) =>{
+    setShowModal(true)
+    setIdRegistro(id)
+
   }
 
-  handleClose(status){
+  const handleClose = (status) => {
     if (status){
-      this.delete(this.state.idRegistro);
+      handleDelete(idRegistro);
     }
-    this.setState({showModal: status});    
+    setShowModal(status);    
   }
 
-  novo(){
-    this.props.history.push('/create-'+tableName+'');
+  const novo = () => {
+    props.history.push('/create-'+tableName+'');
   }
 
-  retornaServico = (id) =>{
-    return this.state.servicos.find(obj=>obj._id===id).nome;
+  const retornaServico = (id) =>{
+    return servicos.find(obj=>obj._id===id).nome;
   }
 
-  handleEditar(url){
-    this.props.history.push(url);
+  const handleEditar = (url) =>{
+    props.history.push(url);
   }
 
-  DataTable() {
-    return this.state.precos.map((res) => {
-      debugger
+  const DataTable = () => {
+    return precos.map((res) => {
       return (
         <tr>
-            <td>{this.retornaServico(res.idServico)}</td>
+            <td>{retornaServico(res.idServico)}</td>
             <td>{res.preco}</td>
             <td>{serverDateToString(res.data)}</td>
             <td>
             <div className="btn-group" role="group" aria-label="Basic mixed styles example">
-              <button type="button" className="btn btn-primary" onClick={() => this.handleEditar("/edit-"+tableName+"/" + res._id)}>
+              <button type="button" className="btn btn-primary" onClick={() => handleEditar("/edit-"+tableName+"/" + res._id)}>
                     Editar
               </button>
-              <button type="button" className="btn btn-danger" onClick={() => this.confimarExclusao(res._id)}>Excluir</button>
+              <button type="button" className="btn btn-danger" onClick={() => confimarExclusao(res._id)}>Excluir</button>
             </div>              
             </td>
         </tr>
@@ -102,13 +91,10 @@ export default class PrecoList extends Component {
 
     });
   }
-
-
-  render() {
     
     return (
       <div>
-        <ModalConfirmacao show={this.state.showModal} handleClose={this.handleClose} Title="Exclusão de preço" Message="Deseja excluir o registro?" />
+        <ModalConfirmacao show={showModal} handleClose={handleClose} Title="Exclusão de preço" Message="Deseja excluir o registro?" />
         <div className="table-wrapper">        
         <table className="table table-striped">
             <thead>
@@ -120,13 +106,13 @@ export default class PrecoList extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.DataTable()}
+              {DataTable()}
             </tbody>
           </table>          
         </div>
-        <Button variant="primary" size="lg" block="block" type="button" onClick={this.novo}>Novo</Button>        
+        <Button variant="primary" size="lg" block="block" type="button" onClick={novo}>Novo</Button>        
       </div>
     
     );
-  }
+  
 }

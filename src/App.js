@@ -8,6 +8,8 @@ import "bootstrap/dist/css/bootstrap.css";
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { NavDropdown } from "react-bootstrap";
+import {ErrorBoundary} from 'react-error-boundary'
+
 
 import Home from "./components/home.component";
 
@@ -77,6 +79,22 @@ function App(props) {
     window.location = '/';
   }
 
+  function ErrorFallback({error, resetErrorBoundary}) {
+    return (
+      <div role="alert">
+        <p>A aplicação gerou um erro:</p>
+        <pre>{error.message}</pre>
+        <button onClick={resetErrorBoundary}>Tente novamente</button>
+      </div>
+    )
+  }
+
+  const myErrorHandler = (error: Error, info: {componentStack: string}) => {
+    debugger
+    // Do something with the error
+    // E.g. log to an error logging client here
+  }
+
   return (<Router>
     <div id="container" className="App">
       <header id="header" className="App-header">      
@@ -123,49 +141,51 @@ function App(props) {
         <Row>
           <Col md={12}>
             <div className="wrapper">
-              <Switch>
-                <Route exact path='/' component={Home} />
-                
-                <Route path="/create-usuario" component={CreateUsuario} />
-                <Route path="/edit-usuario/:id" component={EditUsuario} />
-                <Route path="/usuario-list" component={ListUsuario} />
+              <ErrorBoundary FallbackComponent={ErrorFallback} onError={myErrorHandler}>
+                <Switch>
+                  <Route exact path='/' component={Home} />
+                  
+                  <Route path="/create-usuario" component={CreateUsuario} />
+                  <Route path="/edit-usuario/:id" component={EditUsuario} />
+                  <Route path="/usuario-list" component={ListUsuario} />
 
-                <Route path="/create-cidade" component={CreateCidade} />
-                <Route path="/edit-cidade/:id" component={EditCidade} />
-                <Route path="/cidade-list" component={ListCidade} />
+                  <Route path="/create-cidade" component={CreateCidade} />
+                  <Route path="/edit-cidade/:id" component={EditCidade} />
+                  <Route path="/cidade-list" component={ListCidade} />
 
-                <Route path="/create-grupoServico" component={CreateGrupoServico} />
-                <Route path="/edit-grupoServico/:id" component={EditGrupoServico} />
-                <Route path="/grupoServico-list" component={ListGrupoServico} />
+                  <Route path="/create-grupoServico" component={CreateGrupoServico} />
+                  <Route path="/edit-grupoServico/:id" component={EditGrupoServico} />
+                  <Route path="/grupoServico-list" component={ListGrupoServico} />
 
-                <Route path="/create-servico" component={CreateServico} />
-                <Route path="/edit-servico/:id" component={EditServico} />
-                <Route path="/servico-list" component={ListServico} />
+                  <Route path="/create-servico" component={CreateServico} />
+                  <Route path="/edit-servico/:id" component={EditServico} />
+                  <Route path="/servico-list" component={ListServico} />
 
-                <Route path="/create-cliente" component={CreateCliente} />
-                <Route path="/edit-cliente/:id" component={EditCliente} />
-                <Route path="/cliente-list" component={ListCliente} />
+                  <Route path="/create-cliente" component={CreateCliente} />
+                  <Route path="/edit-cliente/:id" component={EditCliente} />
+                  <Route path="/cliente-list" component={ListCliente} />
 
-                <Route path="/create-funcionario" component={CreateFuncionario} />
-                <Route path="/edit-funcionario/:id" component={EditFuncionario} />
-                <Route path="/funcionario-list" component={ListFuncionario} />
+                  <Route path="/create-funcionario" component={CreateFuncionario} />
+                  <Route path="/edit-funcionario/:id" component={EditFuncionario} />
+                  <Route path="/funcionario-list" component={ListFuncionario} />
 
-                <Route path="/create-preco" component={CreatePreco} />
-                <Route path="/edit-preco/:id" component={EditPreco} />
-                <Route path="/preco-list" component={ListPreco} />
+                  <Route path="/create-preco" component={CreatePreco} />
+                  <Route path="/edit-preco/:id" component={EditPreco} />
+                  <Route path="/preco-list" component={ListPreco} />
 
-                <Route path="/create-servicoFuncionario" component={CreateServicoFuncionario} />
-                <Route path="/edit-servicoFuncionario/:id" component={EditServicoFuncionario} />
-                <Route path="/servicoFuncionario-list" component={ListServicoFuncionario} />
+                  <Route path="/create-servicoFuncionario" component={CreateServicoFuncionario} />
+                  <Route path="/edit-servicoFuncionario/:id" component={EditServicoFuncionario} />
+                  <Route path="/servicoFuncionario-list" component={ListServicoFuncionario} />
 
-                <Route path="/create-agenda" component={CreateAgenda} />
-                <Route path="/edit-agenda/:id" component={EditAgenda} />
-                <Route path="/agenda-list" component={ListAgenda} />
-                <Route path="/agenda-view" component={ViewAgenda} />
+                  <Route path="/create-agenda" component={CreateAgenda} />
+                  <Route path="/edit-agenda/:id" component={EditAgenda} />
+                  <Route path="/agenda-list" component={ListAgenda} />
+                  <Route path="/agenda-view" component={ViewAgenda} />
 
-                <Route path="/login" component={Login} />
-                
-              </Switch>
+                  <Route path="/login" component={Login} />
+                  
+                </Switch>
+              </ErrorBoundary>
             </div>
           </Col>
         </Row>
