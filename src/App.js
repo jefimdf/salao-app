@@ -91,9 +91,14 @@ function App(props) {
       <div className='alert alert-danger'  role="alert">
         <p>A aplicação gerou um erro:</p>
         <pre>{error.message}</pre>
-        <div><a href="#" onClick={handleDetalhes}>Mais Detalhes</a></div>
-        <div className={divNoneBlock}>{detalhesErro}</div>
-        <button onClick={resetErrorBoundary}>Tente novamente</button>
+        <div className="row">
+        <div className="col"><a href="#" onClick={handleDetalhes}>Mais Detalhes</a></div>
+        <div className="col"><button className="btn btn-info" onClick={resetErrorBoundary}>Tente novamente</button></div>
+        </div>
+        
+        <div className="row"><div className={divNoneBlock}>{detalhesErro}</div></div>
+        
+        
       </div>
     )
     
