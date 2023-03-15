@@ -48,6 +48,10 @@ export default function DataGrid(props) {
         return props.data.funcionarios.find(obj=>obj._id===id) ? props.data.funcionarios.find(obj=>obj._id===id).nome : '';
       }
 
+      const retornaCidade = (id) =>{
+        return this.state.cidades.find(obj=>obj._id===id).nome;
+      }
+
       const defineDado = (tipo, dado) => {
         switch (tipo) {
             case 'idServico':
@@ -60,6 +64,10 @@ export default function DataGrid(props) {
         
             case 'idFuncionario':
               return retornaFuncionario(dado);
+              break;
+
+            case 'idCidade':
+              return retornaCidade(dado);
               break;
 
             default:
