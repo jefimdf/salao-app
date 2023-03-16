@@ -1,14 +1,21 @@
 import React, {useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import { Accordion } from "react-bootstrap";
+import handleOrdenar from '../../common/ordenacao'
 
 
 export default function GruposServicos({...props}) {
     const p = props;
-    
+    const [grupos, setGrupos] = useState([]);
+    const [servicos, setServicos] = useState([]);
     
     useEffect(() => {
-        console.log(p);        
+      const dadosGrupos = handleOrdenar(p.gruposServicos, 'nome', 'asc');
+      setGrupos(dadosGrupos);
+
+      const dadosServicos = handleOrdenar(p.servicos, 'idGrupoServico', 'asc');
+      setServicos(dadosServicos);
+
     }, []);
 
     const retornaServico = (id) =>{
@@ -25,11 +32,49 @@ export default function GruposServicos({...props}) {
        return  p.funcionarios.find(obj=>obj._id===id).nome;
       }
       
+      function agruparJson(dados, col) {
+        var lookup = {};
+        var items = dados;
+        var result = [];
+
+        for (var item, i = 0; item = items[i++];) {
+          var name = item[col];
+          if (!(name in lookup)) {
+            lookup[name] = 1;
+            result.push(item);
+          }
+        }
+        return result;
+      }
+
     const montaServicos = (idServico) =>{
         let filtro = p.servicosFuncionarios.filter(objSF=>objSF.idServico === idServico);
-        return filtro.map((obj)=>{
+        
+        filtro = filtro.map((obj) => {
+          return {
+            _id: obj._id,
+            idServico: obj.idServico,
+            idFuncionario: obj.idFuncionario,
+            funcionario: retornaFuncionario(obj.idFuncionario),
+            servico: retornaServico(obj.idServico),
+            preco: retornaPreco(obj.idServico)
+          }
+        });
+        
+        var agrupado = agruparJson(filtro, 'servico')
+
+        console.log(agrupado)
+
+        return agrupado.map((objA)=>{
           return (
-            <div className="col-2 checkServico"><Form.Check type="checkbox" name={obj._id} id={obj._id} label={retornaServico(obj.idServico) +' - '+ retornaFuncionario(obj.idFuncionario) +' - R$'+ retornaPreco(obj.idServico)} onChange={(item)=>onCkcChangeServico(item, obj.idServico+'|'+obj.idFuncionario +'|'+retornaPreco(obj.idServico))}/></div>
+            <div className="col-2 checkServico">
+              <div className="col-2 tituloCheck">{objA.servico +' - R$'+ objA.preco}</div>
+              {filtro.map((obj)=>{
+                if (objA.servico  === obj.servico){
+                  return <div><Form.Check type="checkbox" name={obj._id} id={obj._id} label={obj.funcionario} onChange={(item)=>onCkcChangeServico(item, obj.idServico+'|'+obj.idFuncionario +'|'+obj.preco)}/></div>
+                }          
+              })}
+            </div>
           )
         })     
       }
@@ -58,12 +103,16 @@ debugger
 
       }
 
+  const tratamentoServicos = (dados, idServico) => handleOrdenar(dados.filter(obj=>obj.idGrupoServico === idServico), 'nome', 'asc');
+
+  
+
   return (
     <div>
     <React.Fragment>                
         <Form.Label>Serviço - Profissional - Valor</Form.Label>
         
-    {p.carregado && p.gruposServicos.map(obj => (         
+    {grupos && grupos.map(obj => (
         <Accordion key={obj._id} >   
                 <Accordion.Item eventKey={obj._id}>
                 <Accordion.Header>{obj.nome}</Accordion.Header>
@@ -71,7 +120,7 @@ debugger
                 <div className="container">
                 <div className="row">
                             {
-                                p.servicos.filter(objF=>objF.idGrupoServico === obj._id).map(objS=>{
+                                servicos && tratamentoServicos(servicos, obj._id).map(objS=>{
                                     return (                                    
                                         montaServicos(objS._id)                                    
                                     )

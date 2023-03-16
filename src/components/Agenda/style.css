@@ -199,6 +199,13 @@ div.checkServico{
  min-width: 280px;
 }
 
+div .tituloCheck{      
+    min-width: 280px;
+    font-weight: bold;
+    font-size: medium;        
+    color: #494848;
+}
+
 .form-label{
   font-weight: bold;
 }
