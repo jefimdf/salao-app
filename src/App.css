@@ -169,7 +169,7 @@ div .fotoHome{
   background-image: url('./common/images/foto.jpeg');
   background-size: 100%;
   background-repeat: no-repeat;  
-  background-position: center;
+  background-position: top;
   width: 100%;
   height: 900px;
 }
