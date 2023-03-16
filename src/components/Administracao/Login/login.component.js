@@ -14,7 +14,7 @@ import Mensagem from '../../../common/mensagem/Mensagem';
 
 export default function CreateAgenda(props) {
 
-  const [userLogado, setUserLogado] = useState(window.localStorage.getItem('userLogado') ? window.localStorage.getItem('userLogado') : false);
+  const [userLogado, setUserLogado] = useState(window.sessionStorage.getItem('userLogado') ? window.sessionStorage.getItem('userLogado') : false);
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [login, setLogin] = useState(true);
@@ -54,7 +54,7 @@ export default function CreateAgenda(props) {
         let usuarioLocalizado = res.data.find(obj => obj.email === email);
 
         if (usuarioLocalizado && usuarioLocalizado.senha === senhaCriptografada){            
-            window.localStorage.setItem('userLogado', true);
+            window.sessionStorage.setItem('userLogado', true);
             window.location.reload();            
         }else{
             setLogin(false);

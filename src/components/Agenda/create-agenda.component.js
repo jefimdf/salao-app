@@ -18,7 +18,7 @@ const tableName = 'agenda';
 
 export default function CreateAgenda(props) {
 
-  const [userLogado, setUserLogado] = useState(window.localStorage.getItem('userLogado') ? window.localStorage.getItem('userLogado') : false);
+  const [userLogado, setUserLogado] = useState(window.sessionStorage.getItem('userLogado') ? window.sessionStorage.getItem('userLogado') : false);
   const [idServico, setIdServico] = useState('')
   const [idFuncionario, setIdFuncionario] = useState('')
   const [idCliente, setIdCliente] = useState('')
@@ -174,7 +174,12 @@ export default function CreateAgenda(props) {
       }else{
         setIdCliente('');
         setClienteLogado(null);      
-        setMensagem({tipo: 'alerta', mensagem:'Número de celular não localizado! Favor informar novamente'});
+        setMensagem({tipo: 'alerta', mensagem:'Número de celular não localizado! Aguarde que vc está sendo redirecionado para o cadastro.'});        
+        window.sessionStorage.setItem('cadastroUserExterno', true);
+        setTimeout(() => {
+          props.history.push('/create-cliente');  
+        }, 5000);
+        
       }      
     }
   }

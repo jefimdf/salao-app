@@ -65,7 +65,7 @@ import Login from "./components/Administracao/Login/login.component";
 
 function App(props) {
 
-  const [userLogado, setUserLogado] = useState(window.localStorage.getItem('userLogado') ? window.localStorage.getItem('userLogado') : false)
+  const [userLogado, setUserLogado] = useState(window.sessionStorage.getItem('userLogado') ? window.sessionStorage.getItem('userLogado') : false)
   const [detalhesErro, setDetalhesErro] = useState('');
   const [divNoneBlock, setDivNoneBlock] = useState('d-none');
 

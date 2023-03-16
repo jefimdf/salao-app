@@ -68,16 +68,16 @@ export default function AgendaView(props) {
 
     const dataString = (data) => (new Date(data)).getFullYear() + '' + (new Date(data)).getMonth() + '' + (new Date(data)).getDate();
     
-    function retornaCliente(id){
+    function retornaCliente(id){ 
       return (
-           <div className="divNome">Cliente: {id ? clientes.find(obj=>obj._id===id).nome : ''} - {id ? clientes.find(obj=>obj._id===id).celular: ''}
+           <div className="divNome">Cliente: {clientes.length>0 ? clientes.find(obj=>obj._id===id).nome : ''} - {clientes.length>0 ? clientes.find(obj=>obj._id===id).celular: ''}
            </div>
       );
     }
 
-    const retornaServico = (id) => servicos.find(obj=>obj._id===id).nome;
+    const retornaServico = (id) => servicos.length>0 ? servicos.find(obj=>obj._id===id).nome : '';
     
-    const retornaFuncionario = (id) =>funcionarios.find(obj=>obj._id===id).nome;
+    const retornaFuncionario = (id) => funcionarios.length>0 ? funcionarios.find(obj=>obj._id===id).nome : '';
     
     function alteraSituacao(obj, situacao){
 
