@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { serverDateToString } from "../dateValidations";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { solid, regular, brands, icon } from '@fortawesome/fontawesome-svg-core/import.macro' // <-- import styles to be used
 
 
 export default function DataGrid(props) {
@@ -87,9 +89,12 @@ export default function DataGrid(props) {
                 <td>
                 <div className="btn-group" role="group" aria-label="Basic mixed styles example">
                   <button type="button" className="btn btn-primary" onClick={() => handleEditar("/edit-"+props.tableName+"/" + res._id)}>
-                        Editar
+                  <FontAwesomeIcon icon={solid('pen')} />
                   </button>
-                  <button type="button" className="btn btn-danger" onClick={() => confimarExclusao(res._id)}>Excluir</button>
+                  
+                  <button type="button" className="btn btn-danger" onClick={() => confimarExclusao(res._id)}>
+                  <FontAwesomeIcon icon={solid('trash')} />
+                  </button>
                 </div>                
                 </td>
             </tr>

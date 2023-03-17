@@ -5,6 +5,8 @@ import ModalConfirmacao from "../../../common/modalConfirmacao";
 import DataGrid from '../../../common/dataGrid/dataGrid'
 import Persistencia from '../Commom/persistencia'
 
+
+
 const tableName = 'preco';
 
 export default function PrecoList(props){
