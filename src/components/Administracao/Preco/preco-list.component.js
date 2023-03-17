@@ -54,7 +54,7 @@ export default function PrecoList(props){
         <ModalConfirmacao show={showModal} handleClose={handleClose} Title="Exclusão de preço" Message="Deseja excluir o registro?" />
         {carregado && <DataGrid 
         {...props}
-        fields={['idServico', 'preco', 'data']}
+        fields={['idServico', 'preco']}
         data={data} 
         tableName={tableName}
         setShowModal={setShowModal}
