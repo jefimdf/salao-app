@@ -102,7 +102,7 @@ export default function AgendaView(props) {
           <div className="col-9">
             {retornaCliente(idCliente)}
             <div className="divNome">Serviço: {retornaServico(idServico)}</div>
-            <div className="divNome">Funcionário: {retornaFuncionario(idFuncionario)}</div>
+            <div className="divNome">Profissional: {retornaFuncionario(idFuncionario)}</div>
             <div className="divNome">Situação: {objAgenda.situacao ? objAgenda.situacao : 'Marcado'}</div>
             </div>
             {gerente === 'true' &&
