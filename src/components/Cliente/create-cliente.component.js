@@ -145,7 +145,8 @@ export default class CreateCliente extends Component {
           <div className="col right">
               <div className="btn-group" role="group" aria-label="Basic mixed styles example">
               <button type="submit" size="lg" className="btn btn-primary" >Criar</button>
-              <button type="button" size="lg" className="btn btn-warning" onClick={this.cancelar}>Cancelar</button>
+              {window.sessionStorage.getItem('gerente') === 'true' &&
+              <button type="button" size="lg" className="btn btn-warning" onClick={this.cancelar}>Cancelar</button>}
             </div>
           </div>
           </div>
