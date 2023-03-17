@@ -139,12 +139,16 @@ export default class CreateCliente extends Component {
         </Form.Group>
 
         <Container id="Botoes">
-          <Row>
+          <div className="row">
+          <div className="col"></div>
+          <div className="col"></div>
+          <div className="col right">
               <div className="btn-group" role="group" aria-label="Basic mixed styles example">
               <button type="submit" size="lg" className="btn btn-primary" >Criar</button>
               <button type="button" size="lg" className="btn btn-warning" onClick={this.cancelar}>Cancelar</button>
             </div>
-          </Row>
+          </div>
+          </div>
         </Container>
         
         

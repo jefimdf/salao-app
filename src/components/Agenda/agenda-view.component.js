@@ -9,6 +9,8 @@ import {Row, Col} from 'react-bootstrap';
 import DatePicker from "react-datepicker";
 import situacao from '../../common/enum/situacao';
 import Loading from '../../common/loading/loading';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { solid} from '@fortawesome/fontawesome-svg-core/import.macro' // <-- import styles to be used
 
 const tableName = 'agenda';
 
@@ -22,6 +24,7 @@ export default function AgendaView(props) {
   const [data, setData] = useState(new Date());
   const [agendasTodas, setAgendasTodas] = useState([]);
   const [carregado, setCarregado] = useState(false);
+  const [gerente, setGerente] = useState(window.sessionStorage.getItem('gerente') ? window.sessionStorage.getItem('gerente') : false);
   
   useEffect(() => {
     const requests = [
@@ -96,18 +99,19 @@ export default function AgendaView(props) {
       return (
         <div className="divInfo">
           <div className="row align-items-center">
-          <div className="col">
+          <div className="col-9">
             {retornaCliente(idCliente)}
             <div className="divNome">Serviço: {retornaServico(idServico)}</div>
             <div className="divNome">Funcionário: {retornaFuncionario(idFuncionario)}</div>
             <div className="divNome">Situação: {objAgenda.situacao ? objAgenda.situacao : 'Marcado'}</div>
             </div>
-            <div className="col">              
+            {gerente === 'true' &&
+            <div className="col-3">                                      
             <div className="btn-group" role="group" aria-label="Basic mixed styles example">
-              {objAgenda.situacao != situacao[1] ? <button type="button" className="btn btn-success" onClick={()=>alteraSituacao(objAgenda, situacao[1])}>V</button> : ''}
-              {objAgenda.situacao != situacao[2] ? <button type="button" className="btn btn-danger" onClick={()=>alteraSituacao(objAgenda, situacao[2])}>X</button> : ''}
+              {objAgenda.situacao !== situacao[1] ? <button type="button" className="btn btn-success" onClick={()=>alteraSituacao(objAgenda, situacao[1])}><FontAwesomeIcon icon={solid('check')} /></button> : ''}
+              {objAgenda.situacao !== situacao[2] ? <button type="button" className="btn btn-danger" onClick={()=>alteraSituacao(objAgenda, situacao[2])}><FontAwesomeIcon icon={solid('ban')} /></button> : ''}
             </div>
-              </div>
+              </div>}
           </div>
         </div>
       )

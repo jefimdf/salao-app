@@ -55,6 +55,8 @@ export default function CreateAgenda(props) {
 
         if (usuarioLocalizado && usuarioLocalizado.senha === senhaCriptografada){            
             window.sessionStorage.setItem('userLogado', true);
+            window.sessionStorage.setItem('gerente', usuarioLocalizado.adm === 'S' ? true : false);
+            window.sessionStorage.setItem('userName', usuarioLocalizado.nome);
             window.location.reload();            
         }else{
             setLogin(false);
@@ -85,7 +87,7 @@ export default function CreateAgenda(props) {
   <Container id="Botoes">
   <Row>
           <div className="btn-group" role="group" aria-label="Basic mixed styles example">
-          <button type="submit" className="btn btn-primary" >Criar</button>
+          <button type="submit" className="btn btn-primary" >Acessar</button>
           <button type="button" className="btn btn-warning" onClick={cancelar}>Cancelar</button>
         </div>
       </Row>

@@ -65,9 +65,13 @@ import Login from "./components/Administracao/Login/login.component";
 
 function App(props) {
 
-  const [userLogado, setUserLogado] = useState(window.sessionStorage.getItem('userLogado') ? window.sessionStorage.getItem('userLogado') : false)
+  const [userLogado, setUserLogado] = useState(window.sessionStorage.getItem('userLogado') ? window.sessionStorage.getItem('userLogado') : false);
+  const [gerente, setGerente] = useState(window.sessionStorage.getItem('gerente') ? window.sessionStorage.getItem('gerente') : false);
+  const [userName, setUserName] = useState(window.sessionStorage.getItem('userName'));
   const [detalhesErro, setDetalhesErro] = useState('');
   const [divNoneBlock, setDivNoneBlock] = useState('d-none');
+
+console.log(gerente)
 
   /* useEffect(() => {
     let jaesta = window.location.pathname === '/create-agenda' ? true : false;
@@ -77,7 +81,7 @@ function App(props) {
   }, []); */
 
   const logout = () =>{
-    window.localStorage.clear();
+    window.sessionStorage.clear();
     window.location = '/';
   }
 
@@ -85,8 +89,7 @@ function App(props) {
     divNoneBlock === 'd-none' ? setDivNoneBlock('d-block') : setDivNoneBlock('d-none');    
   }
 
-  function ErrorFallback({error, resetErrorBoundary}) {
-    debugger
+  function ErrorFallback({error, resetErrorBoundary}) {    
     return (
       <div className='alert alert-danger'  role="alert">
         <p>A aplicação gerou um erro:</p>
@@ -94,14 +97,10 @@ function App(props) {
         <div className="row">
         <div className="col"><a href="#" onClick={handleDetalhes}>Mais Detalhes</a></div>
         <div className="col"><button className="btn btn-info" onClick={resetErrorBoundary}>Tente novamente</button></div>
-        </div>
-        
-        <div className="row"><div className={divNoneBlock}>{detalhesErro}</div></div>
-        
-        
+        </div>        
+        <div className="row"><div className={divNoneBlock}>{detalhesErro}</div></div>        
       </div>
-    )
-    
+    )    
   }
 
   const myErrorHandler = (error: Error, info: {componentStack: string}) => {
@@ -118,15 +117,16 @@ function App(props) {
                 <div className="logo"></div>
               </Link>
             </a>
-            <div className="title">Nádia Beauty</div>
+            {!userLogado && <div className="title">Nádia Beauty</div>}
+            {userLogado && <div className="title">Bem vindo, {userName}&nbsp;&nbsp;&nbsp;</div>}
             <button type="button" className="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span className="navbar-toggler-icon"></span>
             </button>
             <div className="collapse navbar-collapse" id="navbarCollapse">
                 <div className="navbar-nav">
                   <a href={"/create-agenda"} class="nav-item nav-link">Agenda</a>
-                  {userLogado &&<a href={"/create-cliente"} class="nav-item nav-link">Clientes</a>}                  
-                  {userLogado && <NavDropdown title="Administração" id="basic-nav-dropdown">
+                  {(gerente==='true') &&<a href={"/create-cliente"} class="nav-item nav-link">Clientes</a>}                  
+                  {(gerente==='true') && <NavDropdown title="Administração" id="basic-nav-dropdown">
                     <NavDropdown.Item href="/usuario-list">Usuário</NavDropdown.Item>
                     <NavDropdown.Item href="/funcionario-list">Funcionário</NavDropdown.Item>
                     <NavDropdown.Item href="/servicoFuncionario-list">Serviços de Funcionário</NavDropdown.Item>

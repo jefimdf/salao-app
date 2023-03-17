@@ -20,6 +20,7 @@ export default class CreateUsuario extends Component {
     this.onChangeNome = this.onChangeNome.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangeSenha = this.onChangeSenha.bind(this);
+    this.onChangeAdm = this.onChangeAdm.bind(this);    
     this.onSubmit = this.onSubmit.bind(this);
     this.cancelar = this.cancelar.bind(this);
 
@@ -27,7 +28,8 @@ export default class CreateUsuario extends Component {
     this.state = {
       nome: '',
       email: '',
-      senha: ''
+      senha: '',
+      adm: ''
     }
   }
 
@@ -47,6 +49,10 @@ export default class CreateUsuario extends Component {
     this.setState({ senha: e.target.value })
   }
 
+  onChangeAdm(e) {debugger
+    this.setState({ adm: e.target.value })
+  }
+
   onSubmit(e) {
     e.preventDefault();
 
@@ -57,9 +63,10 @@ export default class CreateUsuario extends Component {
     const objEnvio = {
       nome: this.state.nome,
       email: this.state.email,
-      senha: senha     
+      senha: senha,
+      adm: this.state.adm     
     };
-
+debugger
     axios.post(process.env.REACT_APP_URL_SERVER + tableName + '/create', objEnvio)
       .then(res => {
         console.log(res.data); 
@@ -69,7 +76,8 @@ export default class CreateUsuario extends Component {
     this.setState({
       nome: '',
       email: '',
-      senha: ''
+      senha: '',
+      adm: ''
     });
   }
 
@@ -91,13 +99,27 @@ export default class CreateUsuario extends Component {
           <Form.Control type="password" value={this.state.senha} onChange={this.onChangeSenha} />
         </Form.Group>
 
+        <Form.Group controlId="Administrador?">
+          <div className="row">
+        <Form.Label>Administrador?</Form.Label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radioSim" value="S" onChange={this.onChangeAdm}/>
+          <label class="form-check-label" for="radioSim">Sim</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radioNao" value="N" onChange={this.onChangeAdm} checked/>
+          <label class="form-check-label" for="radioNao">Não</label>
+        </div>
+        </Form.Group>
+
       <Container id="Botoes">
-      <Row>
+      <div className="row">
               <div className="btn-group" role="group" aria-label="Basic mixed styles example">
               <button type="submit" className="btn btn-primary" >Criar</button>
               <button type="button" className="btn btn-warning" onClick={this.cancelar}>Cancelar</button>
             </div>
-          </Row>
+          </div>
       </Container>
         
         
