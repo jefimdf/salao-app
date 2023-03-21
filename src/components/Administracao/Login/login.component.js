@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { Container } from "react-bootstrap";
-import {Row, Col} from 'react-bootstrap';
-import DatePicker from "react-datepicker";
-import MaskedFormControl from 'react-bootstrap-maskedinput';
-import moment from 'moment';
+import {Row} from 'react-bootstrap';
 import sha256 from 'crypto-js/sha256';
 import hmacSHA512 from 'crypto-js/hmac-sha512';
 import Base64 from 'crypto-js/enc-base64';
@@ -14,7 +10,7 @@ import Mensagem from '../../../common/mensagem/Mensagem';
 
 export default function CreateAgenda(props) {
 
-  const [userLogado, setUserLogado] = useState(window.sessionStorage.getItem('userLogado') ? window.sessionStorage.getItem('userLogado') : false);
+  const [userLogado] = useState(window.sessionStorage.getItem('userLogado') ? window.sessionStorage.getItem('userLogado') : false);
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [login, setLogin] = useState(true);

@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import Form from 'react-bootstrap/Form';
-import Table from 'react-bootstrap/Table';
-import Button from 'react-bootstrap/Button';
-import { Link } from 'react-router-dom';
-import { Container } from "react-bootstrap";
-import {Row, Col} from 'react-bootstrap';
 import DatePicker from "react-datepicker";
 import situacao from '../../common/enum/situacao';
 import Loading from '../../common/loading/loading';
@@ -17,14 +12,13 @@ const tableName = 'agenda';
 export default function AgendaView(props) {
     
   const [agendas, setAgendas] = useState([]);
-  const [showModal, setShowModal] = useState(false);
   const [clientes, setClientes] = useState([]);
   const [funcionarios, setFuncionarios] = useState([]);
   const [servicos, setServicos] = useState([]);
   const [data, setData] = useState(new Date());
   const [agendasTodas, setAgendasTodas] = useState([]);
   const [carregado, setCarregado] = useState(false);
-  const [gerente, setGerente] = useState(window.sessionStorage.getItem('gerente') ? window.sessionStorage.getItem('gerente') : false);
+  const [gerente] = useState(window.sessionStorage.getItem('gerente') ? window.sessionStorage.getItem('gerente') : false);
   
   useEffect(() => {
     const requests = [

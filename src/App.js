@@ -1,6 +1,4 @@
-import React, {useState, useEffect} from "react";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
+import React, {useState} from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -65,9 +63,9 @@ import Login from "./components/Administracao/Login/login.component";
 
 function App(props) {
 
-  const [userLogado, setUserLogado] = useState(window.sessionStorage.getItem('userLogado') ? window.sessionStorage.getItem('userLogado') : false);
-  const [gerente, setGerente] = useState(window.sessionStorage.getItem('gerente') ? window.sessionStorage.getItem('gerente') : false);
-  const [userName, setUserName] = useState(window.sessionStorage.getItem('userName'));
+  const [userLogado] = useState(window.sessionStorage.getItem('userLogado') ? window.sessionStorage.getItem('userLogado') : false);
+  const [gerente] = useState(window.sessionStorage.getItem('gerente') ? window.sessionStorage.getItem('gerente') : false);
+  const [userName] = useState(window.sessionStorage.getItem('userName'));
   const [detalhesErro, setDetalhesErro] = useState('');
   const [divNoneBlock, setDivNoneBlock] = useState('d-none');
 
