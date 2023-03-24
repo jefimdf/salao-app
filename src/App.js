@@ -60,6 +60,9 @@ import ViewAgenda from "./components/Agenda/agenda-view.component";
 //Login
 import Login from "./components/Administracao/Login/login.component";
 
+//Relatorio
+import FechamentoMes from "./components/Administracao/Relatorio/fechamento-rel.component";
+
 
 function App(props) {
 
@@ -132,8 +135,9 @@ console.log(gerente)
                     <NavDropdown.Item href="/servico-list">Serviço</NavDropdown.Item>
                     <NavDropdown.Item href="/preco-list">Preço</NavDropdown.Item>                
                     <NavDropdown.Item href="/cidade-list">Cidade</NavDropdown.Item>
+                    <NavDropdown.Item href="/fechamento-rel">Fechamento Mês</NavDropdown.Item>
                   </NavDropdown>
-                  }              
+                  }                                
                 </div>
                 <div className="navbar-nav ms-auto">
                     {userLogado &&              
@@ -151,6 +155,7 @@ console.log(gerente)
       <Container id="body">
         <Row>
           <Col md={12}>
+            <div>Titulo</div>
             <div className="wrapper">
               <ErrorBoundary FallbackComponent={ErrorFallback} onError={myErrorHandler}>
                 <Switch>
@@ -194,6 +199,8 @@ console.log(gerente)
                   <Route path="/agenda-view" component={ViewAgenda} />
 
                   <Route path="/login" component={Login} />
+
+                  <Route path="/fechamento-rel" component={FechamentoMes} />
                   
                 </Switch>
               </ErrorBoundary>

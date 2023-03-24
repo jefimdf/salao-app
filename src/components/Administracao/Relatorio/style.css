@@ -1,0 +1,11 @@
+div .nomeFuncionario{
+    border-bottom: 1px solid #664d6b;
+    padding: 5px;
+    font-size: x-large;    
+    color: brown;
+}
+
+.total{
+    background: #9c65a7;
+
+}
