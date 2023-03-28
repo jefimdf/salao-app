@@ -195,7 +195,7 @@ export default function CreateAgenda(props) {
 
         {carregado &&
         <Form.Group controlId="Cliente">
-          <Form.Label>Celular do Cliente:</Form.Label>
+          <Form.Label>{!clienteLogado ? 'Celular do ' : ''}Cliente:</Form.Label>
           {!clienteLogado && <div className="row">
           <div className="col"><MaskedFormControl type='text' name='celular' mask='(11)9 1111-1111'  onChange={onChangeCelular}/></div>
           <div className="col"><button type="button" className="btn btn-primary" onClick={onBuscar}>Buscar</button></div>

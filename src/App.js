@@ -108,6 +108,10 @@ console.log(gerente)
     setDetalhesErro('Error:' +error + ' ' + info.componentStack);    
   }
 
+  const retornaPagina = () => {
+    console.log(props);
+  }
+
   return (<Router>
     <div id="container" className="App">
       <header id="header" className="App-header">      
@@ -155,7 +159,7 @@ console.log(gerente)
       <Container id="body">
         <Row>
           <Col md={12}>
-            <div>Titulo</div>
+            <div>{retornaPagina()}</div>
             <div className="wrapper">
               <ErrorBoundary FallbackComponent={ErrorFallback} onError={myErrorHandler}>
                 <Switch>

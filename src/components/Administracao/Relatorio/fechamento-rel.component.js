@@ -190,7 +190,7 @@ export default function FechamentoMes(props) {
             <tbody>
               {retornaDados(obj.dados)}
               <tr>
-                <td colspan="5"></td>
+                <td colSpan="5"></td>
                 <td className="total">
                   R$ {valorTotalFuncionario(obj.idFuncionario)}
                 </td>
@@ -290,6 +290,7 @@ export default function FechamentoMes(props) {
               </Form.Group>
             </div>
             <div className="col">
+              <Form.Label for="dataFinal">&nbsp;</Form.Label>
               <Container id="Botoes">
                 <Row>
                   <div
@@ -308,63 +309,65 @@ export default function FechamentoMes(props) {
         </Form>
       )}
       {listaRelatorio.length > 0 && (
-        <Form.Group controlId="Filtro">
-          <div className="row">
-            <div className="col-2">
-              <Form.Label for="filtro">Filtro:</Form.Label>
-            </div>
-            <div className="col-8">
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  name="inlineRadioOptions"
-                  id="radioConf"
-                  value="C"
-                  onChange={onChangeSituacao}
-                />
-                <label class="form-check-label" for="radioConf">
-                  Confirmado
-                </label>
+        <div className="row espaco">
+          <Form.Group controlId="Filtro">
+            <div className="row">
+              <div className="col-2">
+                <Form.Label for="filtro">Filtro:</Form.Label>
               </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  name="inlineRadioOptions"
-                  id="radioDes"
-                  value="D"
-                  onChange={onChangeSituacao}
-                />
-                <label class="form-check-label" for="radioDes">
-                  Desmarcado
-                </label>
+              <div className="col-8">
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="inlineRadioOptions"
+                    id="radioConf"
+                    value="C"
+                    onChange={onChangeSituacao}
+                  />
+                  <label className="form-check-label" for="radioConf">
+                    Confirmado
+                  </label>
+                </div>
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="inlineRadioOptions"
+                    id="radioDes"
+                    value="D"
+                    onChange={onChangeSituacao}
+                  />
+                  <label className="form-check-label" for="radioDes">
+                    Desmarcado
+                  </label>
+                </div>
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="inlineRadioOptions"
+                    id="radioMar"
+                    value="M"
+                    onChange={onChangeSituacao}
+                  />
+                  <label className="form-check-label" for="radioMar">
+                    Marcado
+                  </label>
+                </div>
               </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  name="inlineRadioOptions"
-                  id="radioMar"
-                  value="M"
-                  onChange={onChangeSituacao}
-                />
-                <label class="form-check-label" for="radioMar">
-                  Marcado
-                </label>
+              <div className="col-2">
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={exportarPDF}
+                >
+                  Exportar PDF
+                </button>
               </div>
             </div>
-            <div className="col-2">
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={exportarPDF}
-              >
-                Exportar PDF
-              </button>
-            </div>
-          </div>
-        </Form.Group>
+          </Form.Group>
+        </div>
       )}
       <div className="row" id="printTable">
         {listaRelatorio.length > 0 && retornaLista()}
