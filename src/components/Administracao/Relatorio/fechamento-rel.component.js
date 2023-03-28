@@ -242,6 +242,14 @@ export default function FechamentoMes(props) {
     else if (e.target.value === "M") carregaRelatorio({ situacao: "Marcado" });
   };
 
+  const exportarPDF = () => {
+    var divToPrint = document.getElementById("printTable");
+    var newWin = window.open("");
+    newWin.document.write(divToPrint.outerHTML);
+    newWin.print();
+    newWin.close();
+  };
+
   return (
     <div className="form-wrapper">
       {mensagem && <Mensagem tipo={mensagem.tipo} texto={mensagem.mensagem} />}
@@ -347,14 +355,20 @@ export default function FechamentoMes(props) {
               </div>
             </div>
             <div className="col-2">
-              <button type="button" className="btn btn-primary">
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={exportarPDF}
+              >
                 Exportar PDF
               </button>
             </div>
           </div>
         </Form.Group>
       )}
-      <div className="row">{listaRelatorio.length > 0 && retornaLista()}</div>
+      <div className="row" id="printTable">
+        {listaRelatorio.length > 0 && retornaLista()}
+      </div>
     </div>
   );
 }
