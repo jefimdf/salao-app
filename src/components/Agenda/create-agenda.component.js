@@ -227,7 +227,7 @@ export default function CreateAgenda(props) {
           <DatePicker
             name="data"
             className="form-control"
-            minDate={new Date()}
+            /* minDate={new Date()} */
             selected={data}
             onChange={onChangeData}
             dateFormat="dd/MM/yyyy"            
