@@ -26,6 +26,7 @@ export default function CreateAgenda(props) {
   const [total, setTotal] = useState(0.0)
   const [hora, setHora] = useState('')
   const [celular, setCelular] = useState('')
+  const [nome, setNome] = useState('')
   const [servicos, setServicos] = useState([])
   const [precos, setPrecos] = useState([])
   const [funcionariosTodos, setFuncionariosTodos] = useState([])
@@ -81,18 +82,6 @@ export default function CreateAgenda(props) {
     props.history.push('/'+tableName+'-list');
   }
 
-  const onChangeServico = (e) => {
-    this.setState({ idServico: e.target.value })    
-  }
-
-  const onChangeFuncionario = (e) => {
-    this.setState({ idFuncionario: e.target.value })
-  }
-
-  const onChangeCliente = (e) => {
-    this.setState({ idCliente: e.target.value })
-  }
-
   const onChangeData = (date) => {
     let dataSelecionada = new Date(date)
     let teste = agenda.filter(obj => {
@@ -102,14 +91,6 @@ export default function CreateAgenda(props) {
     })
 
     setData(date)
-  }
-
-  const onChangeHora= (e) => {    
-    this.setState({ hora: e.target.value })
-  }
-
-  const onChangeTotal = (e) =>{
-    this.setState({ total: e.target.value })
   }
 
   const onSubmit = (e) => {
@@ -161,12 +142,22 @@ export default function CreateAgenda(props) {
   }
 
   const onChangeCelular = (e) => {
+    setNome('');
     setCelular(e.target.value);
   }
 
+  const onChangeNome = (e) => {
+    setCelular('');
+    setNome(e.target.value);
+  }
+
   const onBuscar = () =>{debugger
-    if (celular.length >= 11){
-      let obj = clientes.find(obj=>obj.celular === celular);
+    if ((celular.length >= 11)||(nome.length>5)){
+      let obj = clientes;
+      if (celular.length >= 11)
+        obj = clientes.find(obj=>obj.celular === celular);
+      else if (nome.length>5)
+        obj = clientes.find(obj=>obj.nome === nome);
       if (obj){
         setIdCliente(obj._id);
         setClienteLogado(obj);      
@@ -195,9 +186,21 @@ export default function CreateAgenda(props) {
 
         {carregado &&
         <Form.Group controlId="Cliente">
-          <Form.Label>{!clienteLogado ? 'Celular do ' : ''}Cliente:</Form.Label>
+          <Form.Label>Cliente:</Form.Label>
           {!clienteLogado && <div className="row">
-          <div className="col"><MaskedFormControl type='text' name='celular' mask='(11)9 1111-1111'  onChange={onChangeCelular}/></div>
+          <div className="col">
+          <div className="row">
+          <div className="col">
+            <MaskedFormControl type='text' name='celular' mask='(11)9 1111-1111' value={celular} onChange={onChangeCelular} />
+            </div>
+            <div className="col-1">
+              ou
+            </div>
+            <div className="col">
+            <input type="text" className="form-control" placeholder="Nome" id="nome" value={nome} onChange={onChangeNome}/>
+            </div>
+            </div>
+            </div>
           <div className="col"><button type="button" className="btn btn-primary" onClick={onBuscar}>Buscar</button></div>
           </div>}
           {clienteLogado && <div className="row"><Form.Label>{clienteLogado.nome}</Form.Label></div>}          
