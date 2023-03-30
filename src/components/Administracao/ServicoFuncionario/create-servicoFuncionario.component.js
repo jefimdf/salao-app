@@ -134,6 +134,7 @@ export default function CreateServicoFuncionario(props) {
     options={servicos}
     className="basic-multi-select form-control"
     onChange={onChange}
+    placeholder="Selecione..."
     classNamePrefix="select"
   />
           

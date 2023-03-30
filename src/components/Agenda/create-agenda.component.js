@@ -219,6 +219,7 @@ export default function CreateAgenda(props) {
     options={comboClientes}
     className="basic-multi-select"
     onChange={onComboCliente}
+    placeholder="Selecione..."
     classNamePrefix="select"
   />
             </div>}
