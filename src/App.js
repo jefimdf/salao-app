@@ -164,7 +164,7 @@ console.log(gerente)
             <div className="wrapper">
               <ErrorBoundary FallbackComponent={ErrorFallback} onError={myErrorHandler}>
                 <Switch>
-                  <Route exact path='/' component={Home} />
+                  <Route exact path='/' component={CreateAgenda} />
                   
                   <Route path="/create-usuario" component={CreateUsuario} />
                   <Route path="/edit-usuario/:id" component={EditUsuario} />
