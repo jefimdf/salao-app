@@ -4,7 +4,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "bootstrap/dist/css/bootstrap.css";
 import "./App.css";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link, useLocation, useHistory } from "react-router-dom";
 import { NavDropdown } from "react-bootstrap";
 import {ErrorBoundary} from 'react-error-boundary'
 
@@ -71,8 +71,8 @@ function App(props) {
   const [userName] = useState(window.sessionStorage.getItem('userName'));
   const [detalhesErro, setDetalhesErro] = useState('');
   const [divNoneBlock, setDivNoneBlock] = useState('d-none');
-
-console.log(gerente)
+  const location = useLocation();
+  const history = useHistory();
 
   /* useEffect(() => {
     let jaesta = window.location.pathname === '/create-agenda' ? true : false;
@@ -108,8 +108,63 @@ console.log(gerente)
     setDetalhesErro('Error:' +error + ' ' + info.componentStack);    
   }
 
+  const formataTitulo=(titulo)=>{
+
+    titulo = titulo.replace("/","");
+
+    switch (titulo) {
+      case 'fechamento-rel':
+        titulo = 'Fechamento Mês'        
+        break;
+        case 'agenda-view':
+          titulo = 'Agenda'        
+          break;
+          case 'create-agenda':
+            titulo = 'Agendar Cliente'        
+            break;          
+            case 'agenda-list':
+          titulo = 'Lista de Agendas'        
+          break;
+            case 'cliente-list':
+            titulo = 'Cliente'        
+            break;          
+            case 'cliente-list':
+            titulo = 'Cliente'        
+            break;          
+            case 'usuario-list':
+            titulo = 'Usuário'        
+            break;          
+            case 'funcionario-list':
+            titulo = 'Funcionário'        
+            break;          
+            case 'funcionario-list':
+            titulo = 'Funcionário'        
+            break;          
+            case 'servicoFuncionario-list':
+            titulo = 'Serviço de Funcionário'        
+            break;          
+            case 'grupoServico-list':
+            titulo = 'Grupo de Serviços'        
+            break;          
+            case 'servico-list':
+            titulo = 'Serviço'        
+            break;          
+            case 'preco-list':
+            titulo = 'Preço'        
+            break;          
+            case 'cidade-list':
+            titulo = 'Cidade'        
+            break;          
+      default:
+        break;
+    }
+
+
+    return titulo;
+  }
+
   const retornaPagina = () => {
-    console.log(props);
+    return formataTitulo(location.pathname);
   }
 
   return (<Router>
@@ -160,7 +215,7 @@ console.log(gerente)
       <Container id="body">
         <Row>
           <Col md={12}>
-            <div>{retornaPagina()}</div>
+            <div className="titulo">{retornaPagina()}</div>
             <div className="wrapper">
               <ErrorBoundary FallbackComponent={ErrorFallback} onError={myErrorHandler}>
                 <Switch>

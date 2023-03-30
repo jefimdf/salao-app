@@ -146,7 +146,7 @@ export default function AgendaView(props) {
     }
 
         return(
-          <div className="form-wrapper">
+          <div className="form-wrapper">            
             {!carregado && <Loading/>}
             <Form >
               <DatePicker
