@@ -107,8 +107,9 @@ export default function CreateAgenda(props) {
 
   const onSubmit = (e) => {
     e.preventDefault();
-
     if (servicoSelecionado != undefined){
+
+      setCarregado(false)
       
       servicoSelecionado.map(obj=>{
         
@@ -132,6 +133,7 @@ export default function CreateAgenda(props) {
             setMensagem({tipo: 'sucesso', mensagem:'Dados salvos com sucesso!'});
             window.location.reload();            
           }
+          setCarregado(true)
         }).catch(err=> setMensagem({tipo: 'erro', mensagem:'Problema no cadastro'}));
       })
     }
