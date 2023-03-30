@@ -186,8 +186,10 @@ export default function CreateAgenda(props) {
 
         {carregado &&
         <Form.Group controlId="Cliente">
+          <div className="row">
+          <div className="col">
           <Form.Label>Cliente:</Form.Label>
-          {!clienteLogado && <div className="row">
+          {!clienteLogado && <div>
           <div className="row">
             <MaskedFormControl type='text' name='celular' mask='111111111' value={celular} onChange={onChangeCelular} placeholder="Celular" />
           </div>
@@ -201,6 +203,8 @@ export default function CreateAgenda(props) {
           </div>
           }
           {clienteLogado && <div className="row"><Form.Label>{clienteLogado.nome}</Form.Label></div>}          
+          </div>
+          </div>
         </Form.Group>}
 
         {carregado && clienteLogado && <GruposServicos 
