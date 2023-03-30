@@ -13,6 +13,8 @@ import situacao from '../../common/enum/situacao';
 import Mensagem from '../../common/mensagem/Mensagem';
 import Loading from '../../common/loading/loading';
 import removeMascara from '../../common/removeMascara'
+import Select from 'react-select';
+import handleOrdenar from '../../common/ordenacao'
 
 const tableName = 'agenda';
 
@@ -40,6 +42,7 @@ export default function CreateAgenda(props) {
   const [carregado, setCarregado] = useState(false);
   const [clienteLogado, setClienteLogado] = useState(null);
   const [mensagem, setMensagem] = useState({});
+  const [comboClientes, setComboClientes] = useState([])
 
   useEffect(() => {
     const requests = [
@@ -62,6 +65,15 @@ export default function CreateAgenda(props) {
   Promise.all(requests)
     .then(([objServicoFuncionario, objGrupoServico, objServico, objPreco, objFuncionario, objCliente, objAgenda]) => {      
       
+      objCliente = handleOrdenar(objCliente, 'nome', 'asc')
+
+      setComboClientes(objCliente.map(obj=>{
+        return {
+          value: obj._id,
+          label:obj.nome
+        }
+      }));
+
         setServicosFuncionarios(objServicoFuncionario);
         setGruposServicos(objGrupoServico);
         setServicos(objServico);
@@ -152,12 +164,10 @@ export default function CreateAgenda(props) {
   }
 
   const onBuscar = () =>{debugger
-    if ((celular.length >= 9)||(nome.length>5)){
+    if ((celular.length >= 9)){
       let obj = clientes;      
       if (celular.length >= 9)        
-        obj = clientes.find(obj=> removeMascara(obj.celular) === '61'+celular);
-      else if (nome.length>5)
-        obj = clientes.find(obj=>obj.nome === nome);
+        obj = clientes.find(obj=> removeMascara(obj.celular) === '61'+celular);      
       if (obj){
         setIdCliente(obj._id);
         setClienteLogado(obj);      
@@ -178,6 +188,12 @@ export default function CreateAgenda(props) {
   const onCkcChangeHorario = (item) => {
     setHora(item.target.id)
   }
+
+  const onComboCliente = (e) => {    
+    setIdCliente(e.value);
+    setClienteLogado(clientes.find(obj=>obj._id===e.value));      
+    setMensagem({});
+  }
   
     return (<div className="form-wrapper">
       {!carregado && <Loading/>}
@@ -189,20 +205,23 @@ export default function CreateAgenda(props) {
           <div className="row">
           <div className="col">
           <Form.Label>Cliente:</Form.Label>
-          {!clienteLogado && <div>
+          {!clienteLogado && !userLogado && <div>
           <div className="row">
             <MaskedFormControl type='text' name='celular' mask='111111111' value={celular} onChange={onChangeCelular} placeholder="Celular" />
-          </div>
-          <div className="row">
-              ou
-          </div>
-          <div className="row">
-            <input type="text" className="form-control" placeholder="Nome" id="nome" value={nome} onChange={onChangeNome}/>
           </div>
           <div className="row"><button type="button" className="btn btn-primary" onClick={onBuscar}>Buscar</button></div>
           </div>
           }
-          {clienteLogado && <div className="row"><Form.Label>{clienteLogado.nome}</Form.Label></div>}          
+          {clienteLogado && !userLogado && <div className="row"><Form.Label>{clienteLogado.nome}</Form.Label></div>}          
+          {userLogado && <div>
+            <Select    
+    name="colors"
+    options={comboClientes}
+    className="basic-multi-select"
+    onChange={onComboCliente}
+    classNamePrefix="select"
+  />
+            </div>}
           </div>
           </div>
         </Form.Group>}
