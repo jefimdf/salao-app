@@ -140,6 +140,7 @@ console.log(gerente)
                     <NavDropdown.Item href="/preco-list">Preço</NavDropdown.Item>                
                     <NavDropdown.Item href="/cidade-list">Cidade</NavDropdown.Item>
                     <NavDropdown.Item href="/fechamento-rel">Fechamento Mês</NavDropdown.Item>
+                    <NavDropdown.Item href="/agenda-list">Editar Agenda</NavDropdown.Item>
                   </NavDropdown>
                   }                                
                 </div>
