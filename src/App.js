@@ -130,7 +130,7 @@ console.log(gerente)
             <div className="collapse navbar-collapse" id="navbarCollapse">
                 <div className="navbar-nav">
                   <a href={"/create-agenda"} class="nav-item nav-link">Agenda</a>
-                  {(gerente==='true') &&<a href={"/create-cliente"} class="nav-item nav-link">Clientes</a>}                  
+                  {(gerente==='true') &&<a href={"/cliente-list"} class="nav-item nav-link">Clientes</a>}                  
                   {(gerente==='true') && <NavDropdown title="Administração" id="basic-nav-dropdown">
                     <NavDropdown.Item href="/usuario-list">Usuário</NavDropdown.Item>
                     <NavDropdown.Item href="/funcionario-list">Funcionário</NavDropdown.Item>

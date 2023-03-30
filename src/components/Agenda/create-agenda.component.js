@@ -12,7 +12,7 @@ import GruposServicos from './gruposServicos.component';
 import situacao from '../../common/enum/situacao';
 import Mensagem from '../../common/mensagem/Mensagem';
 import Loading from '../../common/loading/loading';
-
+import removeMascara from '../../common/removeMascara'
 
 const tableName = 'agenda';
 
@@ -152,10 +152,10 @@ export default function CreateAgenda(props) {
   }
 
   const onBuscar = () =>{debugger
-    if ((celular.length >= 11)||(nome.length>5)){
-      let obj = clientes;
-      if (celular.length >= 11)
-        obj = clientes.find(obj=>obj.celular === celular);
+    if ((celular.length >= 9)||(nome.length>5)){
+      let obj = clientes;      
+      if (celular.length >= 9)        
+        obj = clientes.find(obj=> removeMascara(obj.celular) === '61'+celular);
       else if (nome.length>5)
         obj = clientes.find(obj=>obj.nome === nome);
       if (obj){
@@ -188,21 +188,18 @@ export default function CreateAgenda(props) {
         <Form.Group controlId="Cliente">
           <Form.Label>Cliente:</Form.Label>
           {!clienteLogado && <div className="row">
-          <div className="col">
           <div className="row">
-          <div className="col">
-            <MaskedFormControl type='text' name='celular' mask='(11)9 1111-1111' value={celular} onChange={onChangeCelular} />
-            </div>
-            <div className="col-1">
+            <MaskedFormControl type='text' name='celular' mask='111111111' value={celular} onChange={onChangeCelular} placeholder="Celular" />
+          </div>
+          <div className="row">
               ou
-            </div>
-            <div className="col">
+          </div>
+          <div className="row">
             <input type="text" className="form-control" placeholder="Nome" id="nome" value={nome} onChange={onChangeNome}/>
-            </div>
-            </div>
-            </div>
-          <div className="col"><button type="button" className="btn btn-primary" onClick={onBuscar}>Buscar</button></div>
-          </div>}
+          </div>
+          <div className="row"><button type="button" className="btn btn-primary" onClick={onBuscar}>Buscar</button></div>
+          </div>
+          }
           {clienteLogado && <div className="row"><Form.Label>{clienteLogado.nome}</Form.Label></div>}          
         </Form.Group>}
 
