@@ -12,6 +12,7 @@ import {
 } from "../../../common/dateValidations";
 import ordenacao from "../../../common/ordenacao";
 import "./style.css";
+import Loading from '../../../common/loading/loading';
 
 export default function FechamentoMes(props) {
   const [userLogado] = useState(
@@ -98,6 +99,7 @@ export default function FechamentoMes(props) {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    setCarregado(false);
 
     const requests = [
       axios
@@ -114,6 +116,7 @@ export default function FechamentoMes(props) {
     Promise.all(requests).then(
       ([objAgenda]) => {
         setAgenda(objAgenda);
+        setCarregado(true);
       },
       (evt) => {
         console.log(evt);
@@ -252,6 +255,7 @@ export default function FechamentoMes(props) {
 
   return (
     <div className="form-wrapper">
+      {!carregado && <Loading/>}
       {mensagem && <Mensagem tipo={mensagem.tipo} texto={mensagem.mensagem} />}
       {carregado && (
         <Form onSubmit={onSubmit}>
@@ -260,7 +264,7 @@ export default function FechamentoMes(props) {
               <Form.Group controlId="DataInicial">
                 <Form.Label for="dataInicial">Data Inicial:</Form.Label>
                 <div className="row">
-                  <div className="col-6">
+                  <div className="col">
                     <DatePicker
                       name="dataInicial"
                       className="form-control"
@@ -276,7 +280,7 @@ export default function FechamentoMes(props) {
               <Form.Group controlId="DataFinal">
                 <Form.Label for="dataFinal">Data Final:</Form.Label>
                 <div className="row">
-                  <div className="col-6">
+                  <div className="col">
                     <DatePicker
                       name="dataFinal"
                       className="form-control"
@@ -288,27 +292,16 @@ export default function FechamentoMes(props) {
                   </div>
                 </div>
               </Form.Group>
-            </div>
-            <div className="col">
-              <Form.Label for="dataFinal">&nbsp;</Form.Label>
-              <Container id="Botoes">
-                <Row>
-                  <div
-                    className="btn-group"
-                    role="group"
-                    aria-label="Basic mixed styles example"
-                  >
+            </div>            
+          </div>
+          <div className="row espaco">
                     <button type="submit" className="btn btn-primary">
                       Gerar
-                    </button>
-                  </div>
-                </Row>
-              </Container>
+                    </button>              
             </div>
-          </div>
         </Form>
       )}
-      {listaRelatorio.length > 0 && (
+      {listaRelatorio.length > 0 && (<>
         <div className="row espaco">
           <Form.Group controlId="Filtro">
             <div className="row">
@@ -355,19 +348,20 @@ export default function FechamentoMes(props) {
                     Marcado
                   </label>
                 </div>
-              </div>
-              <div className="col-2">
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={exportarPDF}
-                >
-                  Exportar PDF
-                </button>
-              </div>
+              </div>              
             </div>
           </Form.Group>
         </div>
+        <div className="row">
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={exportarPDF}
+        >
+          Exportar PDF
+        </button>
+      </div>
+      </>
       )}
       <div className="row" id="printTable">
         {listaRelatorio.length > 0 && retornaLista()}

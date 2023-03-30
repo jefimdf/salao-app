@@ -1,6 +1,6 @@
 
 .fundo-loading{
-background-color: rgb(112, 112, 112);
+/* background-color: rgb(112, 112, 112); */
 position: absolute;
 z-index: 5000;
 top: 0;
