@@ -56,6 +56,7 @@ export default function ServicoFuncionarioList(props) {
     return (
       <div>
         <ModalConfirmacao show={showModal} handleClose={handleClose} Title="Exclusão de serviço de funcionário" Message="Deseja excluir o registro?" />
+        <Button variant="primary" size="lg" block="block" type="button" onClick={novo}>Novo</Button>        
         {carregado && <DataGrid 
         {...props}
         fields={['idFuncionario', 'idServico', 'percentual']}
@@ -64,7 +65,7 @@ export default function ServicoFuncionarioList(props) {
         setShowModal={setShowModal}
         setIdRegistro={setIdRegistro}
         />}
-        <Button variant="primary" size="lg" block="block" type="button" onClick={novo}>Novo</Button>        
+        
       </div>
     
     );

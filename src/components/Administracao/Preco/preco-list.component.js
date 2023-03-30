@@ -54,6 +54,7 @@ export default function PrecoList(props){
     return (
       <div>
         <ModalConfirmacao show={showModal} handleClose={handleClose} Title="Exclusão de preço" Message="Deseja excluir o registro?" />
+        <Button variant="primary" size="lg" block="block" type="button" onClick={novo}>Novo</Button>        
         {carregado && <DataGrid 
         {...props}
         fields={['idServico', 'preco']}
@@ -62,7 +63,7 @@ export default function PrecoList(props){
         setShowModal={setShowModal}
         setIdRegistro={setIdRegistro}
         />}
-        <Button variant="primary" size="lg" block="block" type="button" onClick={novo}>Novo</Button>        
+        
       </div>
     
     );

@@ -97,6 +97,7 @@ export default class UsuarioList extends Component {
     return (
       <div>
         <ModalConfirmacao show={this.state.showModal} handleClose={this.handleClose} Title="Exclusão de usuário" Message="Deseja excluir o registro?" />
+        <Button variant="primary" size="lg" block="block" type="button" onClick={this.novo}>Novo</Button>        
         <div className="table-wrapper">        
           <Table className="table table-striped">
             <thead>
@@ -111,7 +112,7 @@ export default class UsuarioList extends Component {
             </tbody>
           </Table>          
         </div>
-        <Button variant="primary" size="lg" block="block" type="button" onClick={this.novo}>Novo</Button>        
+        
       </div>
     
     );

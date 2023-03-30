@@ -96,6 +96,7 @@ export default class CidadeList extends Component {
     return (
       <div>
         <ModalConfirmacao show={this.state.showModal} handleClose={this.handleClose} Title="Exclusão de Cidade" Message="Deseja excluir o registro?" />
+        <Button variant="primary" size="lg" block="block" type="button" onClick={this.novo}>Novo</Button>        
         <div className="table-wrapper">        
         <table className="table table-striped">
             <thead>
@@ -109,7 +110,7 @@ export default class CidadeList extends Component {
             </tbody>
           </table>          
         </div>
-        <Button variant="primary" size="lg" block="block" type="button" onClick={this.novo}>Novo</Button>        
+        
       </div>
     
     );

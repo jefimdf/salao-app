@@ -55,6 +55,7 @@ export default function ClienteList(props) {
     return (
       <div>
         <ModalConfirmacao show={showModal} handleClose={handleClose} Title="Exclusão de cliente" Message="Deseja excluir o registro?" />
+        <Button variant="primary" size="lg" block="block" type="button" onClick={novo}>Novo</Button>        
         {carregado && <DataGrid 
         {...props}
         fields={['nome', 'celular']}
@@ -63,7 +64,7 @@ export default function ClienteList(props) {
         setShowModal={setShowModal}
         setIdRegistro={setIdRegistro}
         />}
-        <Button variant="primary" size="lg" block="block" type="button" onClick={novo}>Novo</Button>        
+        
       </div>
     
     );
