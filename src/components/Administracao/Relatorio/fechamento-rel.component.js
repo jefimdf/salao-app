@@ -284,7 +284,7 @@ export default function FechamentoMes(props) {
                     <DatePicker
                       name="dataFinal"
                       className="form-control"
-                      minDate={new Date()}
+                      minDate={dataInicial}
                       selected={dataFinal}
                       onChange={onChangeDataFinal}
                       dateFormat="dd/MM/yyyy"
