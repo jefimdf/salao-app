@@ -146,6 +146,13 @@ export default function CreateAgenda(props) {
       var momentB = moment(data).valueOf();      
       return momentA === momentB; })
     debugger
+
+    objAgenda = objAgenda.filter(obj=>{
+      return servicoSelecionado.find(o=>o.split('|')[1]===obj.idFuncionario)
+    })
+    
+    console.log('servicoSelecionado', servicoSelecionado)
+
     let objhorarios = horarios.filter(obj=>!objAgenda.find(o=>o.hora===obj));
 
     return objhorarios.map((obj)=>{
