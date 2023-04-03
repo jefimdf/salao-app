@@ -91,7 +91,7 @@ export default function AgendaList(props) {
   }
 
   const retornaCliente = (id) =>{
-    return clientes.find(obj=>obj._id===id).nome;
+    return clientes.find(obj=>obj._id===id) ? clientes.find(obj=>obj._id===id).nome : '';
   }
 
   const handleEditar = (url) =>{
