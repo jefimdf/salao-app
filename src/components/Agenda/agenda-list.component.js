@@ -82,7 +82,7 @@ export default function AgendaList(props) {
     props.history.push('/create-'+tableName+'');
   }
 
-  const retornaServico = (id) =>{debugger
+  const retornaServico = (id) =>{
     return servicos.find(obj=>obj._id===id).nome;
   }
 
@@ -99,7 +99,20 @@ export default function AgendaList(props) {
   }
 
   const DataTable=() =>{
-    return agendas.map((res) => {
+    
+
+    let dataAtual = new Date();
+    let diaAtual = dataAtual.getDate();
+
+    let dataInicial = dataAtual.setDate(diaAtual - 7)
+
+    let dataFinal= dataAtual.setDate(diaAtual + 7)
+
+
+    let agendaFiltro = agendas.filter((obj) => new Date(obj.data) >= dataInicial && new Date(obj.data) <= dataFinal);
+
+    
+    return agendaFiltro.map((res) => {
       
       return (
         <tr>
@@ -131,6 +144,7 @@ export default function AgendaList(props) {
       <div>
         <ModalConfirmacao show={showModal} handleClose={handleClose} Title="Exclusão de preço" Message="Deseja excluir o registro?" />
         <div className="table-wrapper">        
+        <Button variant="primary" size="lg" block="block" type="button" onClick={novo}>Novo</Button>        
         <table className="table table-striped">
             <thead>
               <tr>
@@ -149,7 +163,7 @@ export default function AgendaList(props) {
             </tbody>
           </table>          
         </div>
-        <Button variant="primary" size="lg" block="block" type="button" onClick={novo}>Novo</Button>        
+        
       </div>
     
     );
