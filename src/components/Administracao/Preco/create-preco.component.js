@@ -111,7 +111,6 @@ debugger
         <DatePicker
             name="data"
             className="form-control"
-            minDate={new Date()}
             selected={this.state.data}
             onChange={this.onChangeData}
             dateFormat="dd/MM/yyyy"            
