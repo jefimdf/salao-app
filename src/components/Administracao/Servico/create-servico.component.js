@@ -13,8 +13,9 @@ export default class CreateServico extends Component {
     super(props)
 
     // Setting up functions
-    this.onChangeNome = this.onChangeNome.bind(this);
+    this.onChangeNome = this.onChangeNome.bind(this);    
     this.onChangeGrupoServico = this.onChangeGrupoServico.bind(this);
+    this.onChangeQuantidadeHoras =  this.onChangeQuantidadeHoras.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.cancelar = this.cancelar.bind(this);
 
@@ -22,7 +23,8 @@ export default class CreateServico extends Component {
     this.state = {
       idGrupoServico: '',
       nome: '',
-      grupoServico: []
+      grupoServico: [],
+      quantidadeHoras: 0
     }
   }
 
@@ -62,13 +64,17 @@ export default class CreateServico extends Component {
     this.setState({ nome: e.target.value })
   }
 
+  onChangeQuantidadeHoras(e) {
+    this.setState({ quantidadeHoras: e.target.value })
+  }
 
   onSubmit(e) {
     e.preventDefault();
 
     const objEnvio = {
       idGrupoServico: this.state.idGrupoServico,
-      nome: this.state.nome
+      nome: this.state.nome,
+      quantidadeHoras: this.state.quantidadeHoras
     };
 
     axios.post(process.env.REACT_APP_URL_SERVER + tableName + '/create', objEnvio)
@@ -97,6 +103,11 @@ export default class CreateServico extends Component {
         <Form.Group controlId="Name">
           <Form.Label>Nome</Form.Label>
           <Form.Control type="text" value={this.state.nome} onChange={this.onChangeNome} />
+        </Form.Group>
+
+        <Form.Group controlId="QuantidadeHoras">
+          <Form.Label>Quantidade Horas</Form.Label>          
+          <Form.Control type="text" value={this.state.quantidadeHoras} onChange={this.onChangeQuantidadeHoras} placeholder="00"/>
         </Form.Group>
 
 

@@ -13,12 +13,14 @@ export default class EditServico extends Component {
     super(props)
 
     this.onChangeNome = this.onChangeNome.bind(this);
+    this.onChangeQuantidadeHoras =  this.onChangeQuantidadeHoras.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.cancelar = this.cancelar.bind(this);
 
     // State
     this.state = {
-      nome: ''
+      nome: '',
+      quantidadeHoras: 0
     }
   }
 
@@ -26,7 +28,8 @@ export default class EditServico extends Component {
     axios.get(process.env.REACT_APP_URL_SERVER + tableName + '/edit/' + this.props.match.params.id)
       .then(res => {
         this.setState({
-          nome: res.data.nome
+          nome: res.data.nome,
+          quantidadeHoras: res.data.quantidadeHoras
         });
       })
       .catch((error) => {
@@ -42,13 +45,18 @@ export default class EditServico extends Component {
     this.setState({ nome: e.target.value })
   }
 
+  onChangeQuantidadeHoras(e) {
+    this.setState({ quantidadeHoras: e.target.value })
+  }
+
  
 
   onSubmit(e) {
     e.preventDefault()
 
     const objEnvio = {
-      nome: this.state.nome
+      nome: this.state.nome,
+      quantidadeHoras: this.state.quantidadeHoras
     };
 
     axios.put(process.env.REACT_APP_URL_SERVER + tableName + '/update/' + this.props.match.params.id, objEnvio)
@@ -70,6 +78,11 @@ export default class EditServico extends Component {
         <Form.Group controlId="Nome">
           <Form.Label>Nome</Form.Label>
           <Form.Control type="text" value={this.state.nome} onChange={this.onChangeNome} />
+        </Form.Group>
+
+        <Form.Group controlId="QuantidadeHoras">
+          <Form.Label>Quantidade Horas</Form.Label>          
+          <Form.Control type="text" value={this.state.quantidadeHoras} onChange={this.onChangeQuantidadeHoras} placeholder="00"/>
         </Form.Group>
 
         <Container id="Botoes">
