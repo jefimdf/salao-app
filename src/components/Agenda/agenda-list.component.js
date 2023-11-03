@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
 import axios from 'axios';
-import Table from 'react-bootstrap/Table';
+import React, { useEffect, useState } from "react";
 import Button from 'react-bootstrap/Button';
-import { Link } from 'react-router-dom';
-import ModalConfirmacao from "../../common/modalConfirmacao";
 import { serverDateToString } from "../../common/dateValidations";
+import ModalConfirmacao from "../../common/modalConfirmacao";
 
 const tableName = 'agenda';
 
@@ -98,18 +96,39 @@ export default function AgendaList(props) {
     props.history.push(url);
   }
 
+  const formatDateAAAAMMDD=(data)=>{
+    data = new Date(data);
+
+    return parseInt(data.getUTCFullYear() +''+ data.getMonth() +''+ data.getDate());
+
+  }
+
   const DataTable=() =>{
     
 
     let dataAtual = new Date();
     let diaAtual = dataAtual.getDate();
 
-    let dataInicial = dataAtual.setDate(diaAtual - 7)
+    let dataInicial = formatDateAAAAMMDD(new Date(dataAtual.setDate(diaAtual - 7)));
 
-    let dataFinal= dataAtual.setDate(diaAtual + 7)
+    let dataFinal= formatDateAAAAMMDD(new Date(dataAtual.setDate(diaAtual + 7)));
 
 
-    let agendaFiltro = agendas.filter((obj) => new Date(obj.data) >= dataInicial && new Date(obj.data) <= dataFinal);
+    console.log(new Date(dataAtual.setDate(diaAtual - 7)))
+
+    let agendaFiltro = [];
+    
+    agendas.map(obj=>{
+      
+      //console.log(formatDateAAAAMMDD(new Date(obj.data)))
+
+      //if(formatDateAAAAMMDD(new Date(obj.data)) >= dataInicial && formatDateAAAAMMDD(new Date(obj.data)) <= dataFinal){
+     /// debugger
+        agendaFiltro.push(obj);
+      //}
+    }) 
+    
+    //.filter((obj) => new Date(obj.data) >= dataInicial && new Date(obj.data) <= dataFinal);
 
     
     return agendaFiltro.map((res) => {

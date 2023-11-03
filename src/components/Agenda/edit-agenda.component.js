@@ -1,9 +1,8 @@
-import React, { Component } from "react";
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button';
 import axios from 'axios';
-import { Container } from "react-bootstrap";
-import {Row, Col} from 'react-bootstrap';
+import React, { Component } from "react";
+import { Col, Container, Row } from "react-bootstrap";
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 import DatePicker from "react-datepicker";
 
 const tableName = 'preco';
@@ -47,7 +46,7 @@ export default class EditPreco extends Component {
 
   carregaDados(){
     axios.get(process.env.REACT_APP_URL_SERVER + tableName + '/edit/' + this.props.match.params.id)
-      .then(res => {
+      .then(res => {debugger
         this.setState({
           idServico: res.data.idServico,
           preco: res.data.preco,
