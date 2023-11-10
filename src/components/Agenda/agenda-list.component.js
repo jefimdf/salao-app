@@ -99,7 +99,7 @@ export default function AgendaList(props) {
   const formatDateAAAAMMDD=(data)=>{
     data = new Date(data);
 
-    return parseInt(data.getUTCFullYear() +''+ data.getMonth() +''+ data.getDate());
+    return data;//parseInt(data.getUTCFullYear() + data.getMonth() + data.getDate());
 
   }
 
@@ -113,23 +113,14 @@ export default function AgendaList(props) {
 
     let dataFinal= formatDateAAAAMMDD(new Date(dataAtual.setDate(diaAtual + 7)));
 
-
-    console.log(new Date(dataAtual.setDate(diaAtual - 7)))
-
     let agendaFiltro = [];
     
     agendas.map(obj=>{
       
-      //console.log(formatDateAAAAMMDD(new Date(obj.data)))
-
-      //if(formatDateAAAAMMDD(new Date(obj.data)) >= dataInicial && formatDateAAAAMMDD(new Date(obj.data)) <= dataFinal){
-     /// debugger
+      if(formatDateAAAAMMDD(obj.data) >= dataInicial && formatDateAAAAMMDD(obj.data) <= dataFinal){
         agendaFiltro.push(obj);
-      //}
-    }) 
-    
-    //.filter((obj) => new Date(obj.data) >= dataInicial && new Date(obj.data) <= dataFinal);
-
+      }
+    });
     
     return agendaFiltro.map((res) => {
       
