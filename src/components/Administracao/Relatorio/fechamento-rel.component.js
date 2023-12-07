@@ -1,18 +1,14 @@
-import React, { useState, useEffect } from "react";
-import Form from "react-bootstrap/Form";
 import axios from "axios";
-import { Container } from "react-bootstrap";
-import { Row } from "react-bootstrap";
-import Mensagem from "../../../common/mensagem/Mensagem";
+import React, { useEffect, useState } from "react";
+import Form from "react-bootstrap/Form";
 import DatePicker from "react-datepicker";
-import MaskedFormControl from "react-bootstrap-maskedinput";
 import {
-  serverDateToString,
-  dateToStringAmericano,
+  dateToStringAmericano
 } from "../../../common/dateValidations";
+import Loading from '../../../common/loading/loading';
+import Mensagem from "../../../common/mensagem/Mensagem";
 import ordenacao from "../../../common/ordenacao";
 import "./style.css";
-import Loading from '../../../common/loading/loading';
 
 export default function FechamentoMes(props) {
   const [userLogado] = useState(
@@ -82,7 +78,7 @@ export default function FechamentoMes(props) {
     );
 
     let dia = "29";
-    let mes = new Date().getMonth() + 1;
+    let mes = (new Date().getMonth()) === 13 ? 12 : (new Date().getMonth());
     let ano = new Date().getFullYear();
 
     mes = mes.toString().length === 1 ? "0" + mes : mes;
@@ -91,10 +87,11 @@ export default function FechamentoMes(props) {
 
     setDataInicial(dataInicial);
 
-    mes = new Date().getMonth() + 2;
-    mes = mes.toString().length === 1 ? "0" + mes : mes;
+    mes = new Date().getMonth() + 1;
+    mes = mes.toString().length === 1 ? "0" + mes : mes;    
     const dataFinal = new Date(ano + "-" + mes + "-" + dia);
     setDataFinal(dataFinal);
+    debugger
   }, []);
 
   const onSubmit = (e) => {
@@ -213,7 +210,7 @@ export default function FechamentoMes(props) {
       <tr>
         <td>{obj.cliente}</td>
         <td>{obj.servico}</td>
-        <td>{serverDateToString(obj.data)}</td>
+        <td></td>{/* <td>{serverDateToString(obj.data)}</td> */}
         <td>{obj.hora}</td>
         <td>R$ {obj.total}</td>
         <td>R$ {calculaPercentualFuncionario(obj.idFuncionario, obj.total)}</td>

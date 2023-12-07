@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react'
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'; // <-- import styles to be used
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect, useState } from 'react';
 import { serverDateToString } from "../dateValidations";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { solid} from '@fortawesome/fontawesome-svg-core/import.macro' // <-- import styles to be used
 
 
 export default function DataGrid(props) {
@@ -119,6 +119,9 @@ export default function DataGrid(props) {
             <tbody>
               {dataTable()}
             </tbody>
+            <footer>
+              Total: {dados}
+            </footer>
           </table>          
         </div>        
       </div>
