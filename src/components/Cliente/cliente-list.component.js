@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
 import axios from 'axios';
+import React, { useEffect, useState } from "react";
 import Button from 'react-bootstrap/Button';
+import DataGrid from '../../common/dataGrid/dataGrid';
 import ModalConfirmacao from "../../common/modalConfirmacao";
-import DataGrid from '../../common/dataGrid/dataGrid'
-import Persistencia from '../Administracao/Commom/persistencia'
+import Persistencia from '../Administracao/Commom/persistencia';
 
 const tableName = 'cliente';
 
@@ -32,7 +32,7 @@ export default function ClienteList(props) {
           cidades: objCidades
         });
 
-        setCarregado(true)
+        setCarregado(true);
 
       }, (evt) => {
           console.log(evt);        

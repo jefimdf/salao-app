@@ -8,6 +8,7 @@ export default function DataGrid(props) {
 
     const [dados, setDados] = useState(props.data.tabela);
     const [direcao, setDirecao] = useState('asc');
+    const [total, setTotal] = useState(0);
 
     useEffect(() => {
         
@@ -79,7 +80,8 @@ export default function DataGrid(props) {
       }
 
     const dataTable = () => {
-        return dados && dados.map((res) => {          
+      let count = 0;  
+      return dados && dados.map((res) => {  count++;
           return (
             <tr>
                 {props.fields.map((t)=>{
@@ -100,6 +102,8 @@ export default function DataGrid(props) {
             </tr>
           );    
         });
+
+        //setTotal(count);
       }
 
 
@@ -120,7 +124,7 @@ export default function DataGrid(props) {
               {dataTable()}
             </tbody>
             <footer>
-              Total: {dados}
+              Total: {total}
             </footer>
           </table>          
         </div>        
