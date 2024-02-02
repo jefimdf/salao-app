@@ -1,16 +1,14 @@
-import React, { Component } from "react";
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button';
 import axios from 'axios';
-import { Container } from "react-bootstrap";
-import {Row, Col} from 'react-bootstrap';
+import React from "react";
+import { Container, Row } from "react-bootstrap";
+import Form from 'react-bootstrap/Form';
 import DatePicker from "react-datepicker";
-import MaskedFormControl from 'react-bootstrap-maskedinput'
+import InputMask from 'react-input-mask';
 
 const tableName = 'funcionario';
 
 
-export default class CreateFuncionario extends Component {
+export default class CreateFuncionario extends React.Component {
 
   constructor(props) {
     super(props)
@@ -159,12 +157,12 @@ export default class CreateFuncionario extends Component {
           />
         <Form.Group controlId="Name">
           <Form.Label>Celular</Form.Label>
-          <MaskedFormControl type='text' name='celular' mask='(11)1111-1111' value={this.state.celular} onChange={this.onChangeCelular} />          
+          <InputMask type='text' name='celular' mask="(99) 99999-9999" maskChar=" " className='form-control' value={this.state.celular} onChange={this.onChangeCelular}/>                    
         </Form.Group>
 
         <Form.Group controlId="Cpf">
           <Form.Label>CPF</Form.Label>
-          <MaskedFormControl type='text' name='cpf' mask='111.111.111-11' value={this.state.cpf} onChange={this.onChangeCpf} />          
+          <InputMask type='text' name='cpf' mask="999.999.999-99" maskChar=" " className='form-control' value={this.state.cpf} onChange={this.onChangeCpf}/>          
         </Form.Group>
 
         <Form.Group controlId="RG">

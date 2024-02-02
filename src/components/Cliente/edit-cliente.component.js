@@ -1,17 +1,14 @@
-import React, { Component } from "react";
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button';
 import axios from 'axios';
-import { Container } from "react-bootstrap";
-import {Row, Col} from 'react-bootstrap';
+import React from "react";
+import { Container, Row } from "react-bootstrap";
+import Form from 'react-bootstrap/Form';
 import DatePicker from "react-datepicker";
-import MaskedFormControl from 'react-bootstrap-maskedinput';
-import { serverDateToString } from "../../common/dateValidations";
+import InputMask from 'react-input-mask';
 
 
 const tableName = 'cliente';
 
-export default class EditCliente extends Component {
+export default class EditCliente extends React.Component {
 
   constructor(props) {
     super(props)
@@ -136,7 +133,7 @@ export default class EditCliente extends Component {
           />
         <Form.Group controlId="Name">
           <Form.Label>Celular</Form.Label>
-          <MaskedFormControl type='text' name='celular' mask='(11)1 1111-1111' value={this.state.celular} onChange={this.onChangeCelular} />          
+          <InputMask type='text' name='celular' mask="(99) 99999-9999" maskChar=" " className='form-control' value={this.state.celular} onChange={this.onChangeCelular}/>
         </Form.Group>
         <Form.Group controlId="Cidade">
           <Form.Label>Cidade</Form.Label>

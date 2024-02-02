@@ -1,14 +1,13 @@
-import React, { Component } from "react";
 import axios from 'axios';
-import Table from 'react-bootstrap/Table';
+import React from "react";
 import Button from 'react-bootstrap/Button';
-import { Link } from 'react-router-dom';
+import Table from 'react-bootstrap/Table';
 import ModalConfirmacao from "../../../common/modalConfirmacao";
 
 
 const tableName = 'usuario';
 
-export default class UsuarioList extends Component {
+export default class UsuarioList extends React.Component {
 
   constructor(props) {
     super(props)

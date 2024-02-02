@@ -1,16 +1,18 @@
-import React, { Component } from "react";
-import Form from 'react-bootstrap/Form'
+'use client'
+
 import axios from 'axios';
+import React from "react";
 import { Container } from "react-bootstrap";
+import Form from 'react-bootstrap/Form';
 import DatePicker from "react-datepicker";
-import MaskedFormControl from 'react-bootstrap-maskedinput'
+import InputMask from 'react-input-mask';
 
 import "react-datepicker/dist/react-datepicker.css";
 
 
 const tableName = 'cliente';
 
-export default class CreateCliente extends Component {
+export default class CreateCliente extends React.Component {
 
   constructor(props) {
     super(props)
@@ -40,8 +42,7 @@ export default class CreateCliente extends Component {
 
   carregaCidades(){
     axios.get(process.env.REACT_APP_URL_SERVER + 'cidade/')
-    .then(res => {
-      debugger
+    .then(res => {      
       this.setState({
         cidades: res.data
       });
@@ -126,7 +127,7 @@ export default class CreateCliente extends Component {
           />
         <Form.Group controlId="Celular">
           <Form.Label>Celular</Form.Label>
-          <MaskedFormControl type='text' name='celular' mask='111111111' value={this.state.celular} onChange={this.onChangeCelular} />          
+          <InputMask type='text' name='celular' mask="(99) 99999-9999" maskChar=" " className='form-control' value={this.state.celular} onChange={this.onChangeCelular}/>
         </Form.Group>
         <Form.Group controlId="Cidade">
           <Form.Label>Cidade</Form.Label>

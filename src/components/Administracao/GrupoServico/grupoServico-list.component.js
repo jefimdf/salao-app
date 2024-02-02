@@ -1,14 +1,12 @@
-import React, { Component } from "react";
 import axios from 'axios';
-import Table from 'react-bootstrap/Table';
+import React from "react";
 import Button from 'react-bootstrap/Button';
-import { Link } from 'react-router-dom';
 import ModalConfirmacao from "../../../common/modalConfirmacao";
 
 
 const tableName = 'grupoServico';
 
-export default class GrupoServicoList extends Component {
+export default class GrupoServicoList extends React.Component {
 
   constructor(props) {
     super(props)

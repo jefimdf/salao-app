@@ -1,20 +1,18 @@
-import React, { useState, useEffect } from "react";
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import axios from 'axios';
-import { Container } from "react-bootstrap";
-import {Row, Col} from 'react-bootstrap';
-import DatePicker from "react-datepicker";
-import MaskedFormControl from 'react-bootstrap-maskedinput';
-import '../Agenda/style.css';
 import moment from 'moment';
-import GruposServicos from './gruposServicos.component';
-import situacao from '../../common/enum/situacao';
-import Mensagem from '../../common/mensagem/Mensagem';
-import Loading from '../../common/loading/loading';
-import removeMascara from '../../common/removeMascara'
+import React, { useEffect, useState } from "react";
+import { Container, Row } from "react-bootstrap";
+import Form from 'react-bootstrap/Form';
+import DatePicker from "react-datepicker";
+import InputMask from 'react-input-mask';
 import Select from 'react-select';
-import handleOrdenar from '../../common/ordenacao'
+import situacao from '../../common/enum/situacao';
+import Loading from '../../common/loading/loading';
+import Mensagem from '../../common/mensagem/Mensagem';
+import handleOrdenar from '../../common/ordenacao';
+import removeMascara from '../../common/removeMascara';
+import '../Agenda/style.css';
+import GruposServicos from './gruposServicos.component';
 
 const tableName = 'agenda';
 
@@ -216,7 +214,7 @@ export default function CreateAgenda(props) {
           <Form.Label>Cliente:</Form.Label>
           {!clienteLogado && !userLogado && <div>
           <div className="row">
-            <MaskedFormControl type='text' name='celular' mask='111111111' value={celular} onChange={onChangeCelular} placeholder="Celular" />
+          <InputMask type='text' name='celular' mask="(99) 99999-9999" maskChar=" " className='form-control' value={celular} onChange={onChangeCelular} placeholder="Celular"/>            
           </div>
           <div className="row"><button type="button" className="btn btn-primary" onClick={onBuscar}>Buscar</button></div>
           </div>

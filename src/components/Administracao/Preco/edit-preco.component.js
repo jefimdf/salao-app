@@ -1,14 +1,12 @@
-import React, { Component } from "react";
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button';
 import axios from 'axios';
-import { Container } from "react-bootstrap";
-import {Row, Col} from 'react-bootstrap';
+import React from "react";
+import { Container, Row } from "react-bootstrap";
+import Form from 'react-bootstrap/Form';
 import DatePicker from "react-datepicker";
 
 const tableName = 'preco';
 
-export default class EditPreco extends Component {
+export default class EditPreco extends React.Component {
 
   constructor(props) {
     super(props)

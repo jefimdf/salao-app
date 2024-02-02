@@ -1,17 +1,15 @@
-import React, { Component } from "react";
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button';
 import axios from 'axios';
-import sha256 from 'crypto-js/sha256';
-import hmacSHA512 from 'crypto-js/hmac-sha512';
 import Base64 from 'crypto-js/enc-base64';
+import hmacSHA512 from 'crypto-js/hmac-sha512';
+import sha256 from 'crypto-js/sha256';
+import React from "react";
 import { Container } from "react-bootstrap";
-import {Row, Col} from 'react-bootstrap';
+import Form from 'react-bootstrap/Form';
 
 const tableName = 'usuario';
 const nonce = '';
 
-export default class CreateUsuario extends Component {
+export default class CreateUsuario extends React.Component {
 
   constructor(props) {
     super(props)
