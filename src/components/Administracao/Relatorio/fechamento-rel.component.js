@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import DatePicker from "react-datepicker";
 import {
-  dateToStringAmericano
+  dateToStringAmericano, serverDateToString
 } from "../../../common/dateValidations";
 import Loading from '../../../common/loading/loading';
 import Mensagem from "../../../common/mensagem/Mensagem";
@@ -210,7 +210,7 @@ export default function FechamentoMes(props) {
       <tr>
         <td>{obj.cliente}</td>
         <td>{obj.servico}</td>
-        <td></td>{/* <td>{serverDateToString(obj.data)}</td> */}
+        <td>{serverDateToString(obj.data)}</td>
         <td>{obj.hora}</td>
         <td>R$ {obj.total}</td>
         <td>R$ {calculaPercentualFuncionario(obj.idFuncionario, obj.total)}</td>
