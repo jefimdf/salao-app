@@ -206,6 +206,7 @@ export default function FechamentoMes(props) {
   };
 
   const retornaDados = (dados) => {
+    //dados = ordenacao(dados, "data", "asc");
     return dados.map((obj) => (
       <tr>
         <td>{obj.cliente}</td>
