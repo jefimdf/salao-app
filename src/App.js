@@ -1,15 +1,14 @@
-import React, {useState} from "react";
+import "bootstrap/dist/css/bootstrap.css";
+import React, { useState } from "react";
+import { NavDropdown } from "react-bootstrap";
+import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import "bootstrap/dist/css/bootstrap.css";
+import { ErrorBoundary } from 'react-error-boundary';
+import { Link, Route, BrowserRouter as Router, Switch, useHistory, useLocation } from "react-router-dom";
 import "./App.css";
-import { BrowserRouter as Router, Switch, Route, Link, useLocation, useHistory } from "react-router-dom";
-import { NavDropdown } from "react-bootstrap";
-import {ErrorBoundary} from 'react-error-boundary'
 
 
-import Home from "./components/home.component";
 
 //Usuario
 import CreateUsuario from "./components/Administracao/Usuario/create-usuario.component";
@@ -17,9 +16,9 @@ import EditUsuario from "./components/Administracao/Usuario/edit-usuario.compone
 import ListUsuario from "./components/Administracao/Usuario/usuario-list.component";
 
 //Cidade
+import ListCidade from "./components/Administracao/Cidade/cidade-list.component";
 import CreateCidade from "./components/Administracao/Cidade/create-cidade.component";
 import EditCidade from "./components/Administracao/Cidade/edit-cidade.component";
-import ListCidade from "./components/Administracao/Cidade/cidade-list.component";
 
 //Grupo de Serviços
 import CreateGrupoServico from "./components/Administracao/GrupoServico/create-grupoServico.component";
@@ -32,9 +31,9 @@ import EditServico from "./components/Administracao/Servico/edit-servico.compone
 import ListServico from "./components/Administracao/Servico/servico-list.component";
 
 //Cliente
+import ListCliente from "./components/Cliente/cliente-list.component";
 import CreateCliente from "./components/Cliente/create-cliente.component";
 import EditCliente from "./components/Cliente/edit-cliente.component";
-import ListCliente from "./components/Cliente/cliente-list.component";
 
 //Funcionario
 import CreateFuncionario from "./components/Administracao/Funcionario/create-funcionario.component";
@@ -52,10 +51,10 @@ import EditServicoFuncionario from "./components/Administracao/ServicoFuncionari
 import ListServicoFuncionario from "./components/Administracao/ServicoFuncionario/servicoFuncionario-list.component";
 
 //Agenda
-import CreateAgenda from "./components/Agenda/create-agenda.component";
-import EditAgenda from "./components/Agenda/edit-agenda.component";
 import ListAgenda from "./components/Agenda/agenda-list.component";
 import ViewAgenda from "./components/Agenda/agenda-view.component";
+import CreateAgenda from "./components/Agenda/create-agenda.component";
+import EditAgenda from "./components/Agenda/edit-agenda.component";
 
 //Login
 import Login from "./components/Administracao/Login/login.component";
@@ -184,8 +183,8 @@ function App(props) {
             </button>
             <div className="collapse navbar-collapse" id="navbarCollapse">
                 <div className="navbar-nav">
-                  <a href={"/create-agenda"} class="nav-item nav-link">Agenda</a>
-                  {(gerente==='true') &&<a href={"/cliente-list"} class="nav-item nav-link">Clientes</a>}                  
+                  <a href={"/create-agenda"} className="nav-item nav-link">Agenda</a>
+                  {(gerente==='true') &&<a href={"/cliente-list"} className="nav-item nav-link">Clientes</a>}                  
                   {(gerente==='true') && <NavDropdown title="Administração" id="basic-nav-dropdown">
                     <NavDropdown.Item href="/usuario-list">Usuário</NavDropdown.Item>
                     <NavDropdown.Item href="/funcionario-list">Funcionário</NavDropdown.Item>

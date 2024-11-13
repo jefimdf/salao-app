@@ -169,7 +169,12 @@ export default function CreateAgenda(props) {
   }
 
   const onChangeDesconto = (e) =>{
-    setDesconto(e.target.value);
+    
+    if (e.target.value.length>=4){debugger
+      setDesconto(e.target.value);
+      setTotal(total - e.target.value);
+    }
+    
   }
 
   const onChangeNome = (e) => {
@@ -274,8 +279,8 @@ export default function CreateAgenda(props) {
       }
 
       {clienteLogado && <Form.Group>
-        <Form.Label for="desconto">Desconto:</Form.Label>
-        <InputMask type='text' name='descont' mask="99,99" maskChar=" " className='form-control' value={desconto} onChange={onChangeDesconto}/>
+        <Form.Label for="desconto">Desconto:</Form.Label>        
+        <InputMask type='text' name='descont' mask="99,99" maskChar=" " className='form-control' value={desconto} onBlur={onChangeDesconto}/>
       </Form.Group>
       }
       {data && <Form.Group controlId="Hora">

@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
-import Form from 'react-bootstrap/Form';
 import axios from 'axios';
-import { Container } from "react-bootstrap";
-import {Row} from 'react-bootstrap';
-import sha256 from 'crypto-js/sha256';
-import hmacSHA512 from 'crypto-js/hmac-sha512';
 import Base64 from 'crypto-js/enc-base64';
+import hmacSHA512 from 'crypto-js/hmac-sha512';
+import sha256 from 'crypto-js/sha256';
+import React, { useEffect, useState } from "react";
+import { Container, Row } from "react-bootstrap";
+import Form from 'react-bootstrap/Form';
 import Mensagem from '../../../common/mensagem/Mensagem';
 
 export default function CreateAgenda(props) {
@@ -37,7 +36,7 @@ export default function CreateAgenda(props) {
     const path='', privateKey='';
 
     const senhaCriptografada = Base64.stringify(hmacSHA512(path + sha256(nonce + senha), privateKey));
-
+debugger
     const objEnvio = {
       email: email,
       senha: senhaCriptografada     

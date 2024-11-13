@@ -101,13 +101,13 @@ debugger
           <div className="row">
         <Form.Label>Administrador?</Form.Label>
         </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radioSim" value="S" onChange={this.onChangeAdm}/>
-          <label class="form-check-label" for="radioSim">Sim</label>
+        <div className="form-check form-check-inline">
+          <input className="form-check-input" type="radio" name="inlineRadioOptions" id="radioSim" value="S" onChange={this.onChangeAdm}/>
+          <label className="form-check-label" for="radioSim">Sim</label>
         </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radioNao" value="N" onChange={this.onChangeAdm} checked/>
-          <label class="form-check-label" for="radioNao">Não</label>
+        <div className="form-check form-check-inline">
+          <input className="form-check-input" type="radio" name="inlineRadioOptions" id="radioNao" value="N" onChange={this.onChangeAdm} checked/>
+          <label className="form-check-label" for="radioNao">Não</label>
         </div>
         </Form.Group>
 
