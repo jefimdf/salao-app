@@ -168,13 +168,22 @@ export default function CreateAgenda(props) {
     setCelular(e.target.value);
   }
 
-  const onChangeDesconto = (e) =>{
-    
-    if (e.target.value.length>=4){debugger
+  const onChangeDesconto = (e) => {
+
+    if (parseFloat(e.target.value) > 0) {
+      debugger
       setDesconto(e.target.value);
-      setTotal(total - e.target.value);
+      setTotal(parseFloat(total) - parseFloat(e.target.value));
+    }else{
+
+      let tot = 0;
+      let valores = servicoSelecionado.map(o=>{
+        tot += parseInt(o.split('|')[2]);
+      })
+      
+      setTotal(tot);
     }
-    
+
   }
 
   const onChangeNome = (e) => {
@@ -278,9 +287,9 @@ export default function CreateAgenda(props) {
       </Form.Group>
       }
 
-      {clienteLogado && <Form.Group>
-        <Form.Label for="desconto">Desconto:</Form.Label>        
-        <InputMask type='text' name='descont' mask="99,99" maskChar=" " className='form-control' value={desconto} onBlur={onChangeDesconto}/>
+      {clienteLogado && userLogado && <Form.Group>
+        <Form.Label for="desconto">Desconto:</Form.Label>
+        <InputMask type='text' name='descont' mask="99,99" maskChar=" " className='form-control' onBlur={onChangeDesconto} />
       </Form.Group>
       }
       {data && <Form.Group controlId="Hora">
