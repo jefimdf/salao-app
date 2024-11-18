@@ -124,9 +124,10 @@ export default function CreateAgenda(props) {
           desconto: desconto,
           situacao: situacao[0]
         };
-
+        debugger
         axios.post(process.env.REACT_APP_URL_SERVER + tableName + '/create', objEnvio)
           .then(res => {
+            debugger
             if (userLogado) {
               props.history.push('/' + tableName + '-list');
             } else {
@@ -174,13 +175,13 @@ export default function CreateAgenda(props) {
       debugger
       setDesconto(e.target.value);
       setTotal(parseFloat(total) - parseFloat(e.target.value));
-    }else{
+    } else {
 
       let tot = 0;
-      let valores = servicoSelecionado.map(o=>{
+      let valores = servicoSelecionado.map(o => {
         tot += parseInt(o.split('|')[2]);
       })
-      
+
       setTotal(tot);
     }
 

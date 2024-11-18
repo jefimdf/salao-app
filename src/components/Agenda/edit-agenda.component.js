@@ -46,12 +46,14 @@ export default class EditPreco extends React.Component {
 
   carregaDados(){
     axios.get(process.env.REACT_APP_URL_SERVER + tableName + '/edit/' + this.props.match.params.id)
-      .then(res => {debugger
-        this.setState({
-          idServico: res.data.idServico,
-          preco: res.data.preco,
-          data: new Date(res.data.data)
-        });
+      .then(res => {
+        if (res.data){
+          this.setState({
+            idServico: res.data.idServico,
+            preco: res.data.preco,
+            data: new Date(res.data.data)
+          });
+        }        
       })
       .catch((error) => {
         console.log(error);
