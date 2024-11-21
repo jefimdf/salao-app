@@ -58,7 +58,7 @@ export default function AgendaList(props) {
 
   const onDelete = (id) => {
     axios.delete(process.env.REACT_APP_URL_SERVER + tableName + '/delete/' + id)
-      .then((res) => {
+      .then((res) => {debugger
         console.log('Excluído com sucesso!');
         setShowModal(false);
         carregaLista();
@@ -114,7 +114,7 @@ export default function AgendaList(props) {
 
     let dataInicial = formatDateAAAAMMDD(new Date(dataAtual.setDate(diaAtual - 7)));
 
-    let dataFinal = formatDateAAAAMMDD(new Date(dataAtual.setDate(diaAtual + 7)));
+    let dataFinal = formatDateAAAAMMDD(new Date(dataAtual.setDate(diaAtual + 30)));
 
     let agendaFiltro = [];
 
@@ -155,7 +155,7 @@ export default function AgendaList(props) {
 
   return (
     <div>
-      <ModalConfirmacao show={showModal} handleClose={handleClose} Title="Exclusão de preço" Message="Deseja excluir o registro?" />
+      <ModalConfirmacao show={showModal} handleClose={handleClose} Title="Exclusão de agenda" Message="Deseja excluir o registro?" />
       <div className="table-wrapper">
         <Button variant="primary" size="lg" block="block" type="button" onClick={novo}>Novo</Button>
         <table className="table table-striped">

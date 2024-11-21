@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'; // <-- import styles to be used
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
+import React, { useEffect, useState } from "react";
 import Form from 'react-bootstrap/Form';
 import DatePicker from "react-datepicker";
 import situacao from '../../common/enum/situacao';
 import Loading from '../../common/loading/loading';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { solid} from '@fortawesome/fontawesome-svg-core/import.macro' // <-- import styles to be used
 
 const tableName = 'agenda';
 
@@ -59,11 +59,11 @@ export default function AgendaView(props) {
     const filtraDadosAgenda = (date, obj) => obj.filter(obj=>dataString(date) === dataString(obj.data));
     
     const onChangeData = (date) => {
-      setData(date)
-      setAgendas(filtraDadosAgenda(date, agendasTodas));      
+      setData(date)      
+      setAgendas(filtraDadosAgenda(date, agendasTodas));            
     }
 
-    const dataString = (data) => (new Date(data)).getFullYear() + '' + (new Date(data)).getMonth() + '' + (new Date(data)).getDate();
+    const dataString = (data) => (new Date(data)).getFullYear() + '' + (parseInt((new Date(data)).getMonth()) + 1) + '' + (new Date(data)).getDate();
     
     function retornaCliente(id){ 
       return (
