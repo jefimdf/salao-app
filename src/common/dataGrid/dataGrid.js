@@ -15,7 +15,7 @@ export default function DataGrid(props) {
 
   useEffect(() => {
 
-    setFields(fields.push({ field: "button", cellRenderer: CustomButtonComponent }));
+    //setFields(fields.push({ field: "button", cellRenderer: CustomButtonComponent }));
     
   }, []);
 

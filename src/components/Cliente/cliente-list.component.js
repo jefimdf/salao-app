@@ -66,7 +66,7 @@ export default function ClienteList(props) {
         <Button variant="primary" size="lg" block="block" type="button" onClick={novo}>Novo</Button>        
         {carregado && <DataGrid 
         {...props}
-        fields={[{ field: "nome" }, { field: "celular" }, ]}
+        fields={[{ field: "nome" }, { field: "celular" }]}
         data={data} 
         tableName={tableName}
         setShowModal={setShowModal}
