@@ -1,136 +1,164 @@
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'; // <-- import styles to be used
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the Data Grid
+import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the Data Grid
+import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
 import React, { useEffect, useState } from 'react';
 import { serverDateToString } from "../dateValidations";
 
-
 export default function DataGrid(props) {
 
-    const [dados, setDados] = useState(props.data.tabela);
-    const [direcao, setDirecao] = useState('asc');
-    const [total, setTotal] = useState(0);
+  const [dados, setDados] = useState(props.data.tabela);
+  const [fields, setFields] = useState(props.fields);
+  const [direcao, setDirecao] = useState('asc');
+  const [total, setTotal] = useState(0);
 
-    useEffect(() => {
-        
-    }, []);
+  useEffect(() => {
 
-
-    const confimarExclusao = (id) => {
-        props.setShowModal(true)
-        props.setIdRegistro(id)    
-      }
+    setFields(fields.push({ field: "button", cellRenderer: CustomButtonComponent }));
     
-      const handleEditar = (url) =>{
-        props.history.push(url);
-      }
+  }, []);
 
-      const handleOrdenar = (col) =>{debugger        
-        const data = dados.sort(function (a, b) {            
-            if (direcao === 'desc'){
-                if (a[col] > b[col]) {
-                    return -1;
-                }
-                setDirecao('asc');
-            }else{
-                if (a[col] < b[col]) {
-                    return -1;
-                }
-                setDirecao('desc');
-            }            
-        });
-        setDados(data);                
-      }
 
-      const primeiraUpperCase = (v) => v.includes('id') ? v.substr(2,1).toUpperCase() + v.substr(3,v.lenght) : v.substr(0,1).toUpperCase() + v.substr(1,v.lenght)
+  const confimarExclusao = (id) => {
+    props.setShowModal(true)
+    props.setIdRegistro(id)
+  }
 
-      const retornaServico = (id) =>{
-        return props.data.servicos.find(obj=>obj._id===id) ? props.data.servicos.find(obj=>obj._id===id).nome : '';
-      }
+  const handleEditar = (url) => {
+    props.history.push(url);
+  }
 
-      const retornaFuncionario = (id) =>{
-        return props.data.funcionarios.find(obj=>obj._id===id) ? props.data.funcionarios.find(obj=>obj._id===id).nome : '';
-      }
-
-      const retornaCidade = (id) =>{
-        return this.state.cidades.find(obj=>obj._id===id).nome;
-      }
-
-      const defineDado = (tipo, dado) => {
-        switch (tipo) {
-            case 'idServico':
-                return retornaServico(dado);
-                break;
-
-            case 'data':
-                return serverDateToString(dado);
-                break;
-        
-            case 'idFuncionario':
-              return retornaFuncionario(dado);
-              break;
-
-            case 'idCidade':
-              return retornaCidade(dado);
-              break;
-
-            default:
-                return dado;
-                break;
+  const handleOrdenar = (col) => {
+    debugger
+    const data = dados.sort(function (a, b) {
+      if (direcao === 'desc') {
+        if (a[col] > b[col]) {
+          return -1;
         }
+        setDirecao('asc');
+      } else {
+        if (a[col] < b[col]) {
+          return -1;
+        }
+        setDirecao('desc');
       }
+    });
+    setDados(data);
+  }
 
-    const dataTable = () => {
-      let count = 0;  
-      return dados && dados.map((res) => {  count++;
-          return (
-            <tr>
-                {props.fields.map((t)=>{
-                    return Object.keys(res).find((o)=>o===t) ? <td>{defineDado(t,res[t])}</td> : ''                    
-                }                    
-                )}                
-                <td>
-                <div className="btn-group" role="group" aria-label="Basic mixed styles example">
-                  <button type="button" className="btn btn-primary" onClick={() => handleEditar("/edit-"+props.tableName+"/" + res._id)}>
-                  <FontAwesomeIcon icon={solid('pen')} />
-                  </button>
-                  
-                  <button type="button" className="btn btn-danger" onClick={() => confimarExclusao(res._id)}>
-                  <FontAwesomeIcon icon={solid('trash')} />
-                  </button>
-                </div>                
-                </td>
-            </tr>
-          );    
-        });
+  const primeiraUpperCase = (v) => v.includes('id') ? v.substr(2, 1).toUpperCase() + v.substr(3, v.lenght) : v.substr(0, 1).toUpperCase() + v.substr(1, v.lenght)
 
-        //setTotal(count);
-      }
+  const retornaServico = (id) => {
+    return props.data.servicos.find(obj => obj._id === id) ? props.data.servicos.find(obj => obj._id === id).nome : '';
+  }
 
+  const retornaFuncionario = (id) => {
+    return props.data.funcionarios.find(obj => obj._id === id) ? props.data.funcionarios.find(obj => obj._id === id).nome : '';
+  }
 
-    return(
+  const retornaCidade = (id) => {
+    return this.state.cidades.find(obj => obj._id === id).nome;
+  }
 
-        <div>
-        <div className="table-wrapper">        
-        <table className="table table-striped">
-            <thead>
-              <tr>
-                {props.fields.map((t)=>
-                    <th><a href="#" onClick={() => handleOrdenar(t)}>{primeiraUpperCase(t)}</a></th>
-                )}                
-                <th>Ação</th>
-              </tr>
-            </thead>
-            <tbody>
-              {dataTable()}
-            </tbody>
-            <footer>
-              Total: {total}
-            </footer>
-          </table>          
-        </div>        
+  const defineDado = (tipo, dado) => {
+    switch (tipo) {
+      case 'idServico':
+        return retornaServico(dado);
+        break;
+
+      case 'data':
+        return serverDateToString(dado);
+        break;
+
+      case 'idFuncionario':
+        return retornaFuncionario(dado);
+        break;
+
+      case 'idCidade':
+        return retornaCidade(dado);
+        break;
+
+      default:
+        return dado;
+        break;
+    }
+  }
+
+  const dataTable = () => {
+    let count = 0;
+    return dados && dados.map((res) => {
+      count++;
+      return (
+        <tr>
+          {props.fields.map((t) => {
+            return Object.keys(res).find((o) => o === t) ? <td>{defineDado(t, res[t])}</td> : ''
+          }
+          )}
+          <td>
+            <div className="btn-group" role="group" aria-label="Basic mixed styles example">
+              <button type="button" className="btn btn-primary" onClick={() => handleEditar("/edit-" + props.tableName + "/" + res._id)}>
+                <FontAwesomeIcon icon={solid('pen')} />
+              </button>
+
+              <button type="button" className="btn btn-danger" onClick={() => confimarExclusao(res._id)}>
+                <FontAwesomeIcon icon={solid('trash')} />
+              </button>
+            </div>
+          </td>
+        </tr>
+      );
+    });
+
+    setTotal(count);
+  }
+
+  const pagination = true;
+  const paginationPageSize = 50;
+  const paginationPageSizeSelector = [50, 100, 200];
+
+  const CustomButtonComponent = (props) => {    
+    return <button type="button" className="btn btn-danger" onClick={() => confimarExclusao(props.data._id)}>
+      <FontAwesomeIcon icon={solid('trash')} />
+    </button>;
+  };
+
+  return (
+
+    <div>
+      <div
+        className="ag-theme-quartz"
+        style={{ height: 500 }}
+      >
+        <AgGridReact
+          rowData={dados}
+          columnDefs={fields}
+          pagination={pagination}
+          paginationPageSize={paginationPageSize}
+          paginationPageSizeSelector={paginationPageSizeSelector}
+        />
       </div>
+      {/* <div className="table-wrapper">
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              {props.fields.map((t) =>
+                <th><a href="#" onClick={() => handleOrdenar(t)}>{primeiraUpperCase(t)}</a></th>
+              )}
+              <th>Ação</th>
+            </tr>
+          </thead>
+          <tbody>
+            {dataTable()}
+          </tbody>
+          <footer>
+            Total: {total}
+          </footer>
+        </table>
+      </div> */}
+    </div>
 
-    )
+  )
 
-    
+
 }

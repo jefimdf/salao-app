@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import Button from 'react-bootstrap/Button';
 import DataGrid from '../../common/dataGrid/dataGrid';
 import ModalConfirmacao from "../../common/modalConfirmacao";
+import handleOrdenar from '../../common/ordenacao';
 import Persistencia from '../Administracao/Commom/persistencia';
 
 const tableName = 'cliente';
@@ -29,6 +30,11 @@ export default function ClienteList(props) {
 
     Promise.all(requests)
       .then(([objClientes, objCidades]) => {
+
+        console.log(objClientes);
+        
+        objClientes = handleOrdenar(objClientes, 'nome', 'asc');
+
         setData({
           tabela: objClientes,
           cidades: objCidades
@@ -60,7 +66,7 @@ export default function ClienteList(props) {
         <Button variant="primary" size="lg" block="block" type="button" onClick={novo}>Novo</Button>        
         {carregado && <DataGrid 
         {...props}
-        fields={['nome', 'celular']}
+        fields={[{ field: "nome" }, { field: "celular" }, ]}
         data={data} 
         tableName={tableName}
         setShowModal={setShowModal}
