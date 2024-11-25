@@ -72,6 +72,7 @@ export default function AgendaView(props) {
       );
     }
 
+    
     const retornaServico = (id) => servicos.length>0 ? servicos.find(obj=>obj._id===id).nome : '';
     
     const retornaFuncionario = (id) => funcionarios.length>0 ? funcionarios.find(obj=>obj._id===id).nome : '';
