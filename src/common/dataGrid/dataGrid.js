@@ -3,7 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the Data Grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the Data Grid
 import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
-import React, { useEffect, useState } from 'react';
+import React, { StrictMode, useEffect, useState } from 'react';
+
 import { serverDateToString } from "../dateValidations";
 
 export default function DataGrid(props) {
@@ -14,9 +15,11 @@ export default function DataGrid(props) {
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
+    console.log(dados);
 
-    //setFields(fields.push({ field: "button", cellRenderer: CustomButtonComponent }));
-    
+    fields.push({ field: "Ação", cellRenderer: CustomButtonComponent })
+    setFields(fields);
+
   }, []);
 
 
@@ -114,10 +117,10 @@ export default function DataGrid(props) {
   }
 
   const pagination = true;
-  const paginationPageSize = 50;
-  const paginationPageSizeSelector = [50, 100, 200];
+  const paginationPageSize = 10;
+  const paginationPageSizeSelector = [10, 20, 30, 40, 50];
 
-  const CustomButtonComponent = (props) => {    
+  const CustomButtonComponent = (props) => {
     return <button type="button" className="btn btn-danger" onClick={() => confimarExclusao(props.data._id)}>
       <FontAwesomeIcon icon={solid('trash')} />
     </button>;
@@ -126,7 +129,7 @@ export default function DataGrid(props) {
   return (
 
     <div>
-      <div
+      <StrictMode><div
         className="ag-theme-quartz"
         style={{ height: 500 }}
       >
@@ -137,7 +140,8 @@ export default function DataGrid(props) {
           paginationPageSize={paginationPageSize}
           paginationPageSizeSelector={paginationPageSizeSelector}
         />
-      </div>
+      </div></StrictMode>
+
       {/* <div className="table-wrapper">
         <table className="table table-striped">
           <thead>
