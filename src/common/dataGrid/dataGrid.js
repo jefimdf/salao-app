@@ -22,6 +22,7 @@ export default function DataGrid(props) {
 
   }, []);
 
+  
 
   const confimarExclusao = (id) => {
     props.setShowModal(true)
