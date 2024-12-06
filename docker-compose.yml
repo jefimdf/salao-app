@@ -1,0 +1,11 @@
+version: '3'
+services:
+  salaonadia:
+    container_name: salaonadia
+    build: 
+      context: "./"
+      dockerfile: dockerfile
+
+    ports:
+      - '3000:3000'
+    
