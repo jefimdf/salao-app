@@ -58,7 +58,8 @@ export default function AgendaList(props) {
 
   const onDelete = (id) => {
     axios.delete(process.env.REACT_APP_URL_SERVER + tableName + '/delete/' + id)
-      .then((res) => {debugger
+      .then((res) => {
+        debugger
         console.log('Excluído com sucesso!');
         setShowModal(false);
         carregaLista();
@@ -110,11 +111,10 @@ export default function AgendaList(props) {
 
 
     let dataAtual = new Date();
-    let diaAtual = dataAtual.getDate();
+    
+    let dataInicial = formatDateAAAAMMDD(new Date(dataAtual.setDate(dataAtual.getDate() - 7)));
 
-    let dataInicial = formatDateAAAAMMDD(new Date(dataAtual.setDate(diaAtual - 7)));
-
-    let dataFinal = formatDateAAAAMMDD(new Date(dataAtual.setDate(diaAtual + 30)));
+    let dataFinal = formatDateAAAAMMDD(new Date(dataAtual.setDate(dataAtual.getDate() + 30)));
 
     let agendaFiltro = [];
 
