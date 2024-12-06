@@ -22,7 +22,7 @@ export default function DataGrid(props) {
 
   }, []);
 
-  
+
 
   const confimarExclusao = (id) => {
     props.setShowModal(true)
@@ -132,7 +132,7 @@ export default function DataGrid(props) {
     <div>
       <StrictMode><div
         className="ag-theme-quartz"
-        style={{ height: 500 }}
+        style={{ height: 500, width: '100%' }}
       >
         <AgGridReact
           rowData={dados}
