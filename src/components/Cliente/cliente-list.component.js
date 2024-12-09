@@ -69,6 +69,7 @@ export default function ClienteList(props) {
         {...props}
         fields={[{ field: "nome", filter: true, floatingFilter: true }, { field: "cidade", filter: true, floatingFilter: true }, { field: "celular", filter: true, floatingFilter: true }, { field: "dataNascimento", filter: true, floatingFilter: true }]}
         data={data}
+        edit={true}
         tableName={tableName}
         setShowModal={setShowModal}
         setIdRegistro={setIdRegistro}

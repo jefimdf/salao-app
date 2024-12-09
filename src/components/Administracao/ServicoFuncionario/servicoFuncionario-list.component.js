@@ -63,6 +63,7 @@ export default function ServicoFuncionarioList(props) {
         {...props}
         fields={[{ field: "funcionario", filter: true, floatingFilter: true }, { field: "servico", filter: true, floatingFilter: true }, { field: "percentual", filter: true, floatingFilter: true }]}
         data={data}
+        edit={true}
         tableName={tableName}
         setShowModal={setShowModal}
         setIdRegistro={setIdRegistro}

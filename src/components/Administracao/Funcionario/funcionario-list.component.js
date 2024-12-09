@@ -54,6 +54,7 @@ export default function FuncionarioList(props) {
         {...props}
         fields={[{ field: "nome", filter: true, floatingFilter: true }, { field: "email", filter: true, floatingFilter: true }]}
         data={data}
+        edit={true}
         tableName={tableName}
         setShowModal={setShowModal}
         setIdRegistro={setIdRegistro}

@@ -59,6 +59,7 @@ export default function PrecoList(props) {
         {...props}
         fields={[{ field: "servico", filter: true, floatingFilter: true }, { field: "preco", filter: true, floatingFilter: true }]}
         data={data}
+        edit={true}
         tableName={tableName}
         setShowModal={setShowModal}
         setIdRegistro={setIdRegistro}

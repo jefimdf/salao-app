@@ -65,6 +65,7 @@ export default function ServicoList(props) {
         {...props}
         fields={[{ field: "grupo", filter: true, floatingFilter: true }, { field: "nome", filter: true, floatingFilter: true }]}
         data={data}
+        edit={true}
         tableName={tableName}
         setShowModal={setShowModal}
         setIdRegistro={setIdRegistro}
