@@ -27,8 +27,9 @@ export default function DataGrid(props) {
 
 
   useEffect(() => {
-    fields.push({ headerName: "Edição", cellRenderer: btnEdit},{ headerName: "Exclusão", cellRenderer: btnDelete})
-    setFields(fields);    
+    if (props.edit) fields.push({ headerName: "Edição", cellRenderer: btnEdit });
+    fields.push({ headerName: "Exclusão", cellRenderer: btnDelete })
+    setFields(fields);
   }, []);
 
   const confimarExclusao = (id) => {

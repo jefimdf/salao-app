@@ -88,7 +88,7 @@ export default function FechamentoMes(props) {
     setDataInicial(dataInicial);
 
     mes = new Date().getMonth() + 1;
-    mes = mes.toString().length === 1 ? "0" + mes : mes;    
+    mes = mes.toString().length === 1 ? "0" + mes : mes;
     const dataFinal = new Date(ano + "-" + mes + "-" + dia);
     setDataFinal(dataFinal);
     debugger
@@ -102,10 +102,10 @@ export default function FechamentoMes(props) {
       axios
         .get(
           process.env.REACT_APP_URL_SERVER +
-            "agenda/fechamento/" +
-            dateToStringAmericano(dataInicial) +
-            "/" +
-            dateToStringAmericano(dataFinal)
+          "agenda/fechamento/" +
+          dateToStringAmericano(dataInicial) +
+          "/" +
+          dateToStringAmericano(dataFinal)
         )
         .then((res) => (res = res.data)),
     ];
@@ -253,7 +253,7 @@ export default function FechamentoMes(props) {
 
   return (
     <div className="form-wrapper">
-      {!carregado && <Loading/>}
+      {!carregado && <Loading />}
       {mensagem && <Mensagem tipo={mensagem.tipo} texto={mensagem.mensagem} />}
       {carregado && (
         <Form onSubmit={onSubmit}>
@@ -290,13 +290,13 @@ export default function FechamentoMes(props) {
                   </div>
                 </div>
               </Form.Group>
-            </div>            
+            </div>
           </div>
           <div className="row espaco">
-                    <button type="submit" className="btn btn-primary">
-                      Gerar
-                    </button>              
-            </div>
+            <button type="submit" className="btn btn-primary">
+              Gerar
+            </button>
+          </div>
         </Form>
       )}
       {listaRelatorio.length > 0 && (<>
@@ -346,19 +346,19 @@ export default function FechamentoMes(props) {
                     Marcado
                   </label>
                 </div>
-              </div>              
+              </div>
             </div>
           </Form.Group>
         </div>
         <div className="row">
-        <button
-          type="button"
-          className="btn btn-primary"
-          onClick={exportarPDF}
-        >
-          Exportar PDF
-        </button>
-      </div>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={exportarPDF}
+          >
+            Exportar PDF
+          </button>
+        </div>
       </>
       )}
       <div className="row" id="printTable">

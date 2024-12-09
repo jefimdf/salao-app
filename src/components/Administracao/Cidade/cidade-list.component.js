@@ -1,116 +1,64 @@
 import axios from 'axios';
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from 'react-bootstrap/Button';
+import DataGrid from '../../../common/dataGrid/dataGrid';
 import ModalConfirmacao from "../../../common/modalConfirmacao";
+import Persistencia from '../Commom/persistencia';
 
 
 const tableName = 'cidade';
 
-export default class CidadeList extends React.Component {
+export default function CidadeList(props) {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      cidades: [],
-      showModal: false,
-      idRegistro: 0
-    };
+  const [showModal, setShowModal] = useState(false);
+  const [idRegistro, setIdRegistro] = useState(0);
+  const [data, setData] = useState({})
+  const [carregado, setCarregado] = useState(false)
 
-    this.delete = this.delete.bind(this);
-    this.confimarExclusao = this.confimarExclusao.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-    this.novo = this.novo.bind(this);
-  }
+  const persistencia = new Persistencia({ props: props, tableName: tableName, setShowModal: setShowModal });
 
-  componentDidMount() {
-    this.carregaLista();    
-  }
+  useEffect(() => {
 
-  carregaLista(){
-    axios.get(process.env.REACT_APP_URL_SERVER + tableName + '/')
-      .then(res => {
-        this.setState({
-          cidades: res.data
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-  }
+    const requests = [
+      axios.get(process.env.REACT_APP_URL_SERVER + tableName + '/')
+        .then(res => res = res.data)
+    ];
 
-  delete = (id) => {
-    axios.delete(process.env.REACT_APP_URL_SERVER + tableName + '/delete/' + id)
-        .then((res) => {
-            console.log('Excluído com sucesso!');
-            this.setState({showModal: false});    
-            this.carregaLista();
-        }).catch((error) => {
-            console.log(error)
-        })    
-  }
+    Promise.all(requests)
+      .then(([obj]) => {
+        setData(obj)
+        setCarregado(true)
+      }, (evt) => {
+        console.log(evt);
+      });
 
-  confimarExclusao(id){
-    this.setState({showModal: true, idRegistro: id});
-  }
+  }, []);
 
-  handleClose(status){
-    if (status){
-      this.delete(this.state.idRegistro);
+  const handleClose = (status) => {
+    if (status) {
+      persistencia.handleDelete(idRegistro);
     }
-    this.setState({showModal: status});    
+    setShowModal(status);
   }
 
-  novo(){
-    this.props.history.push('/create-cidade');
+  const novo = () => {
+    props.history.push('/create-' + tableName + '');
   }
 
-  handleEditar(url){
-    this.props.history.push(url);
-  }
+  return (
+    <div>
+      <ModalConfirmacao show={showModal} handleClose={handleClose} Title="Exclusão de preço" Message="Deseja excluir o registro?" />
+      <Button variant="primary" size="lg" block="block" type="button" onClick={novo}>Novo</Button>
+      {carregado && <DataGrid
+        {...props}
+        fields={[{ field: "nome", filter: true, floatingFilter: true }]}
+        data={data}
+        tableName={tableName}
+        setShowModal={setShowModal}
+        setIdRegistro={setIdRegistro}
+      />}
 
-  DataTable() {
-    return this.state.cidades.map((res) => {
-      
-      return (
-        <tr>
-            <td>{res.nome}</td>
-            <td>
-            <div className="btn-group" role="group" aria-label="Basic mixed styles example">
-              <button type="button" className="btn btn-primary" onClick={() => this.handleEditar("/edit-cidade/" + res._id)}>
-                    Editar
-              </button>
-              <button type="button" className="btn btn-danger" onClick={() => this.confimarExclusao(res._id)}>Excluir</button>
-            </div>                
-            </td>
-        </tr>
-      );
+    </div>
 
-    });
-  }
-
-
-  render() {
-    
-    return (
-      <div>
-        <ModalConfirmacao show={this.state.showModal} handleClose={this.handleClose} Title="Exclusão de Cidade" Message="Deseja excluir o registro?" />
-        <Button variant="primary" size="lg" block="block" type="button" onClick={this.novo}>Novo</Button>        
-        <div className="table-wrapper">        
-        <table className="table table-striped">
-            <thead>
-              <tr>
-                <th>Nome</th>
-                <th>Ação</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.DataTable()}
-            </tbody>
-          </table>          
-        </div>
-        
-      </div>
-    
-    );
-  }
+  );
 }

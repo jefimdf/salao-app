@@ -1,13 +1,17 @@
 import axios from 'axios';
 import React, { useEffect, useState } from "react";
 import Button from 'react-bootstrap/Button';
+import DataGrid from '../../common/dataGrid/dataGrid';
 import { serverDateToString } from "../../common/dateValidations";
+import { formatMoney } from '../../common/functions';
 import ModalConfirmacao from "../../common/modalConfirmacao";
+import Persistencia from '../Administracao/Commom/persistencia';
 
 const tableName = 'agenda';
 
 export default function AgendaList(props) {
 
+  const [data, setData] = useState([]);
   const [agendas, setAgendas] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [idRegistro, setIdRegistro] = useState(0);
@@ -17,6 +21,8 @@ export default function AgendaList(props) {
   const [servicosFuncionarios, setServicosFuncionarios] = useState([]);
   const [carregado, setCarregado] = useState(false);
   const [precos, setPrecos] = useState([]);
+
+  const persistencia = new Persistencia({ props: props, tableName: tableName, setShowModal: setShowModal });
 
   useEffect(() => {
 
@@ -49,6 +55,7 @@ export default function AgendaList(props) {
         setPrecos(objPreco);
         setFuncionarios(objFuncionario);
         setClientes(objCliente);
+
         setCarregado(true);
 
       }, (evt) => {
@@ -103,7 +110,7 @@ export default function AgendaList(props) {
   const formatDateAAAAMMDD = (data) => {
     data = new Date(data);
 
-    return data;//parseInt(data.getUTCFullYear() + data.getMonth() + data.getDate());
+    return data;
 
   }
 
@@ -111,7 +118,7 @@ export default function AgendaList(props) {
 
 
     let dataAtual = new Date();
-    
+
     let dataInicial = formatDateAAAAMMDD(new Date(dataAtual.setDate(dataAtual.getDate() - 7)));
 
     let dataFinal = formatDateAAAAMMDD(new Date(dataAtual.setDate(dataAtual.getDate() + 30)));
@@ -120,34 +127,46 @@ export default function AgendaList(props) {
 
     agendas.map(obj => {
 
-      if (formatDateAAAAMMDD(obj.data) >= dataInicial && formatDateAAAAMMDD(obj.data) <= dataFinal) {
-        agendaFiltro.push(obj);
+      if (formatDateAAAAMMDD(obj.data) >= dataInicial && formatDateAAAAMMDD(obj.data) <= dataFinal) {debugger
+        agendaFiltro.push(
+          {
+            ...obj,
+            servico: retornaServico(obj.idServico),
+            funcionario: retornaFuncionario(obj.idFuncionario),
+            cliente: retornaCliente(obj.idCliente),
+            data: serverDateToString(obj.data),
+            valor: formatMoney(obj.total, 'R$')
+          }
+        );
+        
       }
+
+
     });
 
-    return agendaFiltro.map((res) => {
-
+    if (agendaFiltro.length > 0) {
+      
       return (
-        <tr>
-          <td>{retornaServico(res.idServico)}</td>
-          <td>{retornaFuncionario(res.idFuncionario)}</td>
-          <td>{retornaCliente(res.idCliente)}</td>
-          <td>{serverDateToString(res.data)}</td>
-          <td>{res.hora}</td>
-          <td>{res.total}</td>
-          <td>{res.situacao}</td>
-          <td>
-            <div className="btn-group" role="group" aria-label="Basic mixed styles example">
-              {/* <button type="button" className="btn btn-primary" onClick={() => handleEditar("/edit-"+tableName+"/" + res._id)}>
-                    Editar
-              </button> */}
-              <button type="button" className="btn btn-danger" onClick={() => confimarExclusao(res._id)}>Excluir</button>
-            </div>
-          </td>
-        </tr>
-      );
+        <DataGrid
+          {...props}
+          fields={[{ field: "servico", filter: true, floatingFilter: true },
+          { field: "funcionario", filter: true, floatingFilter: true },
+          { field: "cliente", filter: true, floatingFilter: true },
+          { field: "data", filter: true, floatingFilter: true },
+          { field: "hora", filter: true, floatingFilter: true },
+          { field: "valor", filter: true, floatingFilter: true },
+          { field: "situacao", filter: true, floatingFilter: true }
+          ]}
+          data={agendaFiltro}
+          tableName={tableName}
+          edit={false}
+          setShowModal={setShowModal}
+          setIdRegistro={setIdRegistro}
+        />
+      )
+    }
 
-    });
+
   }
 
 
@@ -156,26 +175,8 @@ export default function AgendaList(props) {
   return (
     <div>
       <ModalConfirmacao show={showModal} handleClose={handleClose} Title="Exclusão de agenda" Message="Deseja excluir o registro?" />
-      <div className="table-wrapper">
-        <Button variant="primary" size="lg" block="block" type="button" onClick={novo}>Novo</Button>
-        <table className="table table-striped">
-          <thead>
-            <tr>
-              <th>Serviço</th>
-              <th>Funcionário</th>
-              <th>Cliente</th>
-              <th>Data</th>
-              <th>Hora</th>
-              <th>Valor</th>
-              <th>Situação</th>
-              <th>Ação</th>
-            </tr>
-          </thead>
-          <tbody>
-            {carregado && DataTable()}
-          </tbody>
-        </table>
-      </div>
+      <Button variant="primary" size="lg" block="block" type="button" onClick={novo}>Novo</Button>
+      {carregado && DataTable()}
 
     </div>
 
