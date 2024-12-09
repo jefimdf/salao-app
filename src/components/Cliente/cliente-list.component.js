@@ -39,9 +39,7 @@ export default function ClienteList(props) {
           return { ...obj, dataNascimento: serverDateToString(obj.dataNascimento), cidade: cidade }
         })
 
-        setData({
-          tabela: clientes
-        });
+        setData(clientes);
 
         setCarregado(true);
 

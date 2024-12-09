@@ -10,7 +10,7 @@ import './styles.css';
 
 export default function DataGrid(props) {
 
-  const [dados, setDados] = useState(props.data.tabela);
+  const [dados, setDados] = useState(props.data);
   const [fields, setFields] = useState(props.fields);
   const [tableName, setTableName] = useState(props.tableName);
   const gridRef = useRef(null);
@@ -28,7 +28,7 @@ export default function DataGrid(props) {
 
   useEffect(() => {
     fields.push({ headerName: "Edição", cellRenderer: btnEdit},{ headerName: "Exclusão", cellRenderer: btnDelete})
-    setFields(fields);
+    setFields(fields);    
   }, []);
 
   const confimarExclusao = (id) => {
