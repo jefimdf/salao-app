@@ -4,6 +4,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from "react";
 import Button from 'react-bootstrap/Button';
 import DataGrid from '../../common/dataGrid/dataGrid';
+import { serverDateToString } from '../../common/dateValidations';
 import ModalConfirmacao from "../../common/modalConfirmacao";
 import handleOrdenar from '../../common/ordenacao';
 import Persistencia from '../Administracao/Commom/persistencia';
@@ -31,13 +32,15 @@ export default function ClienteList(props) {
     Promise.all(requests)
       .then(([objClientes, objCidades]) => {
 
-        console.log(objClientes);
-
         objClientes = handleOrdenar(objClientes, 'nome', 'asc');
 
+        let clientes = objClientes.map(obj => {
+          const cidade = obj.idCidade ? objCidades.find(obj2 => obj2._id === obj.idCidade).nome : '';
+          return { ...obj, dataNascimento: serverDateToString(obj.dataNascimento), cidade: cidade }
+        })
+
         setData({
-          tabela: objClientes,
-          cidades: objCidades
+          tabela: clientes
         });
 
         setCarregado(true);
@@ -66,7 +69,7 @@ export default function ClienteList(props) {
       <Button variant="primary" size="lg" block="block" type="button" onClick={novo}>Novo</Button>
       {carregado && <DataGrid
         {...props}
-        fields={[{ field: "nome", filter: true, floatingFilter: true }, { field: "celular", filter: true, floatingFilter: true }]}
+        fields={[{ field: "nome", filter: true, floatingFilter: true }, { field: "cidade", filter: true, floatingFilter: true }, { field: "celular", filter: true, floatingFilter: true }, { field: "dataNascimento", filter: true, floatingFilter: true }]}
         data={data}
         tableName={tableName}
         setShowModal={setShowModal}

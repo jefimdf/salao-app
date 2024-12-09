@@ -3,26 +3,33 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the Data Grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the Data Grid
 import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
-import React, { StrictMode, useEffect, useState } from 'react';
+import React, { StrictMode, useEffect, useMemo, useRef, useState } from 'react';
 
-import { serverDateToString } from "../dateValidations";
+
+import './styles.css';
 
 export default function DataGrid(props) {
 
   const [dados, setDados] = useState(props.data.tabela);
   const [fields, setFields] = useState(props.fields);
-  const [direcao, setDirecao] = useState('asc');
-  const [total, setTotal] = useState(0);
+  const [tableName, setTableName] = useState(props.tableName);
+  const gridRef = useRef(null);
+  const [style, setStyle] = useState({
+    height: '600px',
+    width: '100%',
+  });
 
-  useEffect(() => {
-    console.log(dados);
-
-    fields.push({ field: "Ação", cellRenderer: CustomButtonComponent })
-    setFields(fields);
-
+  const defaultColDef = useMemo(() => {
+    return {
+      resizable: false,
+    };
   }, []);
 
 
+  useEffect(() => {
+    fields.push({ headerName: "Edição", cellRenderer: btnEdit},{ headerName: "Exclusão", cellRenderer: btnDelete})
+    setFields(fields);
+  }, []);
 
   const confimarExclusao = (id) => {
     props.setShowModal(true)
@@ -33,25 +40,6 @@ export default function DataGrid(props) {
     props.history.push(url);
   }
 
-  const handleOrdenar = (col) => {
-    debugger
-    const data = dados.sort(function (a, b) {
-      if (direcao === 'desc') {
-        if (a[col] > b[col]) {
-          return -1;
-        }
-        setDirecao('asc');
-      } else {
-        if (a[col] < b[col]) {
-          return -1;
-        }
-        setDirecao('desc');
-      }
-    });
-    setDados(data);
-  }
-
-  const primeiraUpperCase = (v) => v.includes('id') ? v.substr(2, 1).toUpperCase() + v.substr(3, v.lenght) : v.substr(0, 1).toUpperCase() + v.substr(1, v.lenght)
 
   const retornaServico = (id) => {
     return props.data.servicos.find(obj => obj._id === id) ? props.data.servicos.find(obj => obj._id === id).nome : '';
@@ -61,107 +49,49 @@ export default function DataGrid(props) {
     return props.data.funcionarios.find(obj => obj._id === id) ? props.data.funcionarios.find(obj => obj._id === id).nome : '';
   }
 
-  const retornaCidade = (id) => {
-    return this.state.cidades.find(obj => obj._id === id).nome;
-  }
-
-  const defineDado = (tipo, dado) => {
-    switch (tipo) {
-      case 'idServico':
-        return retornaServico(dado);
-        break;
-
-      case 'data':
-        return serverDateToString(dado);
-        break;
-
-      case 'idFuncionario':
-        return retornaFuncionario(dado);
-        break;
-
-      case 'idCidade':
-        return retornaCidade(dado);
-        break;
-
-      default:
-        return dado;
-        break;
-    }
-  }
-
-  const dataTable = () => {
-    let count = 0;
-    return dados && dados.map((res) => {
-      count++;
-      return (
-        <tr>
-          {props.fields.map((t) => {
-            return Object.keys(res).find((o) => o === t) ? <td>{defineDado(t, res[t])}</td> : ''
-          }
-          )}
-          <td>
-            <div className="btn-group" role="group" aria-label="Basic mixed styles example">
-              <button type="button" className="btn btn-primary" onClick={() => handleEditar("/edit-" + props.tableName + "/" + res._id)}>
-                <FontAwesomeIcon icon={solid('pen')} />
-              </button>
-
-              <button type="button" className="btn btn-danger" onClick={() => confimarExclusao(res._id)}>
-                <FontAwesomeIcon icon={solid('trash')} />
-              </button>
-            </div>
-          </td>
-        </tr>
-      );
-    });
-
-    setTotal(count);
-  }
 
   const pagination = true;
   const paginationPageSize = 10;
   const paginationPageSizeSelector = [10, 20, 30, 40, 50];
 
-  const CustomButtonComponent = (props) => {
+  const btnDelete = (props) => {
     return <button type="button" className="btn btn-danger" onClick={() => confimarExclusao(props.data._id)}>
       <FontAwesomeIcon icon={solid('trash')} />
     </button>;
   };
 
+  const btnEdit = (props) => {
+    return <button type="button" className="btn btn-primary" onClick={() => handleEditar("/edit-" + tableName + "/" + props.data._id)}>
+      <FontAwesomeIcon icon={solid('pen')} />
+    </button>;
+  };
+
   return (
 
-    <div>
-      <StrictMode><div
-        className="ag-theme-quartz"
-        style={{ height: 500, width: '100%' }}
-      >
-        <AgGridReact
-          rowData={dados}
-          columnDefs={fields}
-          pagination={pagination}
-          paginationPageSize={paginationPageSize}
-          paginationPageSizeSelector={paginationPageSizeSelector}
-        />
-      </div></StrictMode>
+    <StrictMode>
+      <div className="example-wrapper">
+        <div
+          className={
+            'grid-wrapper ' +
+            "ag-theme-quartz"
+          }
+        >
+          <div style={style}>
+            <AgGridReact
+              ref={gridRef}
+              rowData={dados}
+              defaultColDef={defaultColDef}
+              columnDefs={fields}
+              pagination={pagination}
+              paginationPageSize={paginationPageSize}
+              paginationPageSizeSelector={paginationPageSizeSelector}
 
-      {/* <div className="table-wrapper">
-        <table className="table table-striped">
-          <thead>
-            <tr>
-              {props.fields.map((t) =>
-                <th><a href="#" onClick={() => handleOrdenar(t)}>{primeiraUpperCase(t)}</a></th>
-              )}
-              <th>Ação</th>
-            </tr>
-          </thead>
-          <tbody>
-            {dataTable()}
-          </tbody>
-          <footer>
-            Total: {total}
-          </footer>
-        </table>
-      </div> */}
-    </div>
+            />
+          </div>
+        </div>
+      </div>
+    </StrictMode>
+
 
   )
 
