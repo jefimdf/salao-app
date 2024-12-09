@@ -1,6 +1,8 @@
 import React from "react";
+import ReactLoading from 'react-loading';
 import { Article, Prop, Section } from "./generic";
 import './style.css';
+
 
 export default function Loading() {
 
@@ -9,9 +11,10 @@ export default function Loading() {
             <div className="col"></div>
             <div className="col">
                 <Section>
-                    <Article key="spinningBubbles">
-                        {/* <ReactLoading type="spinningBubbles" color="#fff" className="fundo-loading" height={'0px'} width={'50%'} /> */}
-                        <Prop>Carregando</Prop>
+                    <Article key="spinningBubbles" >
+                        <ReactLoading type="spinningBubbles" color="#fff" height={'20%'} width={'20%'} /> 
+                        
+                        <Prop className="carregando">Carregando</Prop>
                     </Article>
                 </Section>
             </div>
