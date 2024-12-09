@@ -153,8 +153,8 @@ export default function AgendaList(props) {
           { field: "funcionario", filter: true, floatingFilter: true },
           { field: "cliente", filter: true, floatingFilter: true },
           { field: "data", filter: true, floatingFilter: true },
-          { field: "hora", filter: true, floatingFilter: true },
-          { field: "valor", filter: true, floatingFilter: true },
+          { field: "hora" },
+          { field: "valor" },
           { field: "situacao", filter: true, floatingFilter: true }
           ]}
           data={agendaFiltro}
