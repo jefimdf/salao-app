@@ -62,6 +62,10 @@ import Login from "./components/Administracao/Login/login.component";
 //Relatorio
 import FechamentoMes from "./components/Administracao/Relatorio/fechamento-rel.component";
 
+//Despesa
+import CreateDespesa from "./components/Administracao/Despesa/create-despesa.component";
+import Despesa from "./components/Administracao/Despesa/despesa-list.component";
+
 
 function App(props) {
 
@@ -154,6 +158,9 @@ function App(props) {
             case 'cidade-list':
             titulo = 'Cidade'        
             break;          
+            case 'despesa-list':
+            titulo = 'Despesa'        
+            break;          
       default:
         break;
     }
@@ -195,6 +202,7 @@ function App(props) {
                     <NavDropdown.Item href="/cidade-list">Cidade</NavDropdown.Item>
                     <NavDropdown.Item href="/fechamento-rel">Fechamento Mês</NavDropdown.Item>
                     <NavDropdown.Item href="/agenda-list">Editar Agenda</NavDropdown.Item>
+                    <NavDropdown.Item href="/despesa-list">Despesa</NavDropdown.Item>
                   </NavDropdown>
                   }                                
                 </div>
@@ -260,6 +268,9 @@ function App(props) {
                   <Route path="/login" component={Login} />
 
                   <Route path="/fechamento-rel" component={FechamentoMes} />
+
+                  <Route path="/create-despesa" component={CreateDespesa} />
+                  <Route path="/despesa-list" component={Despesa} />
                   
                 </Switch>
               </ErrorBoundary>
