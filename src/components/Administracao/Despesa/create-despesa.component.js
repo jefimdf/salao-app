@@ -6,7 +6,7 @@ import DatePicker from "react-datepicker";
 import Select from 'react-select';
 import Persistencia from '../Commom/persistencia';
 
-const tableName = 'usuario';
+const tableName = 'despesa';
 const nonce = '';
 
 const comboCategoria = [
@@ -31,15 +31,42 @@ export default function CreateUsuario(props) {
   const [titulo, setTitulo] = useState('')
   const [descricao, setDescricao] = useState('')
   const [data, setData] = useState('')
-  const [categoria, setCategoria] = useState('')
-  const [lancamento, setLancamento] = useState('')
   const [valor, setValor] = useState('')
+  const [categoria, setCategoria] = useState([])
+  const [lancamento, setLancamento] = useState([])
 
   const persistencia = new Persistencia({ props: props, tableName: tableName, setShowModal: setShowModal });
 
   useEffect(() => {
 
-  })
+    const requests = [
+      axios.get(process.env.REACT_APP_URL_SERVER + 'categoria/')
+        .then(res => res = res.data),
+      axios.get(process.env.REACT_APP_URL_SERVER + 'lancamento/')
+        .then(res => res = res.data)
+    ]
+
+    Promise.all(requests)
+      .then(([objCategoria, objLancamento]) => {
+        objCategoria = objCategoria.map(obj => {
+          return {
+            value: obj._id,
+            label: obj.name
+          }
+        })
+        setCategoria(objCategoria);
+
+        objLancamento = objLancamento.map(obj => {
+          return {
+            value: obj._id,
+            label: obj.name
+          }
+        })
+        setLancamento(objLancamento);
+
+      })
+
+  }, [])
 
   const cancelar = () => {
     props.history.push('/' + tableName + '-list');
@@ -54,7 +81,8 @@ export default function CreateUsuario(props) {
   }
 
   const onChangeData = (e) => {
-    setDescricao(e.target.value);
+    debugger
+    setData(e);
   }
 
   const onComboCategoria = (e) => {
@@ -95,56 +123,77 @@ export default function CreateUsuario(props) {
 
   return (<div className="form-wrapper">
     <Form onSubmit={onSubmit}>
-      <Form.Group controlId="Titulo">
-        <Form.Label>Título</Form.Label>
-        <Form.Control type="text" value={titulo} onChange={onChangeTitulo} />
-      </Form.Group>
+      <div className="row">
+        <div className="col-8">
+          <Form.Group controlId="Titulo">
+            <Form.Label>Título</Form.Label>
+            <Form.Control type="text" value={titulo} onChange={onChangeTitulo} />
+          </Form.Group>
+        </div>
+        <div className="col-4">
+          <Form.Group controlId="Valor">
+            <Form.Label>Valor</Form.Label>
+            <Form.Control type="text" value={valor} onChange={onChangeValor} placeholder="R$ 000,00" />
+          </Form.Group>
+        </div>
+      </div>
 
-      <Form.Group controlId="Descricao">
-        <Form.Label>Descrição</Form.Label>
-        <Form.Control type="text" value={descricao} onChange={onChangeDescricao} />
-      </Form.Group>
+      <div className="row">
+        <div className="col-8">
+          <Form.Group controlId="Descricao">
+            <Form.Label>Descrição</Form.Label>
+            <Form.Control type="text" value={descricao} onChange={onChangeDescricao} />
+          </Form.Group>
+        </div>
+        <div className="col-4">
+          <Form.Group controlId="Data">
+            <Form.Label>Data</Form.Label>
+            <div className="row">
+              <div className="col">
+                <DatePicker
+                  name="data"
+                  className="form-control"
+                  /* minDate={new Date()} */
+                  selected={data}
+                  onChange={onChangeData}
+                  dateFormat="dd/MM/yyyy"
+                />
+              </div>
+            </div>
+          </Form.Group>
+        </div>
+      </div>
 
-      <Form.Group controlId="Data">
-        <Form.Label>Data</Form.Label>
-        <DatePicker
-          name="data"
-          className="form-control"
-          /* minDate={new Date()} */
-          selected={data}
-          onChange={onChangeData}
-          dateFormat="dd/MM/yyyy"
-        />
-      </Form.Group>
+      <div className="row">
+        <div className="col-6">
+          <Form.Group controlId="Categoria">
+            <Form.Label>Categoria</Form.Label>
+            <Select
+              name="categoria"
+              options={categoria}
+              className="basic-multi-select"
+              onChange={onComboCategoria}
+              placeholder="Selecione..."
+              classNamePrefix="select"
+            />
+          </Form.Group>
 
-      <Form.Group controlId="Categoria">
-        <Form.Label>Categoria</Form.Label>
-        <Select
-          name="categoria"
-          options={comboCategoria}
-          className="basic-multi-select"
-          onChange={onComboCategoria}
-          placeholder="Selecione..."
-          classNamePrefix="select"
-        />
-      </Form.Group>
+        </div>
+        <div className="col-6">
+          <Form.Group controlId="Lancamento">
+            <Form.Label>Lançamento</Form.Label>
+            <Select
+              name="lancamento"
+              options={lancamento}
+              className="basic-multi-select"
+              onChange={onComboLancamento}
+              placeholder="Selecione..."
+              classNamePrefix="select"
+            />
+          </Form.Group>
+        </div>
+      </div>
 
-      <Form.Group controlId="Lancamento">
-        <Form.Label>Lançamento</Form.Label>
-        <Select
-          name="lancamento"
-          options={comboLancamento}
-          className="basic-multi-select"
-          onChange={onComboLancamento}
-          placeholder="Selecione..."
-          classNamePrefix="select"
-        />
-      </Form.Group>
-
-      <Form.Group controlId="Valor">
-        <Form.Label>Valor</Form.Label>
-        <Form.Control type="text" value={valor} onChange={onChangeValor} placeholder="R$ 000,00" />
-      </Form.Group>
 
       <Container id="Botoes">
         <div className="row">
