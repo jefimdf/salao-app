@@ -67,6 +67,8 @@ export default function DataGrid(props) {
     </button>;
   };
 
+
+
   return (
 
     <StrictMode>
@@ -86,7 +88,7 @@ export default function DataGrid(props) {
               pagination={pagination}
               paginationPageSize={paginationPageSize}
               paginationPageSizeSelector={paginationPageSizeSelector}
-
+              
             />
           </div>
         </div>
