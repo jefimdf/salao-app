@@ -70,49 +70,37 @@ export default function DespesaList(props) {
 
         setMes(mesValues.find(obj => obj.value === mesAtual))
 
-
-        setTimeout(() => {
-
-          const dadosFilter = objDespesas.filter((obj) => {
-            let data = new Date(obj.data);
-            if ((data.getMonth() + 1) === mesAtual) {
-              return obj;
-            }
-          })
-
-          setDataFilter(dadosFilter)
-
-          setCarregado(true);
-        }, 2000);
-
-
+        filterDespesas(mesAtual)
 
 
       })
 
   }, []);
 
-
-  const onChangeMes = (e) => {
-    setCarregado(false);
-    setDataFilter([])
-
+  const filterDespesas = (valor) => {
     setTimeout(() => {
       const dadosFilter = data.filter((obj) => {
-
-        let data = new Date(obj.data);
-        if ((data.getMonth() + 1) === e.value) {
-          debugger
+        let data = new Date(obj.data);debugger
+        if ((data.getMonth() + 1) === valor) {
+          return obj;
+        }else if(obj.lancamento === 'Mensal'){
           return obj;
         }
       })
 
       setDataFilter(dadosFilter)
 
-      setMes(e)
-
       setCarregado(true);
-    }, 1000);
+    }, 2000);
+  }
+
+  const onChangeMes = (e) => {
+    setCarregado(false);
+    setDataFilter([])
+    
+    setMes(e)
+
+    filterDespesas(e.value)    
 
   }
 
