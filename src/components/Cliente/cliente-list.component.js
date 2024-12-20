@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import Button from 'react-bootstrap/Button';
 import DataGrid from '../../common/dataGrid/dataGrid';
 import { serverDateToString } from '../../common/dateValidations';
+import Loading from '../../common/loading/loading';
 import ModalConfirmacao from "../../common/modalConfirmacao";
 import handleOrdenar from '../../common/ordenacao';
 import Persistencia from '../Administracao/Commom/persistencia';
@@ -63,6 +64,7 @@ export default function ClienteList(props) {
 
   return (
     <div>
+      {!carregado && <Loading />}
       <ModalConfirmacao show={showModal} handleClose={handleClose} Title="Exclusão de cliente" Message="Deseja excluir o registro?" />
       <Button variant="primary" size="lg" block="block" type="button" onClick={novo}>Novo</Button>
       {carregado && <DataGrid

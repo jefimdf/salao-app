@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import DataGrid from '../../common/dataGrid/dataGrid';
 import { serverDateToString } from "../../common/dateValidations";
 import { formatMoney } from '../../common/functions';
+import Loading from '../../common/loading/loading';
 import ModalConfirmacao from "../../common/modalConfirmacao";
 import Persistencia from '../Administracao/Commom/persistencia';
 
@@ -127,7 +128,8 @@ export default function AgendaList(props) {
 
     agendas.map(obj => {
 
-      if (formatDateAAAAMMDD(obj.data) >= dataInicial && formatDateAAAAMMDD(obj.data) <= dataFinal) {debugger
+      if (formatDateAAAAMMDD(obj.data) >= dataInicial && formatDateAAAAMMDD(obj.data) <= dataFinal) {
+
         agendaFiltro.push(
           {
             ...obj,
@@ -138,14 +140,14 @@ export default function AgendaList(props) {
             valor: formatMoney(obj.total, 'R$')
           }
         );
-        
+
       }
 
 
     });
 
     if (agendaFiltro.length > 0) {
-      
+
       return (
         <DataGrid
           {...props}
@@ -169,11 +171,9 @@ export default function AgendaList(props) {
 
   }
 
-
-
-
   return (
     <div>
+      {!carregado && <Loading />}
       <ModalConfirmacao show={showModal} handleClose={handleClose} Title="Exclusão de agenda" Message="Deseja excluir o registro?" />
       <Button variant="primary" size="lg" block="block" type="button" onClick={novo}>Novo</Button>
       {carregado && DataTable()}
